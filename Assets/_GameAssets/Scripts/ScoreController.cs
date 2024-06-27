@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using TapAndRun.Character.Model;
+using TapAndRun.Level;
 
 public class ScoreController : MonoBehaviour
 {
@@ -22,7 +24,7 @@ public class ScoreController : MonoBehaviour
     public void Start()
     {
         GameManager.instance.crystalTaken.AddListener(IncreaseScore);
-        GameManager.instance.tapEvent += IncreaseScore;
+        //ameManager.instance.tapEvent += IncreaseScore;
         GameManager.instance.levelStart.AddListener(SetLevel);
         GameManager.instance.levelComplete.AddListener(LevelUp);
 
@@ -38,10 +40,10 @@ public class ScoreController : MonoBehaviour
         currentScoreText.text = currentScore.ToString();
     }
 
-    private void IncreaseScore(Commands command)
+    private void IncreaseScore(ArrowType commandType)
     {
-        ShakeText();
-        if (command == Commands.Jump)
+        /*ShakeText();
+        if (commandType == CommandType.Jump)
         {
             currentScore += amountOfPoints * 2 * scoreMiltiplier;
             currentScoreText.text = currentScore.ToString();
@@ -50,7 +52,7 @@ public class ScoreController : MonoBehaviour
         {
             currentScore += amountOfPoints * scoreMiltiplier;
             currentScoreText.text = currentScore.ToString();
-        }   
+        }  */ 
     }
 
     private void SetLevel()

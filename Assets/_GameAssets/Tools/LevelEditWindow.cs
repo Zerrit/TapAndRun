@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TapAndRun.Character.Model;
+using TapAndRun.Level;
+using TapAndRun.Levels.View;
 using TMPro;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -17,7 +20,7 @@ public class LevelEditWindow : EditorWindow
     private string levelName;
     private Vector2 lastSegmentEndPos;
 
-    private Level creatingLevel;
+    private LevelView creatingLevel;
     private Transform lastSegment;
 
     private GameObject startSegment;
@@ -53,28 +56,26 @@ public class LevelEditWindow : EditorWindow
     {
         lastSegment = Instantiate(segment, lastSegmentEndPos, rotation, creatingLevel.transform).transform;
         lastSegmentEndPos = lastSegment.GetChild(0).position;
-        creatingLevel.segmentList.Add(new Segment(lastSegment, type));
+        //creatingLevel.segmentList.Add(new Segment(lastSegment, type));
         segmentsCount++;
 
         if(type == LastSegmentType.TurnLeft)
         {
             creatingLevel.arrow.Add(lastSegment.GetComponentInChildren<Arrow>());
-            creatingLevel.arrow[creatingLevel.arrow.Count - 1].command = Commands.TurnLeft;
+            creatingLevel.arrow[creatingLevel.arrow.Count - 1]._commandType = ArrowType.TurnLeft;
             leftWayRotation += 90;
             rightWayRotation -= 90;
         }
         else if(type == LastSegmentType.TurnRight)
         {
             creatingLevel.arrow.Add(lastSegment.GetComponentInChildren<Arrow>());
-            creatingLevel.arrow[creatingLevel.arrow.Count - 1].command = Commands.TurnRight;
+            creatingLevel.arrow[creatingLevel.arrow.Count - 1]._commandType = ArrowType.TurnRight;
             leftWayRotation -= 90;
             rightWayRotation += 90;
         }
         else if (type == LastSegmentType.Jump)
         {
             creatingLevel.arrow.Add(lastSegment.GetComponentInChildren<Arrow>());
-            //creatingLevel.arrow[creatingLevel.arrow.Count - 1].command = Commands.Jump;
-
         }
     }
     private void BuildSegment(GameObject segment, LastSegmentType type, Quaternion rotation, int range)
@@ -82,13 +83,13 @@ public class LevelEditWindow : EditorWindow
         lastSegment = Instantiate(segment, lastSegmentEndPos, rotation, creatingLevel.transform).transform;
         lastSegment.localScale = new Vector3(1, range, 1);
         lastSegmentEndPos = lastSegment.GetChild(0).position;
-        creatingLevel.segmentList.Add(new Segment(lastSegment, type));
+        //creatingLevel.segmentList.Add(new Segment(lastSegment, type));
         segmentsCount++;
     }
 
     private void CreateLevel()
     {
-        creatingLevel = new GameObject("New Level").AddComponent<Level>();
+        //creatingLevel = new GameObject("New Level").AddComponent<Level>();
         if (PlayerPrefs.HasKey("MaxLvl")) creatingLevel.levelId = PlayerPrefs.GetInt("MaxLvl") + 1;
         else creatingLevel.levelId = 0;
         BuildSegment(startSegment, LastSegmentType.Simple, Quaternion.identity);
@@ -117,8 +118,8 @@ public class LevelEditWindow : EditorWindow
         creatingLevel.segmentList.RemoveAt(segmentsCount - 1);
         DestroyImmediate(lastSegment.gameObject, false);
         segmentsCount--;
-        lastSegmentEndPos = creatingLevel.segmentList[segmentsCount - 1].segment.GetChild(0).position;
-        lastSegment = creatingLevel.segmentList[segmentsCount - 1].segment;
+        //lastSegmentEndPos = creatingLevel.segmentList[segmentsCount - 1].segment.GetChild(0).position;
+        //lastSegment = creatingLevel.segmentList[segmentsCount - 1].segment;
 
     }
     private void SaveLevelToPrefab()
@@ -131,10 +132,10 @@ public class LevelEditWindow : EditorWindow
 
     private void OnGUI()
     {
-        EditorGUILayout.LabelField(" ÓÌÒÚÛÍÚÓ ÛÓ‚ÌÂÈ TapTapDash");
-        //---------------------------------------------------------------------------//  —“¿–“  ŒÕ—“–” “Œ–¿
+        EditorGUILayout.LabelField("–ö–æ–Ω—Å—Ç—Ä—É–∫—Ç–æ—Ä —É—Ä–æ–≤–Ω–µ–π TapTapDash");
+        //---------------------------------------------------------------------------//  –°–¢–ê–†–¢ –ö–û–ù–°–¢–†–£–ö–¢–û–†–ê
 
-        if (GUILayout.Button("—ÓÁ‰‡Ú¸ ÛÓ‚ÂÌ¸"))
+        if (GUILayout.Button("–°–æ–∑–¥–∞—Ç—å —É—Ä–æ–≤–µ–Ω—å"))
         {
             fadePanel = 1f;
             lastSegmentEndPos = Vector2.zero;
@@ -147,21 +148,21 @@ public class LevelEditWindow : EditorWindow
 
         EditorGUILayout.Space(20);
 
-        //---------------------------------------------------------------------------//  Õ¿◊¿ÀŒ Ã≈Õﬁ  ŒÕ—“–” “Œ–¿
+        //---------------------------------------------------------------------------//  –ù–ê–ß–ê–õ–û –ú–ï–ù–Æ –ö–û–ù–°–¢–†–£–ö–¢–û–†–ê
         if (EditorGUILayout.BeginFadeGroup(fadePanel))
         {
-            //-----------------------------------------------------------------------//  —Œ«ƒ¿Õ»≈ ƒŒ–Œ∆≈ 
+            //-----------------------------------------------------------------------//  –°–û–ó–î–ê–ù–ò–ï –î–û–†–û–ñ–ï–ö
             EditorGUILayout.BeginHorizontal();
 
-            if (GUILayout.Button("ÕÂ·ÓÎ¯‡ˇ ‰ÓÓÊÍ‡", GUILayout.Height(30)))
+            if (GUILayout.Button("–ù–µ–±–æ–ª—à–∞—è –¥–æ—Ä–æ–∂–∫–∞", GUILayout.Height(30)))
             {
                 BuildSegment(roadSegment, LastSegmentType.Simple, Quaternion.Euler(0,0,leftWayRotation), 1);
             }
-            if (GUILayout.Button("—Â‰Ìˇˇ ‰ÓÓÊÍ‡", GUILayout.Height(30)))
+            if (GUILayout.Button("–°—Ä–µ–¥–Ω—è—è –¥–æ—Ä–æ–∂–∫–∞", GUILayout.Height(30)))
             {
                 BuildSegment(roadSegment, LastSegmentType.Simple, Quaternion.Euler(0, 0, leftWayRotation), 2);
             }
-            if (GUILayout.Button("ƒÎËÌÌ‡ˇ ‰ÓÓÊÍ‡", GUILayout.Height(30)))
+            if (GUILayout.Button("–î–ª–∏–Ω–Ω–∞—è –¥–æ—Ä–æ–∂–∫–∞", GUILayout.Height(30)))
             {
                 BuildSegment(roadSegment, LastSegmentType.Simple, Quaternion.Euler(0, 0, leftWayRotation), 3);
             }
@@ -169,14 +170,14 @@ public class LevelEditWindow : EditorWindow
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space(15);
 
-            //---------------------------------------------------------------------------// —Œ«ƒ¿Õ»≈ œŒ¬Œ–Œ“Œ¬
+            //---------------------------------------------------------------------------// –°–û–ó–î–ê–ù–ò–ï –ü–û–í–û–†–û–¢–û–í
             EditorGUILayout.BeginHorizontal();
 
-            if (GUILayout.Button("œÓ‚ÓÓÚ Ì‡ÎÂ‚Ó", GUILayout.Height(50)))
+            if (GUILayout.Button("–ü–æ–≤–æ—Ä–æ—Ç –Ω–∞–ª–µ–≤–æ", GUILayout.Height(50)))
             {
                 BuildSegment(turnSegment, LastSegmentType.TurnLeft, Quaternion.Euler(0, 0, leftWayRotation));
             }
-            if (GUILayout.Button("œÓ‚ÓÓÚ Ì‡Ô‡‚Ó", GUILayout.Height(50)))
+            if (GUILayout.Button("–ü–æ–≤–æ—Ä–æ—Ç –Ω–∞–ø—Ä–∞–≤–æ", GUILayout.Height(50)))
             {
                 BuildSegment(turnSegment, LastSegmentType.TurnRight, Quaternion.Euler(0, 180, rightWayRotation));
             }
@@ -184,60 +185,60 @@ public class LevelEditWindow : EditorWindow
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space(15);
 
-            //---------------------------------------------------------------------------// —Œ«ƒ¿Õ»≈ —≈√Ã≈Õ“Œ¬ ƒÀﬂ œ–€∆ Œ¬
+            //---------------------------------------------------------------------------// –°–û–ó–î–ê–ù–ò–ï –°–ï–ì–ú–ï–ù–¢–û–í –î–õ–Ø –ü–†–´–ñ–ö–û–í
             EditorGUILayout.BeginHorizontal();
 
-            if (GUILayout.Button("œ˚ÊÓÍ", GUILayout.Height(30)))
+            if (GUILayout.Button("–ü—Ä—ã–∂–æ–∫", GUILayout.Height(30)))
             {
                 BuildSegment(jumpSegment, LastSegmentType.Jump, Quaternion.Euler(0,0,leftWayRotation));
             }
 
-            if (GUILayout.Button("Œ‰ËÌÓ˜Ì˚È Ô˚ÊÓÍ", GUILayout.Height(30)))
+            if (GUILayout.Button("–û–¥–∏–Ω–æ—á–Ω—ã–π –ø—Ä—ã–∂–æ–∫", GUILayout.Height(30)))
             {
                 BuildSegment(singleJumpSegment, LastSegmentType.Jump, Quaternion.Euler(0, 0, leftWayRotation));
             }
 
-            if (GUILayout.Button("«ÓÌ‡ ÔËÁÂÏÎÂÌËˇ", GUILayout.Height(30)))
+            if (GUILayout.Button("–ó–æ–Ω–∞ –ø—Ä–∏–∑–µ–º–ª–µ–Ω–∏—è", GUILayout.Height(30)))
             {
                 BuildSegment(jumpEndSegment, LastSegmentType.Simple, Quaternion.Euler(0, 0, leftWayRotation));
             }
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space(30);
-            //---------------------------------------------------------------------------// ”ƒ¿À≈Õ»≈ —≈√Ã≈Õ“¿
+            //---------------------------------------------------------------------------// –£–î–ê–õ–ï–ù–ò–ï –°–ï–ì–ú–ï–ù–¢–ê
 
             EditorGUILayout.BeginHorizontal();
 
-            if (GUILayout.Button("”‰‡ÎËÚ¸ ÔÓÒÎÂ‰ÌËÈ ÒÂ„ÏÂÌÚ", GUILayout.Height(30)))
+            if (GUILayout.Button("–£–¥–∞–ª–∏—Ç—å –ø–æ—Å–ª–µ–¥–Ω–∏–π —Å–µ–≥–º–µ–Ω—Ç", GUILayout.Height(30)))
             {
                 DeleteSegment();
             }
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space(30);
-            //---------------------------------------------------------------------------// Õ¿—“–Œ… » ”–Œ¬Õﬂ
+            //---------------------------------------------------------------------------// –ù–ê–°–¢–†–û–ô–ö–ò –£–†–û–í–ù–Ø
 
             EditorGUILayout.BeginHorizontal();
 
             difficulty = EditorGUILayout.IntSlider(difficulty, 1, 3);
-            EditorGUILayout.LabelField("”Ó‚ÂÌ¸ ÒÎÓÊÌÓÒÚË");
+            EditorGUILayout.LabelField("–£—Ä–æ–≤–µ–Ω—å —Å–ª–æ–∂–Ω–æ—Å—Ç–∏");
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space(15);
-            //---------------------------------------------------------------------------// «¿¬≈–ÿ≈Õ»≈ —Œ«ƒ¿Õ»ﬂ ”–Œ¬Õﬂ
+            //---------------------------------------------------------------------------// –ó–ê–í–ï–†–®–ï–ù–ò–ï –°–û–ó–î–ê–ù–ò–Ø –£–†–û–í–ù–Ø
 
             EditorGUILayout.BeginHorizontal();
             levelName = EditorGUILayout.TextField(levelName);
-            EditorGUILayout.LabelField("¬‚Â‰ËÚÂ Ì‡Á‚‡ÌËÂ ÛÓ‚Ìˇ");
+            EditorGUILayout.LabelField("–í–≤–µ–¥–∏—Ç–µ –Ω–∞–∑–≤–∞–Ω–∏–µ —É—Ä–æ–≤–Ω—è");
 
 
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space(15);
-            //---------------------------------------------------------------------------// «¿¬≈–ÿ≈Õ»≈ —Œ«ƒ¿Õ»ﬂ ”–Œ¬Õﬂ
+            //---------------------------------------------------------------------------// –ó–ê–í–ï–†–®–ï–ù–ò–ï –°–û–ó–î–ê–ù–ò–Ø –£–†–û–í–ù–Ø
 
 
-            if (GUILayout.Button("«‡ÍÓÌ˜ËÚ¸ ÒÓÁ‰‡ÌËÂ ÛÓ‚Ìˇ"))
+            if (GUILayout.Button("–ó–∞–∫–æ–Ω—á–∏—Ç—å —Å–æ–∑–¥–∞–Ω–∏–µ —É—Ä–æ–≤–Ω—è"))
             {
                 BuildSegment(finishSegment, LastSegmentType.Simple, Quaternion.Euler(0,0,leftWayRotation));
 
