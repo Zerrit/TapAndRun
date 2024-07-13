@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
-using TapAndRun.Character.Model;
-using TapAndRun.Level;
+using TapAndRun.MVP.Levels.Model;
 
 public class ScoreController : MonoBehaviour
 {
@@ -40,7 +39,7 @@ public class ScoreController : MonoBehaviour
         currentScoreText.text = currentScore.ToString();
     }
 
-    private void IncreaseScore(ArrowType commandType)
+    private void IncreaseScore(InteractType commandType)
     {
         /*ShakeText();
         if (commandType == CommandType.Jump)

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using TapAndRun.Character.Model;
 using UnityEngine;
 using UnityEngine.Audio;
 

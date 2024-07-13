@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TapAndRun.Character.Model;
-using TapAndRun.Level;
+using TapAndRun.MVP.Levels.Model;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -28,7 +27,7 @@ public class CameraController : MonoBehaviour
         camTransform.position = new Vector3(player.position.x, player.position.y, -2);
     }
 
-    private void TapRotation(ArrowType commandType)
+    private void TapRotation(InteractType commandType)
     {
         /*switch (cameraDificulty)
         {
