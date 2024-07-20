@@ -1,28 +1,73 @@
-﻿namespace TapAndRun.MVP.Levels.Model
+﻿using System;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using TapAndRun.Character.Commands;
+using TapAndRun.MVP.Character.Model;
+
+namespace TapAndRun.MVP.Levels.Model
 {
     public class LevelsModel
-    { 
-        public int CurrentLevel { get; private set; }
+    {
+        public event Action OnLevelChanged;
+        public event Action OnLevelCompleted;
+        public int CurrentLevelId { get; private set; }
 
-
-
-
-        //public Character player;
+        public int LastUnlockedLevelId { get; private set; }
+        public int LevelCount { get; private set; }
+        public bool IsLevelBuild { private get; set; }
         
-        public LevelsConstructor levelConstructor;
+        private Queue<ICommand> _currentLevelCommands;
 
-        //private List<Level> levels = new List<Level>(); // Список уровней на сцене
-        //private List<Arrow> arrows = new List<Arrow>(); // Список указателей на сцене
+        private readonly CharacterModel _characterModel;
 
+        public LevelsModel(CharacterModel characterModel)
+        {
+            _characterModel = characterModel;
+        }
+
+        public void Initialize()
+        {
+            LevelCount = 2;
+            LastUnlockedLevelId = 1;
+            CurrentLevelId = 0;
+            
+            OnLevelChanged?.Invoke();
+        }
+
+        public async UniTask ChangeLevelAsync(int levelId)
+        {
+            CurrentLevelId = levelId;
+            OnLevelChanged?.Invoke();
+
+            await UniTask.WaitUntil(() => IsLevelBuild);
+
+            IsLevelBuild = false;
+        }
+
+        public void CompleteLevel()
+        {
+            if (LevelCount - 1 > CurrentLevelId)
+            {
+                if (LastUnlockedLevelId == CurrentLevelId)
+                {
+                    LastUnlockedLevelId++;
+                }
+
+                CurrentLevelId++;
+                OnLevelCompleted?.Invoke();
+            }
+        }
+        
+        public void SetCommands(IEnumerable<InteractType> interactions)
+        {
+            
+        }
+        
+        
         private int currentArrowId;
         //private int currentLevelId;
 
         //private Level newestLevel;
-                                    
-        private void Start()
-        {
-            //GameManager.instance.tapEvent += SwitchArrow;
-        }
 
         /*public void CreateStartLevel(int levelId)
         {

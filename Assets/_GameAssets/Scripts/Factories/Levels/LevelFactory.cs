@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace TapAndRun.Factories
+namespace TapAndRun.Factories.Levels
 {
     public class LevelFactory : ILevelFactory, IDisposable
     {
@@ -23,11 +23,11 @@ namespace TapAndRun.Factories
             _parentContainer = parentContainer;
         }
 
-        public async UniTask<LevelView> CreateLevelViewAsync(int levelId, CancellationToken token)
+        public async UniTask<LevelView> CreateLevelViewAsync(int levelId, Vector2 position, Quaternion rotation, CancellationToken token)
         {
             var assetRef = _levelsConfig.LevelPrefabs[levelId];
 
-            var operationHandle = Addressables.InstantiateAsync(assetRef, _parentContainer);
+            var operationHandle = Addressables.InstantiateAsync(assetRef, position, rotation, _parentContainer);
             var levelInstance = await operationHandle.WithCancellation(token);
 
             _levelOperationHandles.Enqueue(operationHandle);

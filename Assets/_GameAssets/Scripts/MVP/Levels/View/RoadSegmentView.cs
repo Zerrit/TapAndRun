@@ -6,7 +6,7 @@ namespace TapAndRun.MVP.Levels.View
     {
 
         [field: SerializeField] public CrystalView[] Crystals { get; private set; }
-        public override void Reset()
+        public override void ResetSegment()
         {
             
         }

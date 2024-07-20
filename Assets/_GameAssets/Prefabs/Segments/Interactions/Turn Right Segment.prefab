@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21d0608db7964a03a04d8fd938e8c559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <SnapAngleOffset>k__BackingField: -90
+  <SnapPoint>k__BackingField: {fileID: 630516248155782240}
   <Interaction>k__BackingField: {fileID: 1153231120505126081}
 --- !u!1 &8998076144066504635
 GameObject:

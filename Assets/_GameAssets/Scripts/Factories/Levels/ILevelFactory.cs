@@ -1,11 +1,12 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.MVP.Levels.View;
+using UnityEngine;
 
-namespace TapAndRun.Factories
+namespace TapAndRun.Factories.Levels
 {
     public interface ILevelFactory
     {
-        UniTask<LevelView> CreateLevelViewAsync(int levelId, CancellationToken token);
+        public UniTask<LevelView> CreateLevelViewAsync(int levelId, Vector2 position, Quaternion rotation, CancellationToken token);
     }
 }

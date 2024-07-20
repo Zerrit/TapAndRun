@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
 
     //public LevelController levelController { get; private set; }
     public CameraController cameraController { get; private set; }
-    public UIController uiController { get; private set; }
     public AudioManager audioManager { get; private set; }
     public ScoreController scoreController { get; private set; }
 
@@ -42,7 +41,6 @@ public class GameManager : MonoBehaviour
         levelComplete.AddListener(audioManager.ChangeRunSoundSpeed);
         levelComplete.AddListener(scoreController.ChangeMultipliyer);
         levelLose.AddListener(LevelLose);
-        uiController.menuPanel.sound.onClick.AddListener(audioManager.SwitchSoundMode);
     }
 
     public void StartLevel(int levelNumber) // Старт игры и запуск соответствующего события
@@ -62,7 +60,7 @@ public class GameManager : MonoBehaviour
     }
     public void ReturnToMenu() // Открывает панель меню и запускает удаление уровней
     {
-        uiController.OpenMenuPanel();
+       // uiController.OpenMenuPanel();
         //levelController.ClearAllLevels();
     }
     private void LevelComplete() // Отметка о прохождении уровня и создание следующего уровня
@@ -72,7 +70,7 @@ public class GameManager : MonoBehaviour
     }
     private void LevelLose() // Запуск панели проигрыша
     {
-        StartCoroutine(uiController.OpenLosePanel());
+        //StartCoroutine(uiController.OpenLosePanel());
     }
 
 

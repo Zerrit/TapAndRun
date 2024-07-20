@@ -4,8 +4,9 @@ namespace TapAndRun.MVP.Levels.View
 {
     public abstract class AbstractSegmentView : MonoBehaviour
     {
-        public LastSegmentType SegmentType { get; private set; }
+        [field:SerializeField] public int SnapAngleOffset { get; private set; }   
+        [field:SerializeField] public Transform SnapPoint { get; private set; }
 
-        public abstract void Reset();
+        public abstract void ResetSegment();
     }
 }

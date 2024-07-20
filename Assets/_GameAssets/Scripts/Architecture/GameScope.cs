@@ -1,5 +1,6 @@
 ﻿using TapAndRun.Configs;
 using TapAndRun.Factories;
+using TapAndRun.Factories.Levels;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Character.Presenter;
 using TapAndRun.MVP.Character.View;

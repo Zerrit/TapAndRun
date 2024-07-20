@@ -1,14 +1,17 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TapAndRun.MVP.Levels.Model;
+using TMPro;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Levels.View
 {
     public class LevelView : MonoBehaviour
     {
-        [field: SerializeField] public TMP_Text LevelNumberText { get; private set; }
-        [field: SerializeField] public Transform FinishSegment { get; private set; }
-
-        [field: SerializeField] public AbstractSegmentView[] Segments { get; private set; }
+        [field: SerializeField] public int Difficulty { get; set; }
+        [field: SerializeField] public AbstractSegmentView FinishSegment { get; set; }
+        [field: SerializeField] public TMP_Text LevelNumberText { get; set; }
+        [field: SerializeField] public List<AbstractSegmentView> Segments { get; private set; } = new();
+        [field: SerializeField] public List<InteractType> Interactions { get; private set; } = new();
 
 
         public void Initialize(int level)
@@ -16,50 +19,17 @@ namespace TapAndRun.MVP.Levels.View
             LevelNumberText.text = level.ToString();
         }
 
-        public void Reset()
+        public void ResetLevel()
         {
-            /*foreach (var arrow in Arrows)
+            foreach (var segment in Segments)
             {
-                arrow.SetDefault();
+                segment.ResetSegment();
             }
-
-            foreach (var crystal in Crystals)
-            {
-                crystal.Reset();
-            }*/
         }
 
         public void Destroy()
         {
             Destroy(gameObject);
         }
-        
-        //public int levelId;
-
-        //public int difficulty;
-
-        //public TMP_Text levelNumberText;
-
-        //public Transform finishSegment;
-        /*[SerializeField]public Quaternion levelRotation;
-
-
-        public List<SegmentView> segmentList = new List<SegmentView>();     
-        public List<Arrow> arrow = new List<Arrow>();
-        public CrystalView[] crystal;
-
-        private void Awake()
-        {
-            levelNumberText.text = (levelId + 1).ToString();
-            levelRotation = transform.rotation;
-        }
-
-        public void GetCommands(List<ArrowType> commands)
-        {
-            foreach (Arrow arr in arrow)
-            {
-                commands.Add(arr._commandType);
-            }
-        }*/
     }
 }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4187006186327145607}
   m_Layer: 0
-  m_Name: SegmentConnector
+  m_Name: Snap Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -171,6 +171,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6441190424205846819}
+  - component: {fileID: 7333852848388839238}
   m_Layer: 0
   m_Name: Start
   m_TagString: Start
@@ -195,6 +196,21 @@ Transform:
   - {fileID: 4187006186327145607}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7333852848388839238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7746934045579640328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0320ceb97fb471bac1f3456b5a6faef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <SnapAngleOffset>k__BackingField: 0
+  <SnapPoint>k__BackingField: {fileID: 4187006186327145607}
+  <Crystals>k__BackingField: []
 --- !u!1 &8385493621463544506
 GameObject:
   m_ObjectHideFlags: 0
