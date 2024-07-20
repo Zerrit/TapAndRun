@@ -3,13 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Commands
-{
-    TurnRight,
-    TurnLeft,
-    Jump
-}
-
 public class Character : MonoBehaviour
 {
     private Vector2 moveDirection = new Vector2(0, 1);
@@ -20,8 +13,8 @@ public class Character : MonoBehaviour
     [SerializeField] private bool isImmortal;
     [SerializeField] private float moveSpeed;
     [SerializeField] private int currentCommandId = 0; // Номер текущей команды
-    [SerializeField] public List<Commands> commands = new List<Commands>();
-    [SerializeField] private Commands nextCommand;
+    //[SerializeField] public List<CommandType> commands = new List<CommandType>();
+    //[SerializeField] private CommandType _nextCommandType;
 
     public Transform roadChecker; // Объект для проверки обрыва
     private Transform player;
@@ -44,36 +37,38 @@ public class Character : MonoBehaviour
     private void SetNextCommand() // Установка следующей команды
     {
         currentCommandId++;
-        nextCommand = commands[currentCommandId];
+        //_nextCommandType = commands[currentCommandId];
     }
+    
     private void SetStartCommand() // Установка стартовой команды уровня
     {
         currentCommandId = 0;
-        nextCommand = commands[currentCommandId];
+        //_nextCommandType = commands[currentCommandId];
     }
+    
     public void Tap() // Управление персонажа "Тапом". Запускает соответствующий эвент в скрипте GameManager
     {
         isImmortal = false;
-        GameManager.instance.TapEventActivate(nextCommand);
+        //GameManager.instance.TapEventActivate(_nextCommandType);
 
-        switch (nextCommand)
+        /*switch (_nextCommandType)
         {
-            case Commands.Jump:
+            case CommandType.Jump:
                 StartCoroutine(Jump());
                 //Jump();
                 SetNextCommand();
                 break;
 
-            case Commands.TurnLeft:
+            case CommandType.TurnLeft:
                 StartCoroutine(Turn(player.eulerAngles.z, 90f));
                 SetNextCommand();
                 break;
 
-            case Commands.TurnRight:
+            case CommandType.TurnRight:
                 StartCoroutine(Turn(player.eulerAngles.z,  -90f));
                 SetNextCommand();
                 break;
-        } 
+        } */
     }
 
     private IEnumerator Jump()
@@ -199,7 +194,7 @@ public class Character : MonoBehaviour
 
     public void ClearOldCommands(int countCommands)
     {
-        commands.RemoveRange(0, countCommands);
+        //commands.RemoveRange(0, countCommands);
         currentCommandId -= countCommands;
     }
     private bool isPayerDirectionVecrtical(float rotation)

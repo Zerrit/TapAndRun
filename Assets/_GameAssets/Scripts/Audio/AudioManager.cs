@@ -22,7 +22,7 @@ public class AudioManager : MonoBehaviour
 			s.source.loop = s.loop;
 		}
 
-		GameManager.instance.tapEvent += PlayTapSound;
+		//GameManager.instance.tapEvent += PlayTapSound;
 		//GameManager.instance.crystalTaken.AddListener(PlayCrystalSound);
 		GameManager.instance.levelComplete.AddListener(PlayCompleteSound);
 		GameManager.instance.levelLose.AddListener(PlayLoseSound);
@@ -51,11 +51,11 @@ public class AudioManager : MonoBehaviour
 		PlayRunSound();
 	}
 
-	private void PlayTapSound(Commands command)
+	/*private void PlayTapSound(CommandType commandType)
     {
-		if(command == Commands.Jump) StartCoroutine(PlayWhileRun("Jump"));	
+		if(commandType == CommandType.Jump) StartCoroutine(PlayWhileRun("Jump"));	
 		else StartCoroutine(PlayWhileRun("Turn"));
-	}
+	}*/
 
 	private void PlayCompleteSound()
 	{

@@ -9,16 +9,15 @@ public class GameManager : MonoBehaviour
 
     public int currentLevelId { get; private set; }
 
-    public LevelController levelController { get; private set; }
+    //public LevelController levelController { get; private set; }
     public CameraController cameraController { get; private set; }
-    public UIController uiController { get; private set; }
     public AudioManager audioManager { get; private set; }
     public ScoreController scoreController { get; private set; }
 
 
     //События >>
-    public delegate void CommandEvent(Commands command);
-    public event CommandEvent tapEvent;  // Эвент тапа по экрану при управлении персонажем
+    //public delegate void CommandEvent(CommandType commandType);
+    //public event CommandEvent tapEvent;  // Эвент тапа по экрану при управлении персонажем
 
     public UnityEvent crystalTaken; // Событие подбора кристалика
     public UnityEvent levelComplete; // Событие прохождения уровня
@@ -42,44 +41,43 @@ public class GameManager : MonoBehaviour
         levelComplete.AddListener(audioManager.ChangeRunSoundSpeed);
         levelComplete.AddListener(scoreController.ChangeMultipliyer);
         levelLose.AddListener(LevelLose);
-        uiController.menuPanel.sound.onClick.AddListener(audioManager.SwitchSoundMode);
     }
 
     public void StartLevel(int levelNumber) // Старт игры и запуск соответствующего события
     {
-        levelController.CreateStartLevel(levelNumber);
+        //levelController.CreateStartLevel(levelNumber);
         levelStart.Invoke();
     }
     public void StartLastLevel() // Старт игры и запуск соответствующего события
     {
-        levelController.CreateStartLevel(currentLevelId);
+        //levelController.CreateStartLevel(currentLevelId);
         levelStart.Invoke();
     }
     public void RestartLevel() // Рестарт игры и запуск соответствующего события
     {
-        levelController.RestartLevel();
+        //levelController.RestartLevel();
         levelStart.Invoke();
     }
     public void ReturnToMenu() // Открывает панель меню и запускает удаление уровней
     {
-        uiController.OpenMenuPanel();
-        levelController.ClearAllLevels();
+       // uiController.OpenMenuPanel();
+        //levelController.ClearAllLevels();
     }
     private void LevelComplete() // Отметка о прохождении уровня и создание следующего уровня
     {
         currentLevelId++;
-        levelController.CreateNextLevel();
+        //levelController.CreateNextLevel();
     }
     private void LevelLose() // Запуск панели проигрыша
     {
-        StartCoroutine(uiController.OpenLosePanel());
+        //StartCoroutine(uiController.OpenLosePanel());
     }
 
 
-    public void TapEventActivate(Commands command) // Активация события Тапа
+    /*public void TapEventActivate(CommandType commandType) // Активация события Тапа
     {
-        tapEvent?.Invoke(command);
-    }
+        //tapEvent?.Invoke(commandType);
+    }*/
     public void SetDifficulty(int index)
     {
         cameraController.ChangeCameraDificulty(index);

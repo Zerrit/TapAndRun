@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TapAndRun.MVP.Levels.Model;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -16,7 +17,7 @@ public class CameraController : MonoBehaviour
         cam = GetComponent<Camera>();
         camTransform.position = new Vector3(player.position.x, player.position.y, -2);
 
-        GameManager.instance.tapEvent += TapRotation;
+        //GameManager.instance.tapEvent += TapRotation;
         GameManager.instance.levelStart.AddListener(SetDefaultRotation);
         GameManager.instance.levelLose.AddListener(SetLoseCamera);
     }
@@ -26,26 +27,26 @@ public class CameraController : MonoBehaviour
         camTransform.position = new Vector3(player.position.x, player.position.y, -2);
     }
 
-    private void TapRotation(Commands command)
+    private void TapRotation(InteractType commandType)
     {
-        switch (cameraDificulty)
+        /*switch (cameraDificulty)
         {
             case 1:
-                if (command == Commands.TurnLeft) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, 90f)); 
-                if (command == Commands.TurnRight) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, -90f));   
+                if (commandType == CommandType.TurnLeft) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, 90f)); 
+                if (commandType == CommandType.TurnRight) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, -90f));   
                 break;
 
             case 2:
-                if (command == Commands.TurnLeft) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, 40f));
-                if (command == Commands.TurnRight) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, -40f));
+                if (commandType == CommandType.TurnLeft) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, 40f));
+                if (commandType == CommandType.TurnRight) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, -40f));
                 break;
 
             case 3:
-                if (command == Commands.TurnLeft) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, Random.Range(-100, 100)));
-                if (command == Commands.TurnRight) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, Random.Range(-100, 100)));
-                if (command == Commands.Jump) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, Random.Range(-200, 200)));
+                if (commandType == CommandType.TurnLeft) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, Random.Range(-100, 100)));
+                if (commandType == CommandType.TurnRight) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, Random.Range(-100, 100)));
+                if (commandType == CommandType.Jump) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, Random.Range(-200, 200)));
                 break;
-        }
+        }*/
     }
 
     private void SetCameraDistance(int value)
