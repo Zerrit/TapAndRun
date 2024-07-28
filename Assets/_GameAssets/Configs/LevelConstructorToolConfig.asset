@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a8f8efe0c5d41c1bc6092329c6a0294, type: 3}
   m_Name: LevelConstructorToolConfig
   m_EditorClassIdentifier: 
-  <StartSegment>k__BackingField: {fileID: 7333852848388839238, guid: 5908f903bfeef384080fcf6ab66f508a, type: 3}
+  <StartSegment>k__BackingField: {fileID: 2445484754912848913, guid: 5908f903bfeef384080fcf6ab66f508a, type: 3}
   <RoadSegment>k__BackingField: {fileID: 3931110721579730327, guid: adaff09a92afb5e44b931b0636b922d1, type: 3}
-  <TurnSegment>k__BackingField: {fileID: 2974594783289499209, guid: 7959969492d2bd04193b32cf1e4126d2, type: 3}
+  <LeftTurnSegment>k__BackingField: {fileID: 2974594783289499209, guid: f3aaf19893b4ab3429d8921de8cbcfca, type: 3}
+  <RightTurnSegment>k__BackingField: {fileID: 2974594783289499209, guid: 7959969492d2bd04193b32cf1e4126d2, type: 3}
   <JumpStartSegment>k__BackingField: {fileID: 5693799598156488038, guid: 13a0fb0496494bf418711d98c7557ba9, type: 3}
   <JumpSegment>k__BackingField: {fileID: 5103050312766909204, guid: c416957756988b441ad628683c0c29a2, type: 3}
   <JumpEndSegment>k__BackingField: {fileID: 2083111835628566302, guid: cea7d25226f29f149bb0fe29bde25a1a, type: 3}
-  <FinishSegment>k__BackingField: {fileID: -6948230366750251706, guid: 28b5f0c9a142fbf40b9d7b231884225e, type: 3}
+  <FinishSegment>k__BackingField: {fileID: -9159173210695243050, guid: 28b5f0c9a142fbf40b9d7b231884225e, type: 3}
