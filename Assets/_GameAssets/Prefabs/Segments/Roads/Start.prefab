@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1433065925711663048}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.35, z: 0}
+  m_LocalPosition: {x: 0, y: 2.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -58,8 +58,8 @@ Transform:
   m_GameObject: {fileID: 3581860340410456158}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalPosition: {x: 0, y: 1.35, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5867057450751683289}
@@ -105,13 +105,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: -6945323628647333712, guid: 37010a84ed9f8dc4b82e07cc71897178, type: 3}
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -2413806693520163455, guid: 2b5998a89ce68694aa8754cf1a2942e6, type: 3}
   m_Color: {r: 0.9686275, g: 0.9686275, b: 0.9686275, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.12, y: 2.12}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -153,8 +153,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.12, y: 2.12}
-    newSize: {x: 2.12, y: 2.12}
+    oldSize: {x: 2, y: 2}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -171,7 +171,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6441190424205846819}
-  - component: {fileID: 7333852848388839238}
+  - component: {fileID: 2445484754912848913}
   m_Layer: 0
   m_Name: Start
   m_TagString: Start
@@ -196,7 +196,7 @@ Transform:
   - {fileID: 4187006186327145607}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7333852848388839238
+--- !u!114 &2445484754912848913
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -205,12 +205,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7746934045579640328}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0320ceb97fb471bac1f3456b5a6faef, type: 3}
+  m_Script: {fileID: 11500000, guid: da27195d7ae94912844cc1edc7a7d736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <SnapAngleOffset>k__BackingField: 0
   <SnapPoint>k__BackingField: {fileID: 4187006186327145607}
-  <Crystals>k__BackingField: []
+  <SegmentCenter>k__BackingField: {fileID: 7891259886289146909}
+  <LevelNumberText>k__BackingField: {fileID: 4189829746841156683}
 --- !u!1 &8385493621463544506
 GameObject:
   m_ObjectHideFlags: 0
