@@ -1,5 +1,7 @@
 using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
+using UnityEditor.U2D.Animation;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Character.View
@@ -77,21 +79,21 @@ namespace TapAndRun.MVP.Character.View
             await UniTask.CompletedTask;
         }
         
-        public async UniTask TurnAsync(float targetAngle)
+        public async UniTaskVoid TurnAsync(float targetAngle)
         {
+            var originAngle = CharacterTransform.eulerAngles.z;
             var t = 0f;
 
             while (t < 1f)
             {
                 t += _turnSpeed * Time.deltaTime;
-                var originAngle = CharacterTransform.eulerAngles.z;
-                var angle = Mathf.LerpAngle(originAngle, originAngle + targetAngle, t);
 
+                var angle = Mathf.LerpAngle(originAngle, originAngle + targetAngle, t);
                 CharacterTransform.eulerAngles = new Vector3(0, 0, angle);
 
-                UniTask.Yield();
+                await UniTask.NextFrame(this.GetCancellationTokenOnDestroy());
             }
-
+            
             await UniTask.CompletedTask;
         }
 

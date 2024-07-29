@@ -33,7 +33,7 @@ namespace TapAndRun.MVP.Character.Presenter
             _model.OnReplaced += ReplaceCharacterView;
             _model.IsRunning.OnChanged += SwitchRunStatus;
             _model.OnInteractionsUpdated += UpdateCommands;
-            _model.OnInteractionPerformed += ProсcesNextCommand;
+            _model.OnInteractionPerformed += ProcessNextCommand;
         }
 
         private void ReplaceCharacterView(Vector2 position)
@@ -76,7 +76,7 @@ namespace TapAndRun.MVP.Character.Presenter
             }
         }
 
-        public void ProсcesNextCommand(int interactionIndex)
+        public void ProcessNextCommand(int interactionIndex)
         {
             _activeCommands = _commandsList[interactionIndex]; //TODO Проверка на наличие в очереди
             _activeCommands.Execute();

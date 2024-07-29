@@ -14,7 +14,7 @@ namespace TapAndRun.MVP.Character.Commands
 
         public void Execute()
         {
-            _character.TurnAsync(90).Forget();
+            _character.TurnAsync(-90).Forget();
         }
     }
 }

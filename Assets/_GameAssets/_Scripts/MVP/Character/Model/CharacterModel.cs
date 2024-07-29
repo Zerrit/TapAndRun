@@ -49,6 +49,8 @@ namespace TapAndRun.MVP.Character.Model
             
             OnInteractionPerformed?.Invoke(_currentInteractionIndex);
             _currentInteractionIndex++;
+            
+
         }
 
         public void SetLevelCommands(IReadOnlyCollection<InteractType> interactions)
@@ -58,7 +60,7 @@ namespace TapAndRun.MVP.Character.Model
             _currentInteractionIndex = 0;
             
             OnInteractionsUpdated?.Invoke();
-            
+
             Debug.Log("Комманды получены персонажем");
         }
     }

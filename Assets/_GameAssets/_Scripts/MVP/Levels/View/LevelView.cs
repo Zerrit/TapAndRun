@@ -8,15 +8,15 @@ namespace TapAndRun.MVP.Levels.View
 {
     public class LevelView : MonoBehaviour
     {
-        public event Action OnLevelCompleted;
+        public event Action OnFinishReached;
         
         [field: SerializeField] public int Difficulty { get; set; }
 
         [field: SerializeField] public StartSegmentView StartSegment { get; set; }
         [field: SerializeField] public FinishSegmentView FinishSegment { get; set; }
 
-        [field: SerializeField] public List<AbstractSegmentView> Segments { get; } = new();
-        [field: SerializeField] public List<InteractType> Interactions { get; } = new();
+        [field: SerializeField] public List<AbstractSegmentView> Segments { get; private set; } = new();
+        [field: SerializeField] public List<InteractType> Interactions { get; private set; } = new();
 
         public void Configure(int level)
         {
@@ -39,7 +39,9 @@ namespace TapAndRun.MVP.Levels.View
 
         private void Complete()
         {
-            OnLevelCompleted?.Invoke();
+            OnFinishReached?.Invoke();
+
+            Debug.Log("Уровень пройден");
         }
     }
 }

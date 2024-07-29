@@ -12,11 +12,10 @@ namespace TapAndRun.MVP.Levels.Model
     public class LevelModel : ILevelsSelfModel, ILevelModel, IDisposable
     {
         public event Action OnLevelChanged;
+        public event Action OnLevelStarted;
         public event Action OnLevelCompleted;
         public event Action OnPlayerClicked;
-        
-        public SimpleReactiveProperty<bool> IsScreenDisplaying { get; private set; }
-        
+
         public int CurrentLevelId { get; private set; }
 
         public int LastUnlockedLevelId { get; private set; }
@@ -24,7 +23,7 @@ namespace TapAndRun.MVP.Levels.Model
         public bool IsLevelBuild { private get; set; }
 
         private CancellationTokenSource _cts;
-        
+
         private readonly ICharacterModel _characterModel;
 
         public LevelModel(ICharacterModel characterModel)
@@ -34,11 +33,9 @@ namespace TapAndRun.MVP.Levels.Model
 
         public void Initialize()
         {
-            LevelCount = 2;
+            LevelCount = 4;
             LastUnlockedLevelId = 0;
             CurrentLevelId = 0;
-
-            IsScreenDisplaying = new SimpleReactiveProperty<bool>(false);
 
             _cts = new CancellationTokenSource();
         }
@@ -60,9 +57,9 @@ namespace TapAndRun.MVP.Levels.Model
 
         public void StartLevel()
         {
-            IsScreenDisplaying.Value = true;
-
-            _characterModel.IsRunning.Value = true;
+            OnLevelStarted?.Invoke();
+            //TODO Возможно сделать задержку для анимаций перед запуском персонажа
+            _characterModel.IsRunning.Value = true; //TODO Рассмотреть перенос в презентер
         }
 
         public void CompleteLevel()
@@ -89,6 +86,7 @@ namespace TapAndRun.MVP.Levels.Model
             Debug.Log("Тап по экрану");
             
             _characterModel.PerformInteraction();
+
             OnPlayerClicked?.Invoke();
         }
 

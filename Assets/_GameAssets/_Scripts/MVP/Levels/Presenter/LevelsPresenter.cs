@@ -14,20 +14,22 @@ namespace TapAndRun.MVP.Levels.Presenter
 {
     public class LevelsPresenter : IDisposable
     {
-        private LevelView _actualLevel;
-        private LevelView _lastLevel;
+        private int _maxLevelViews;
+
+        private LevelView _oldLevel;
+        private LevelView _currentLevel;
+        private LevelView _nextLevel;
 
         private CancellationTokenSource _cts;
 
-        private const int MaxLevelViews = 3;
-
-        private readonly Queue<LevelView> _levels = new();
+        private readonly List<LevelView> _levels = new();
         private readonly LevelScreenView _levelScreen;
         private readonly ILevelsSelfModel _selfModel;
         private readonly ILevelFactory _levelFactory;
         private readonly ICharacterModel _characterModel;
 
-        public LevelsPresenter(ILevelsSelfModel selfModel, ILevelFactory levelFactory, ICharacterModel characterModel, LevelScreenView levelScreen)
+        public LevelsPresenter(ILevelsSelfModel selfModel, ILevelFactory levelFactory, 
+            ICharacterModel characterModel, LevelScreenView levelScreen)
         {
             _selfModel = selfModel;
             _levelFactory = levelFactory;
@@ -39,10 +41,18 @@ namespace TapAndRun.MVP.Levels.Presenter
         {
             _cts = new CancellationTokenSource();
 
-            _selfModel.IsScreenDisplaying.OnChanged += ChangeScreenDisplaying;
+            _maxLevelViews = 3;
+
             _selfModel.OnLevelChanged += BuildLevel;
-            _selfModel.OnLevelCompleted += BuildNextLevel;
+            _selfModel.OnLevelStarted += ChangeScreenDisplaying;
+            _selfModel.OnLevelCompleted += EnableNexLevel;
+
             _levelScreen.OnClicked += _selfModel.ApplyClick;
+        }
+
+        private void ChangeScreenDisplaying() //TODO Изменить логику названия
+        {
+            _levelScreen.Show();
         }
 
         private void BuildLevel()
@@ -53,15 +63,14 @@ namespace TapAndRun.MVP.Levels.Presenter
             {
                 await ClearLevels(token);
 
-                _lastLevel = await _levelFactory.CreateLevelViewAsync(_selfModel.CurrentLevelId, Vector2.zero, Quaternion.identity, token);
+                _currentLevel = await _levelFactory.CreateLevelViewAsync(_selfModel.CurrentLevelId, Vector2.zero, Quaternion.identity, token);
+                
+                _currentLevel.Configure(-_selfModel.CurrentLevelId);
+                _levels.Add(_currentLevel);
+                _characterModel.Replace(_currentLevel.StartSegment.SegmentCenter.position);
 
-                _actualLevel = _lastLevel;
-                _levels.Enqueue(_lastLevel);
-                _selfModel.SetCommands(_lastLevel.Interactions);
-
-                _characterModel.Replace(_lastLevel.StartSegment.SegmentCenter.position);
-
-                BuildNextLevel();
+                BuildNextLevel(); 
+                ActivateLevel(_currentLevel); //TODO Подумать об активации сразу
 
                 _selfModel.IsLevelBuild = true;
             }
@@ -73,22 +82,44 @@ namespace TapAndRun.MVP.Levels.Presenter
             
             async UniTask BuildNextLevelAsync(CancellationToken token)
             {
-                if (_levels.Count == MaxLevelViews)
-                {
-                    ClearLastLevel();
-                }
-
                 var nextLevelId = _selfModel.CurrentLevelId + 1;
 
-                _lastLevel = await _levelFactory.CreateLevelViewAsync(nextLevelId, _lastLevel.FinishSegment.SnapPoint.position, Quaternion.identity, token);
+                _nextLevel = await _levelFactory.CreateLevelViewAsync(nextLevelId, _currentLevel.FinishSegment.SnapPoint.position, _currentLevel.FinishSegment.SnapPoint.rotation, token);
 
-                _levels.Enqueue(_lastLevel);
+                _currentLevel.Configure(nextLevelId);
+                _levels.Add(_nextLevel);
             }
         }
 
-        private void ClearLastLevel()
+        private void ActivateLevel(LevelView level)
         {
-            Object.Destroy(_levels.Dequeue().gameObject);
+            if (_oldLevel)
+            {
+                _oldLevel.OnFinishReached -= _selfModel.CompleteLevel;
+            }
+
+            _oldLevel = _currentLevel;
+            _currentLevel = level;
+            _selfModel.SetCommands(_currentLevel.Interactions);
+            //TODO Включение учета интерактивных стрелок
+            
+            _currentLevel.OnFinishReached += _selfModel.CompleteLevel;
+        }
+
+        private void EnableNexLevel()
+        {
+            if (_levels.Count == _maxLevelViews)
+            {
+                ClearOldLevel();
+            }
+
+            ActivateLevel(_nextLevel);
+            BuildNextLevel();
+        }
+        
+        private void ClearOldLevel()
+        {
+            Object.Destroy(_levels[0].gameObject);
             
             //TODO Удалить ссылку на операцию в фабрике.
         }
@@ -104,19 +135,6 @@ namespace TapAndRun.MVP.Levels.Presenter
             _levelFactory.Dispose();
         }
 
-        private void ChangeScreenDisplaying(bool status)
-        {
-            if (status)
-            {
-                _levelScreen.Show();
-            }
-            else
-            {
-                _levelScreen.Hide();
-            }
-        }
-        
-        
         public void Dispose()
         {
             _selfModel.OnLevelChanged -= BuildLevel;
