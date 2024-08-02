@@ -97,6 +97,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Simple Road (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2940877987930131872, guid: 8aae1e99dd072ea4d9ee586077b2614f, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4655305575552714139, guid: 8aae1e99dd072ea4d9ee586077b2614f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -170,6 +174,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Simple Road
       objectReference: {fileID: 0}
+    - target: {fileID: 2940877987930131872, guid: 8aae1e99dd072ea4d9ee586077b2614f, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4655305575552714139, guid: 8aae1e99dd072ea4d9ee586077b2614f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -242,6 +250,10 @@ PrefabInstance:
     - target: {fileID: 2940877987930131872, guid: 8aae1e99dd072ea4d9ee586077b2614f, type: 3}
       propertyPath: m_Name
       value: Simple Road (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940877987930131872, guid: 8aae1e99dd072ea4d9ee586077b2614f, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4655305575552714139, guid: 8aae1e99dd072ea4d9ee586077b2614f, type: 3}
       propertyPath: m_LocalPosition.x

@@ -13,23 +13,19 @@ MonoBehaviour:
   m_Name: LevelsConfig
   m_EditorClassIdentifier: 
   <LevelPrefabs>k__BackingField:
-  - m_AssetGUID: 08c22052fc00d3a41b8141f41e248ff5
+  - m_AssetGUID: 67c99935cb24c404291e0802765098af
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  - m_AssetGUID: e8d644bd1bf6aec419d25b92d51437c7
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 1
-  - m_AssetGUID: a035e6cec5e0ec4448cde4b496cbffc9
+  - m_AssetGUID: b394e5c729121c340a0200e99848746e
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  - m_AssetGUID: b8434192b0cfbbc4899cec2904e2776d
+  - m_AssetGUID: 8826045a70d51194697dde0433efc129
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  - m_AssetGUID: e9ab5ee1f459ff04a8a2e46bccb0792a
+  - m_AssetGUID: eade7bbd098393a4db0c7b4d86fdd7e3
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 1

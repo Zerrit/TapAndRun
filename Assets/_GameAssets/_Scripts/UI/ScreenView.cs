@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace TapAndRun.UI
 {
-    public class ScreenView : MonoBehaviour
+    public abstract class ScreenView : MonoBehaviour
     {
         [field:SerializeField] public Transform Parent { get; private set; }
         
-        public void Show()
+        public virtual void Show()
         {
             Parent.gameObject.SetActive(true);
         }
@@ -18,7 +18,7 @@ namespace TapAndRun.UI
             
         }
         
-        public void Hide()
+        public virtual void Hide()
         {
             Parent.gameObject.SetActive(false);
         }

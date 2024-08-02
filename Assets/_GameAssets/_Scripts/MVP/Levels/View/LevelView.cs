@@ -20,7 +20,7 @@ namespace TapAndRun.MVP.Levels.View
 
         public void Configure(int level)
         {
-            StartSegment.LevelNumberText.text = level.ToString();
+            StartSegment.LevelNumberText.text = (level + 1).ToString();
             FinishSegment.OnPlayerEntered += Complete;
         }
         

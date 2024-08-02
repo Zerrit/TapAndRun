@@ -12,10 +12,11 @@ namespace TapAndRun.MVP.Levels.Model
         event Action OnLevelCompleted;
 
         int CurrentLevelId { get; }
+        int CurrentInteractionIndex { get; set; }
+        int InteractionCount { get; set; }
+
         bool IsLevelBuild { set; }
-        
-        void SetCommands(List<InteractType> interactions);
+
         void CompleteLevel();
-        void ApplyClick();
     }
 }

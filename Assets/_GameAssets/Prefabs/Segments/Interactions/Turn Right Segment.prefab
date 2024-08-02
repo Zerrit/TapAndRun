@@ -132,6 +132,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TurnSegment
       objectReference: {fileID: 0}
+    - target: {fileID: 8308555757872062239, guid: d51ea7cc7adf1784889e752fcc2589ec, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
