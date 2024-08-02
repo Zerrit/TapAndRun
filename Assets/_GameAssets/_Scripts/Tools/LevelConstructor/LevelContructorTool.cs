@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using TapAndRun.Configs;
-using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.View;
 using TapAndRun.Tools.LevelConstructor.BuildCommands;
-using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,8 +15,6 @@ namespace TapAndRun.Tools.LevelConstructor
         
         private LevelView _creatingLevel;
 
-        private List<InteractType> _levelInteractions;
-
         private Stack<AbstractSegmentBuilder> _buildersStack;
         private LevelConstructorToolConfig _config;
 
@@ -30,7 +26,6 @@ namespace TapAndRun.Tools.LevelConstructor
         private void OnEnable()
         {
             _buildersStack = new Stack<AbstractSegmentBuilder>();
-            _levelInteractions = new List<InteractType>();
             _config = AssetDatabase.LoadAssetAtPath<LevelConstructorToolConfig>("Assets/_GameAssets/Configs/LevelConstructorToolConfig.asset");
 
             _fadePanel = 0f;

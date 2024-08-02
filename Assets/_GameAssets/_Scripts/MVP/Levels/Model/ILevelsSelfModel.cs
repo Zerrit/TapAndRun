@@ -8,15 +8,15 @@ namespace TapAndRun.MVP.Levels.Model
     public interface ILevelsSelfModel
     {
         event Action OnLevelChanged;
+        event Action OnLevelStarted;
         event Action OnLevelCompleted;
-        
-        SimpleReactiveProperty<bool> IsScreenDisplaying { get; }
 
         int CurrentLevelId { get; }
-        bool IsLevelBuild { set; }
-        
-        void SetCommands(List<InteractType> interactions);
+        int CurrentInteractionIndex { get; set; }
+        int InteractionCount { get; set; }
 
-        void ApplyClick();
+        bool IsLevelBuild { set; }
+
+        void CompleteLevel();
     }
 }

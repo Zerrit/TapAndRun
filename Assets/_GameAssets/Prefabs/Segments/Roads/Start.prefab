@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 7891259886289146909}
   - component: {fileID: 6389180840930819285}
   - component: {fileID: 2514580497967259467}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: StartSegment
   m_TagString: Start
   m_Icon: {fileID: 0}

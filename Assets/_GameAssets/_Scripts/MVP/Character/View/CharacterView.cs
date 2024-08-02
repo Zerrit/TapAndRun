@@ -6,17 +6,18 @@ namespace TapAndRun.MVP.Character.View
 {
     public class CharacterView : MonoBehaviour
     {
-        public event Action OnLevelStarted;
-        public event Action OnLevelFinished;
-        public event Action OnCrystalTaken;
+        public event Action OnFalling;
 
         [field:SerializeField] public Transform CharacterTransform { get; private set; }
         [field:SerializeField] public Transform SkinHandler { get; private set; }
-        [field:SerializeField] public Transform RoadChecker { get; private set; }
-        [field:SerializeField] public Animator CharacterAnimator { get; private set; }
 
+        [SerializeField] private Transform _roadChecker;
+        [SerializeField] private Animator _characterAnimator;
+
+        private static readonly int Idle = Animator.StringToHash("Idle");
         private static readonly int Run = Animator.StringToHash("Run");
         private static readonly int Jump = Animator.StringToHash("Jump");
+        private static readonly int Fall = Animator.StringToHash("Fall");
 
         private bool _isInteractive;
         
@@ -32,26 +33,45 @@ namespace TapAndRun.MVP.Character.View
             TryMove();
         }
 
-        public void ActiveRunAnimation()
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            CharacterAnimator.SetTrigger(Run);
+            /*if (collision.CompareTag("Start"))
+            {
+                OnLevelStarted?.Invoke();
+            }
+
+            if (collision.CompareTag("Crystal"))
+            {
+                OnCrystalTaken?.Invoke();
+            }*/
         }
 
-        public void ActiveJumpAnimation()
+        private void OnTriggerExit2D(Collider2D collision)
         {
-            CharacterAnimator.SetTrigger(Jump);
+            if (collision.CompareTag("Start"))
+            {
+                //isCanTapping = true;
+            }
         }
 
-        public void StartMove(Vector2 startDirection, float speed)
+        public void StartMove(Vector2 startDirection, float speed = 3) //TODO Данный метод почему-то вызывается при прохождение уровня. исправитЬ!
         {
             _currentDirection = startDirection;
             _currentSpeed = speed;
 
-            ActiveRunAnimation();
+            _isInteractive = true;
             _isMoving = true;
+            ActivateAnimation(Run);
+        }
+
+        public void StopMove()
+        {
+            _isInteractive = false;
+            _isMoving = false;
+            ActivateAnimation(Idle);
         }
         
-        public async UniTask CenteringAsync(Vector3 centre)
+        public async UniTaskVoid CenteringAsync(Vector3 centre)
         {
             _isInteractive = false;
 
@@ -71,44 +91,43 @@ namespace TapAndRun.MVP.Character.View
                     CharacterTransform.position = new Vector2(CharacterTransform.position.x, Mathf.Lerp(origin.y, centre.y, t));
                 }
 
-                UniTask.Yield();
+                await UniTask.NextFrame(this.GetCancellationTokenOnDestroy());
             }
 
             await UniTask.CompletedTask;
         }
-        
-        public async UniTask TurnAsync(float targetAngle)
+
+        public async UniTaskVoid TurnAsync(float targetAngle)
         {
+            var originAngle = CharacterTransform.eulerAngles.z;
             var t = 0f;
 
             while (t < 1f)
             {
                 t += _turnSpeed * Time.deltaTime;
-                var originAngle = CharacterTransform.eulerAngles.z;
-                var angle = Mathf.LerpAngle(originAngle, originAngle + targetAngle, t);
 
+                var angle = Mathf.LerpAngle(originAngle, originAngle + targetAngle, t);
                 CharacterTransform.eulerAngles = new Vector3(0, 0, angle);
 
-                UniTask.Yield();
+                await UniTask.NextFrame(this.GetCancellationTokenOnDestroy());
             }
 
             await UniTask.CompletedTask;
         }
 
-        public async UniTask JumpAsync()
+        public async UniTaskVoid JumpAsync()
         {
-            //_model.IsActive = false;
-            ActiveJumpAnimation();
+            _isInteractive = false;
+            ActivateAnimation(Jump);
 
             var t = Time.time;
 
-            while ((t+3f) <= Time.time) //TODO добавить логику согласно изменению сложности
+            while ((t+2f) >= Time.time) //TODO добавить логику согласно изменению сложности
             {
-                UniTask.Yield();
+                await UniTask.NextFrame(this.GetCancellationTokenOnDestroy());
             }
 
-            ActiveRunAnimation();
-            //_model.IsActive = true;
+            _isInteractive = true;
 
             await UniTask.CompletedTask;
         }
@@ -120,33 +139,37 @@ namespace TapAndRun.MVP.Character.View
             return ((Mathf.Abs(rotation) < 5f) || (Mathf.Abs(rotation) > 355f) ||
                     (Mathf.Abs(rotation) > 175f && Mathf.Abs(rotation) < 185f));
         }
-        
+
         private void TryMove()
         {
             if (!_isMoving) return;
 
             CharacterTransform.Translate(_currentDirection * (_currentSpeed * Time.deltaTime));
-        }
 
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.CompareTag("Start"))
+            if (!CheckRoad())
             {
-                OnLevelStarted?.Invoke();
-            }
+                _isMoving = false;
+                _characterAnimator.SetTrigger(Fall);
 
-            if (collision.CompareTag("Crystal"))
-            {
-                OnCrystalTaken?.Invoke();
+                OnFalling?.Invoke();
+                
+                Debug.Log("Упал");
             }
         }
 
-        private void OnTriggerExit2D(Collider2D collision)
+        private bool CheckRoad()
         {
-            if (collision.CompareTag("Start"))
+            if (Physics2D.OverlapCircle(_roadChecker.position, 0.1f, 1 << 7) || _isInteractive != true)
             {
-                //isCanTapping = true;
+                return true;
             }
+
+            return false;
+        }
+
+        private void ActivateAnimation(int animHash)
+        {
+            _characterAnimator.SetTrigger(animHash);
         }
     }
 }

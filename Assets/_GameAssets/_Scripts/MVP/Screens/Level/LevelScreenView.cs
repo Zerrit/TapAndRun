@@ -2,7 +2,7 @@
 using TapAndRun.UI;
 using UnityEngine.EventSystems;
 
-namespace TapAndRun.MVP.Screens.LevelScreen
+namespace TapAndRun.MVP.Screens.Level
 {
     public class LevelScreenView : ScreenView, IPointerClickHandler
     {

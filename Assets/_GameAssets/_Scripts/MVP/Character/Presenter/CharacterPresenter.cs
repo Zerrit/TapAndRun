@@ -12,14 +12,14 @@ namespace TapAndRun.MVP.Character.Presenter
     public class CharacterPresenter
     {
         private ICommand _activeCommands;
-        
+
         private readonly List<ICommand> _commandsList = new ();
-        
-        private readonly ICharacterSelfModel _model;
+
+        //private readonly ICharacterSelfModel _model;
         private readonly CharacterView _view;
         private readonly CharacterCamera _camera;
-        
-        public CharacterPresenter(ICharacterSelfModel model, CharacterView view, CharacterCamera camera)
+
+        /*public CharacterPresenter(ICharacterSelfModel model, CharacterView view, CharacterCamera camera)
         {
             _model = model;
             _view = view;
@@ -30,20 +30,27 @@ namespace TapAndRun.MVP.Character.Presenter
         {
             _camera.SetCharacter(_view.CharacterTransform);
 
-            _model.OnReplaced += ReplaceCharacterView;
+            _model.OnReplaced += MoveCharacterTo;
             _model.IsRunning.OnChanged += SwitchRunStatus;
             _model.OnInteractionsUpdated += UpdateCommands;
-            _model.OnInteractionPerformed += ProсcesNextCommand;
+            _model.OnInteractionPerformed += ProcessNextCommand;
         }
 
-        private void ReplaceCharacterView(Vector2 position)
+        private void MoveCharacterTo(Vector2 position)
         {
             _view.CharacterTransform.position = position;
         }
         
-        private void SwitchRunStatus(bool status)
+        private void SwitchRunStatus(bool isRun)
         {
-            if(status) _view.StartMove(_model.MoveDirection, _model.Speed);
+            if (isRun)
+            {
+                _view.StartMove(_model.MoveDirection, _model.Speed);
+            }
+            else
+            {
+                _view.StopMove();
+            }
         }
 
         private void UpdateCommands()
@@ -76,11 +83,10 @@ namespace TapAndRun.MVP.Character.Presenter
             }
         }
 
-        public void ProсcesNextCommand(int interactionIndex)
+        public void ProcessNextCommand(int interactionIndex)
         {
-            _activeCommands = _commandsList[interactionIndex]; //TODO Проверка на наличие в очереди
+            _activeCommands = _commandsList[interactionIndex];
             _activeCommands.Execute();
-            Debug.Log("Выполнение команды");
-        }
+        }*/
     }
 }
