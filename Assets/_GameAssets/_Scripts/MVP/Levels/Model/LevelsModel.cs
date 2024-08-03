@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 
 namespace TapAndRun.MVP.Levels.Model
 {
-    public class LevelModel : ILevelsSelfModel, ILevelModel, IDisposable
+    public class LevelsModel : ILevelsSelfModel, ILevelsModel, IDisposable
     {
         public event Action OnLevelChanged;
 

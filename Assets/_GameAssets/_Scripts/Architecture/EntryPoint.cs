@@ -1,23 +1,24 @@
-﻿using TapAndRun.MVP.Character.Model;
-using TapAndRun.MVP.Character.Presenter;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.Presenter;
 using TapAndRun.MVP.Screens.Main;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 namespace TapAndRun.Architecture
 {
-    public class EntryPoint : MonoBehaviour
+    public class EntryPoint : MonoBehaviour, IAsyncStartable
     {
-        private ILevelModel _levelModel;
+        private ILevelsModel _levelModel;
         private IMainScreenModel _mainScreenModel;
         private LevelsPresenter _levelsPresenter;
         private MainScreenPresenter _mainScreenPresenter;
 
         [Inject]
         public void Construct(
-            ILevelModel levelModel,
+            ILevelsModel levelModel,
             IMainScreenModel mainScreenModel,
             LevelsPresenter levelsPresenter,
             MainScreenPresenter mainScreenPresenter)
@@ -28,15 +29,13 @@ namespace TapAndRun.Architecture
             _mainScreenPresenter = mainScreenPresenter;
         }
 
-        public void Start()
+        public async UniTask StartAsync(CancellationToken cancellation)
         {
             _levelModel.Initialize();
-            _levelsPresenter.Initialize();
+            await _levelsPresenter.InitializeAsync(cancellation);
 
             _mainScreenModel.Initialize();
             _mainScreenPresenter.Initialize();
-
-            _levelModel.LoadLevel();
         }
     }
 }

@@ -417,6 +417,7 @@ GameObject:
   - component: {fileID: 380631018}
   - component: {fileID: 380631021}
   - component: {fileID: 380631022}
+  - component: {fileID: 380631023}
   m_Layer: 5
   m_Name: Spheres
   m_TagString: Untagged
@@ -476,8 +477,23 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 2
-    height: 2
+    width: 1
+    height: 1
+--- !u!114 &380631023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380631017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88351829d6c7442e8a46fbd3475a7676, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rawImage: {fileID: 380631022}
+  _ySpeed: 0
+  _xSpeed: 0
 --- !u!1 &420922426
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,7 +724,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 3.75
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1069,6 +1085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbaae9c607edcd94087e95385eb19e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isInteractive: 0
   <CharacterTransform>k__BackingField: {fileID: 1017691792}
   <SkinHandler>k__BackingField: {fileID: 1617596520}
   _roadChecker: {fileID: 1454152462}
@@ -1995,6 +2012,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects:
   - {fileID: 1482358646}
+  _entryPoint: {fileID: 1482358647}
   _levelsParent: {fileID: 1065271343}
   _levelsConfig: {fileID: 11400000, guid: c2802e4a8cf26794aafd26dba2ec6914, type: 2}
   _characterView: {fileID: 1017691795}

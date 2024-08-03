@@ -8,42 +8,30 @@ namespace TapAndRun.MVP.Character.View
     {
         public event Action OnFalling;
 
+        public bool _isInteractive;
+        
         [field:SerializeField] public Transform CharacterTransform { get; private set; }
         [field:SerializeField] public Transform SkinHandler { get; private set; }
 
         [SerializeField] private Transform _roadChecker;
         [SerializeField] private Animator _characterAnimator;
 
+        private bool _isMoving;
+        private float _currentSpeed;
+
+        private float _turnSpeed = 12f; // Вынести в конфиг
+        private float _centeringSpeed = 4f; // Вынести в конфиг
+        
+        private static readonly Vector2 MoveDirection = Vector2.up;
+        
         private static readonly int Idle = Animator.StringToHash("Idle");
         private static readonly int Run = Animator.StringToHash("Run");
         private static readonly int Jump = Animator.StringToHash("Jump");
         private static readonly int Fall = Animator.StringToHash("Fall");
 
-        private bool _isInteractive;
-        
-        private bool _isMoving;
-        private Vector2 _currentDirection;
-        private float _currentSpeed;
-        
-        private float _turnSpeed = 12f; // Вынести в конфиг
-        private float _centeringSpeed = 7f; // Вынести в конфиг
-
         public void Update()
         {
             TryMove();
-        }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            /*if (collision.CompareTag("Start"))
-            {
-                OnLevelStarted?.Invoke();
-            }
-
-            if (collision.CompareTag("Crystal"))
-            {
-                OnCrystalTaken?.Invoke();
-            }*/
         }
 
         private void OnTriggerExit2D(Collider2D collision)
@@ -54,13 +42,12 @@ namespace TapAndRun.MVP.Character.View
             }
         }
 
-        public void StartMove(Vector2 startDirection, float speed = 3) //TODO Данный метод почему-то вызывается при прохождение уровня. исправитЬ!
+        public void StartMove(float speed = 4)
         {
-            _currentDirection = startDirection;
             _currentSpeed = speed;
 
-            _isInteractive = true;
             _isMoving = true;
+            _isInteractive = true;
             ActivateAnimation(Run);
         }
 
@@ -71,10 +58,14 @@ namespace TapAndRun.MVP.Character.View
             ActivateAnimation(Idle);
         }
         
+        public void MoveTo(Vector2 position)
+        {
+            CharacterTransform.position = position;
+            CharacterTransform.rotation = Quaternion.identity;
+        }
+        
         public async UniTaskVoid CenteringAsync(Vector3 centre)
         {
-            _isInteractive = false;
-
             var origin = CharacterTransform.position;
             var t = 0f;
 
@@ -122,7 +113,7 @@ namespace TapAndRun.MVP.Character.View
 
             var t = Time.time;
 
-            while ((t+2f) >= Time.time) //TODO добавить логику согласно изменению сложности
+            while ((t+0.5f) >= Time.time) //TODO добавить логику согласно изменению сложности
             {
                 await UniTask.NextFrame(this.GetCancellationTokenOnDestroy());
             }
@@ -144,16 +135,15 @@ namespace TapAndRun.MVP.Character.View
         {
             if (!_isMoving) return;
 
-            CharacterTransform.Translate(_currentDirection * (_currentSpeed * Time.deltaTime));
+            CharacterTransform.Translate(MoveDirection * (_currentSpeed * Time.deltaTime));
 
             if (!CheckRoad())
             {
+                _isInteractive = false;
                 _isMoving = false;
                 _characterAnimator.SetTrigger(Fall);
 
                 OnFalling?.Invoke();
-                
-                Debug.Log("Упал");
             }
         }
 
