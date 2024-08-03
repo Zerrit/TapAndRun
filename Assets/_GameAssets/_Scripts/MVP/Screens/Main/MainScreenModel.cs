@@ -8,9 +8,9 @@ namespace TapAndRun.MVP.Screens.Main
     {
         public SimpleReactiveProperty<bool> IsDisplaying { get; private set; }
 
-        private readonly ILevelModel _levelModel;
+        private readonly ILevelsModel _levelModel;
         
-        public MainScreenModel(ILevelModel levelModel)
+        public MainScreenModel(ILevelsModel levelModel)
         {
             _levelModel = levelModel;
         }

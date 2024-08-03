@@ -2,7 +2,7 @@
 
 namespace TapAndRun.MVP.Levels.Model
 {
-    public interface ILevelModel
+    public interface ILevelsModel
     {
         void Initialize();
 

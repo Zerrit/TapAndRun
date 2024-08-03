@@ -26,6 +26,11 @@ namespace TapAndRun.CameraLogic
 
         private void FollowCharacter()
         {
+            if (!_character)
+            {
+                return;
+            }
+            
             Vector3 targetPosition = _character.position + _offset;
             
             transform.position = targetPosition;
@@ -71,6 +76,10 @@ namespace TapAndRun.CameraLogic
             ChangeCameraDistance(value);
         }*/
 
+        public async UniTask FlyUpAsync(CancellationToken token)
+        {
+            await ChangeDistanceAsync(6f, token);
+        }
 
         public async UniTask TurnAsync(float angle, CancellationToken token)
         {
@@ -82,7 +91,7 @@ namespace TapAndRun.CameraLogic
                 t += 10 * Time.deltaTime;
                 _camera.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(originRotation, originRotation + angle, t));
 
-                UniTask.Yield(token);
+                await UniTask.NextFrame(token);
             }
 
             await UniTask.CompletedTask;
@@ -98,7 +107,7 @@ namespace TapAndRun.CameraLogic
                 t += 3 * Time.deltaTime;
                 _camera.orthographicSize = Mathf.Lerp(originDistance, 3.75f + target, t);
 
-                UniTask.Yield(token);
+                await UniTask.NextFrame(token);
             }
 
             await UniTask.CompletedTask;

@@ -5,7 +5,6 @@ using Cysharp.Threading.Tasks;
 using TapAndRun.CameraLogic;
 using TapAndRun.Factories.Levels;
 using TapAndRun.MVP.Character.Commands;
-using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Character.View;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.View;
@@ -23,7 +22,6 @@ namespace TapAndRun.MVP.Levels.Presenter
 
         private CancellationTokenSource _cts;
 
-        //private ICommand _activeCommand;
         private readonly List<ICommand> _characterCommands = new ();
 
         private readonly CharacterView _character;
@@ -45,15 +43,19 @@ namespace TapAndRun.MVP.Levels.Presenter
             _loseScreen = loseScreen;
         }
 
-        public void Initialize()
+        public async UniTask InitializeAsync(CancellationToken token)
         {
             _cts = new CancellationTokenSource();
             _camera.SetCharacter(_character.CharacterTransform);
-
-            _selfModel.OnLevelChanged += BuildLevel;
+            
+            await BuildLevelAsync(token);
+            
+            _loseScreen.RestartButton.onClick.AddListener(RestartGameplay);
+            //_selfModel.OnLevelChanged += BuildLevel;
             _selfModel.OnLevelStarted += StartGameplay;
             _selfModel.OnLevelCompleted += UpdateLevelViews;
 
+            _character.OnFalling += ShowLose;
             _levelScreen.OnClicked += ProcessClick;
         }
 
@@ -62,28 +64,47 @@ namespace TapAndRun.MVP.Levels.Presenter
             _levelScreen.Show();
             //TODO Возможно сделать задержку для анимаций перед запуском персонажа
 
-            _character.StartMove(new Vector2(0, 1));
+            _character.StartMove();
         }
 
-        private void BuildLevel()
+        private async void RestartGameplay()
         {
-            BuildLevelAsync(_cts.Token).Forget();
-
-            async UniTask BuildLevelAsync(CancellationToken token)
+            _loseScreen.Hide();
+            
+            await BuildLevelAsync(_cts.Token);
+            
+            _levelScreen.Show();
+            
+            _character.StartMove();
+        }
+        
+        private void ShowLose()
+        {
+            ShowLoseAsync(_cts.Token).Forget();
+            
+            async UniTaskVoid ShowLoseAsync(CancellationToken token)
             {
-                await ClearLevels(token);
+                _levelScreen.Hide();
 
-                _nextLevel = await _levelFactory.CreateLevelViewAsync(_selfModel.CurrentLevelId, Vector2.zero, Quaternion.identity, token);
+                await _camera.FlyUpAsync(_cts.Token);
 
-                _nextLevel.Configure(-_selfModel.CurrentLevelId);
-
-                ActivateNextLevel();
-                BuildNextLevel(); 
-
-                MoveCharacterTo(_currentLevel.StartSegment.SegmentCenter.position);
-
-                _selfModel.IsLevelBuild = true;
+                _loseScreen.Show();
             }
+        }
+
+        private async UniTask BuildLevelAsync(CancellationToken token)
+        {
+            await ClearLevels(token);
+
+            _nextLevel = await _levelFactory.CreateLevelViewAsync(_selfModel.CurrentLevelId, Vector2.zero, Quaternion.identity, token);
+
+            Debug.Log(_selfModel.CurrentLevelId);
+            _nextLevel.Configure(_selfModel.CurrentLevelId);
+
+            ActivateNextLevel();
+            BuildNextLevel(); 
+
+            _character.MoveTo(_currentLevel.StartSegment.SegmentCenter.position);
         }
 
         private void BuildNextLevel()
@@ -100,6 +121,16 @@ namespace TapAndRun.MVP.Levels.Presenter
             }
         }
 
+        private void UpdateLevelViews()
+        {
+            ClearOldLevel();
+
+            ActivateNextLevel();
+            BuildNextLevel();
+
+            _character.CenteringAsync(_currentLevel.StartSegment.SegmentCenter.position).Forget();
+        }
+        
         private void ActivateNextLevel()
         {
             if (_currentLevel)
@@ -115,15 +146,9 @@ namespace TapAndRun.MVP.Levels.Presenter
             _currentLevel.OnFinishReached += _selfModel.CompleteLevel;
         }
 
-        private void UpdateLevelViews()
-        {
-           // _characterModel.
-            ClearOldLevel();
-
-            ActivateNextLevel();
-            BuildNextLevel();
-        }
-
+        /// <summary>
+        /// Обрабатывает клик игрока.
+        /// </summary>
         private void ProcessClick()
         {
             if (_selfModel.CurrentInteractionIndex >= _selfModel.InteractionCount)
@@ -132,13 +157,8 @@ namespace TapAndRun.MVP.Levels.Presenter
             }
             
             _characterCommands[_selfModel.CurrentInteractionIndex].Execute();
+            _selfModel.CurrentInteractionIndex++;
         }
-        
-        /*public void ExecuteCommand(int interactionIndex)
-        {
-            _activeCommand = _characterCommands[interactionIndex];
-            _activeCommand.Execute();
-        }*/
 
         /// <summary>
         /// Обновляет список команд для персонажа, согласно активному уровню.
@@ -175,12 +195,7 @@ namespace TapAndRun.MVP.Levels.Presenter
                 }
             }
         }
-        
-        private void MoveCharacterTo(Vector2 position)
-        {
-            _character.CharacterTransform.position = position;
-        }
-        
+
         private void ClearOldLevel()
         {
             if (_oldLevel)
@@ -213,10 +228,10 @@ namespace TapAndRun.MVP.Levels.Presenter
 
         public void Dispose()
         {
-            _selfModel.OnLevelChanged -= BuildLevel;
+            /*_selfModel.OnLevelChanged -= BuildLevel;
             _selfModel.OnLevelStarted -= StartGameplay;
             _selfModel.OnLevelCompleted -= UpdateLevelViews;
-            _levelScreen.OnClicked -= ProcessClick;
+            _levelScreen.OnClicked -= ProcessClick;*/
 
             _cts?.Dispose();
         }

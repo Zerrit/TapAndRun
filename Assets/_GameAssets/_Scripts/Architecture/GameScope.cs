@@ -1,8 +1,6 @@
 ﻿using TapAndRun.CameraLogic;
 using TapAndRun.Configs;
 using TapAndRun.Factories.Levels;
-using TapAndRun.MVP.Character.Model;
-using TapAndRun.MVP.Character.Presenter;
 using TapAndRun.MVP.Character.View;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.Presenter;
@@ -17,6 +15,9 @@ namespace TapAndRun.Architecture
 {
     public class GameScope : LifetimeScope
     {
+        [Header("Entry Point")]
+        [SerializeField] private EntryPoint _entryPoint;
+        
         [Header("Objects")]
         [SerializeField] private Transform _levelsParent;
         
@@ -37,6 +38,8 @@ namespace TapAndRun.Architecture
 
             RegisterLevels(builder);
             RegisterMainScreen(builder);
+
+            builder.RegisterInstance(_entryPoint).As<IAsyncStartable>();
         }
 
         private void RegisterConfigs(IContainerBuilder builder)
@@ -51,17 +54,9 @@ namespace TapAndRun.Architecture
                 .WithParameter(_levelsParent);
         }
 
-        /*private void RegisterCharacter(IContainerBuilder builder)
-        {
-            builder.Register<CharacterModel>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.Register<CharacterPresenter>(Lifetime.Singleton)
-                .WithParameter(_characterView)
-                .WithParameter(_camera);
-        }*/
-        
         private void RegisterLevels(IContainerBuilder builder)
         {
-            builder.Register<LevelModel>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<LevelsModel>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<LevelsPresenter>(Lifetime.Singleton)
                 .WithParameter(_characterView)
                 .WithParameter(_camera)
