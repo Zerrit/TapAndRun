@@ -11,6 +11,9 @@ namespace TapAndRun.MVP.Levels.Model
         event Action OnLevelStarted;
         event Action OnLevelCompleted;
 
+        SimpleReactiveProperty<int> AvailableCrystals { get; }
+        SimpleReactiveProperty<int> CrystalsByLevel { get; }
+        
         int CurrentLevelId { get; }
         int CurrentInteractionIndex { get; set; }
         int InteractionCount { get; set; }

@@ -724,7 +724,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4
+  orthographic size: 3
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -768,8 +768,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _config: {fileID: 11400000, guid: 2d1bfba690d76c243ab43b0bdc1655f2, type: 2}
-  _offset: {x: 0, y: 1, z: -5}
-  _smoothSpeed: 1
   _camera: {fileID: 519420031}
 --- !u!1 &569594281
 GameObject:
@@ -875,6 +873,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1c2fd71666c4a59b55b4ac0785e553b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &798067102 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4940241325284636816, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
+  m_PrefabInstance: {fileID: 1389594894684992864}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &811645838
@@ -1086,7 +1095,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbaae9c607edcd94087e95385eb19e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isInteractive: 0
   <CharacterTransform>k__BackingField: {fileID: 1017691792}
   <SkinHandler>k__BackingField: {fileID: 1617596520}
   _roadChecker: {fileID: 1454152462}
@@ -1656,29 +1664,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1596073703 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8915125300398456386, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
-  m_PrefabInstance: {fileID: 1389594894684992864}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1596073704 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2876775851678282701, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
   m_PrefabInstance: {fileID: 1389594894684992864}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1596073705
+--- !u!114 &1596073705 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 8921586857454993928, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
+  m_PrefabInstance: {fileID: 1389594894684992864}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1596073703}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dbdc3756f874bb69762293fc124579c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Amount>k__BackingField: {fileID: 8656350351095475746}
 --- !u!1 &1617596519
 GameObject:
   m_ObjectHideFlags: 0
@@ -2157,6 +2158,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2866666858303318360, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
+      propertyPath: m_Name
+      value: Available Crystals Text
+      objectReference: {fileID: 0}
     - target: {fileID: 2876775851678282701, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2237,6 +2242,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4048478218532149942, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
+      propertyPath: m_Name
+      value: Crystals By Level Text
+      objectReference: {fileID: 0}
     - target: {fileID: 4368899260624019292, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2257,17 +2266,46 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4940241325284636816, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500160958665038255, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500160958665038255, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500160958665038255, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500160958665038255, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500160958665038255, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8915125300398456386, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
       propertyPath: m_Name
       value: Wallet
       objectReference: {fileID: 0}
+    - target: {fileID: 8921586857454993928, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
+      propertyPath: <CrystalsByLevel>k__BackingField
+      value: 
+      objectReference: {fileID: 798067102}
+    - target: {fileID: 8921586857454993928, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
+      propertyPath: <AvailableCrystals>k__BackingField
+      value: 
+      objectReference: {fileID: 8656350351095475746}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8915125300398456386, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1596073705}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b32992a5198d1d94caebc90fb838e0bb, type: 3}
 --- !u!1001 &7399983680940235290
 PrefabInstance:

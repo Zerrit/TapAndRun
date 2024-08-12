@@ -10,6 +10,7 @@ using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.View;
 using TapAndRun.MVP.Screens.Level;
 using TapAndRun.MVP.Screens.Lose;
+using TapAndRun.MVP.Screens.Wallet;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Levels.Presenter
@@ -26,6 +27,7 @@ namespace TapAndRun.MVP.Levels.Presenter
 
         private readonly CharacterView _character;
         private readonly CharacterCamera _camera;
+        private readonly WalletView _walletView;
         private readonly LevelScreenView _levelScreen;
         private readonly LoseScreenView _loseScreen;
 
@@ -33,12 +35,13 @@ namespace TapAndRun.MVP.Levels.Presenter
         private readonly ILevelFactory _levelFactory;
 
         public LevelsPresenter(ILevelsSelfModel selfModel, ILevelFactory levelFactory, 
-            CharacterView character, CharacterCamera camera, LevelScreenView levelScreen, LoseScreenView loseScreen)
+            CharacterView character, CharacterCamera camera, WalletView walletView, LevelScreenView levelScreen, LoseScreenView loseScreen)
         {
             _selfModel = selfModel;
             _levelFactory = levelFactory;
             _character = character;
             _camera = camera;
+            _walletView = walletView;
             _levelScreen = levelScreen;
             _loseScreen = loseScreen;
         }
@@ -49,7 +52,9 @@ namespace TapAndRun.MVP.Levels.Presenter
             _camera.Initialize(_character.CharacterTransform);
             
             await BuildLevelAsync(token);
-            
+
+            _selfModel.AvailableCrystals.SubscribeAndUpdate(_walletView.UpdateAvailableCrystals);
+            _selfModel.CrystalsByLevel.SubscribeAndUpdate(_walletView.UpdateCrystalsByLevel);
             _loseScreen.RestartButton.onClick.AddListener(RestartGameplay);
 
             _selfModel.OnLevelStarted += StartGameplay;

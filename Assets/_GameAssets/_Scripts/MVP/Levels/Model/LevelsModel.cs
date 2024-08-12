@@ -16,7 +16,7 @@ namespace TapAndRun.MVP.Levels.Model
         public int LastUnlockedLevelId { get; private set; }
         public int LevelCount { get; private set; }
         
-        public SimpleReactiveProperty<int> CrystalsCount { get; private set; }
+        public SimpleReactiveProperty<int> AvailableCrystals { get; private set; }
         public SimpleReactiveProperty<int> CrystalsByLevel { get; private set; }
         
         public int CurrentDifficulty { get; private set; }
@@ -39,7 +39,7 @@ namespace TapAndRun.MVP.Levels.Model
             CurrentLevelId = 0;
             CurrentDifficulty = MinDifficulty;
 
-            CrystalsCount = new SimpleReactiveProperty<int>(0);
+            AvailableCrystals = new SimpleReactiveProperty<int>(0);
             CrystalsByLevel = new SimpleReactiveProperty<int>(0);
 
             _cts = new CancellationTokenSource();
