@@ -7,6 +7,7 @@ using TapAndRun.MVP.Levels.Presenter;
 using TapAndRun.MVP.Screens.Level;
 using TapAndRun.MVP.Screens.Lose;
 using TapAndRun.MVP.Screens.Main;
+using TapAndRun.MVP.Screens.Wallet;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -27,6 +28,7 @@ namespace TapAndRun.Architecture
         [Header("Views")]
         [SerializeField] private CharacterView _characterView;
         [SerializeField] private CharacterCamera _camera;
+        [SerializeField] private WalletView _wallet;
         [SerializeField] private MainScreenView _mainScreen;
         [SerializeField] private LevelScreenView _levelScreen;
         [SerializeField] private LoseScreenView _loseScreen;
@@ -61,7 +63,8 @@ namespace TapAndRun.Architecture
                 .WithParameter(_characterView)
                 .WithParameter(_camera)
                 .WithParameter(_levelScreen)
-                .WithParameter(_loseScreen);
+                .WithParameter(_loseScreen)
+                .WithParameter(_wallet);
         }
         
         private void RegisterMainScreen(IContainerBuilder builder)

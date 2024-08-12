@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace TapAndRun.MVP.Character.View
 {
@@ -8,17 +9,18 @@ namespace TapAndRun.MVP.Character.View
     {
         public event Action OnFalling;
 
-        public bool _isInteractive;
-        
         [field:SerializeField] public Transform CharacterTransform { get; private set; }
         [field:SerializeField] public Transform SkinHandler { get; private set; }
 
         [SerializeField] private Transform _roadChecker;
         [SerializeField] private Animator _characterAnimator;
 
+        private bool _isInteractive;
         private bool _isMoving;
+        
         private float _currentSpeed;
 
+        private float _baseMoveSpeed = 2f; // Вынести в конфиг
         private float _turnSpeed = 12f; // Вынести в конфиг
         private float _centeringSpeed = 4f; // Вынести в конфиг
         
@@ -42,10 +44,14 @@ namespace TapAndRun.MVP.Character.View
             }
         }
 
-        public void StartMove(float speed = 4)
+        public void ChangeSpeed(int difficultyLevel)
         {
-            _currentSpeed = speed;
-
+            _currentSpeed = _baseMoveSpeed + difficultyLevel;
+            Debug.Log(_currentSpeed);
+        }
+        
+        public void StartMove()
+        {
             _isMoving = true;
             _isInteractive = true;
             ActivateAnimation(Run);

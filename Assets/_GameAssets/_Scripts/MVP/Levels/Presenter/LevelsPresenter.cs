@@ -46,12 +46,12 @@ namespace TapAndRun.MVP.Levels.Presenter
         public async UniTask InitializeAsync(CancellationToken token)
         {
             _cts = new CancellationTokenSource();
-            _camera.SetCharacter(_character.CharacterTransform);
+            _camera.Initialize(_character.CharacterTransform);
             
             await BuildLevelAsync(token);
             
             _loseScreen.RestartButton.onClick.AddListener(RestartGameplay);
-            //_selfModel.OnLevelChanged += BuildLevel;
+
             _selfModel.OnLevelStarted += StartGameplay;
             _selfModel.OnLevelCompleted += UpdateLevelViews;
 
@@ -73,9 +73,9 @@ namespace TapAndRun.MVP.Levels.Presenter
             
             await BuildLevelAsync(_cts.Token);
             
-            _levelScreen.Show();
-            
-            _character.StartMove();
+            StartGameplay();
+            //_levelScreen.Show();
+            //_character.StartMove();
         }
         
         private void ShowLose()
@@ -84,6 +84,7 @@ namespace TapAndRun.MVP.Levels.Presenter
             
             async UniTaskVoid ShowLoseAsync(CancellationToken token)
             {
+                _selfModel.LoseLevel();
                 _levelScreen.Hide();
 
                 await _camera.FlyUpAsync(_cts.Token);
@@ -98,13 +99,13 @@ namespace TapAndRun.MVP.Levels.Presenter
 
             _nextLevel = await _levelFactory.CreateLevelViewAsync(_selfModel.CurrentLevelId, Vector2.zero, Quaternion.identity, token);
 
-            Debug.Log(_selfModel.CurrentLevelId);
             _nextLevel.Configure(_selfModel.CurrentLevelId);
 
             ActivateNextLevel();
             BuildNextLevel(); 
 
             _character.MoveTo(_currentLevel.StartSegment.SegmentCenter.position);
+            _camera.ResetRotation();
         }
 
         private void BuildNextLevel()
@@ -125,25 +126,46 @@ namespace TapAndRun.MVP.Levels.Presenter
         {
             ClearOldLevel();
 
+            DeactivateLevel();
             ActivateNextLevel();
+
             BuildNextLevel();
 
             _character.CenteringAsync(_currentLevel.StartSegment.SegmentCenter.position).Forget();
         }
-        
+
         private void ActivateNextLevel()
         {
-            if (_currentLevel)
-            {
-                _oldLevel = _currentLevel;
-                _currentLevel.OnFinishReached -= _selfModel.CompleteLevel;
-            }
-            
             _currentLevel = _nextLevel;
-            UpdateCommands();
-            //TODO Включение учета интерактивных стрелок
             
-            _currentLevel.OnFinishReached += _selfModel.CompleteLevel;
+            UpdateCommands();
+            _character.ChangeSpeed(_selfModel.CurrentDifficulty);
+            _camera.ChangeDifficulty(_selfModel.CurrentDifficulty, _cts.Token);
+            //TODO Включение учета интерактивных стрелок
+
+            foreach (var crystal in _currentLevel.Crystals)
+            {
+                crystal.OnTaken += _selfModel.IncreaseCrystals;
+            }
+
+            _currentLevel.FinishSegment.OnPlayerEntered += _selfModel.CompleteLevel;
+        }
+
+        private void DeactivateLevel()
+        {
+            if (!_currentLevel)
+            {
+                return;
+            }
+
+            _oldLevel = _currentLevel;
+
+            foreach (var crystal in _currentLevel.Crystals)
+            {
+                crystal.OnTaken -= _selfModel.IncreaseCrystals;
+            }
+ 
+            _currentLevel.OnFinishReached -= _selfModel.CompleteLevel;
         }
 
         /// <summary>
@@ -176,17 +198,17 @@ namespace TapAndRun.MVP.Levels.Presenter
                 {
                     case InteractType.Jump:
                     {
-                        _characterCommands.Add(new JumpCommand(_character));
+                        _characterCommands.Add(new JumpCommand(_character, _camera));
                         break;
                     }
                     case InteractType.TurnLeft:
                     {
-                        _characterCommands.Add(new TurnLeftCommand(_character));
+                        _characterCommands.Add(new TurnLeftCommand(_character, _camera));
                         break;
                     }
                     case InteractType.TurnRight:
                     {
-                        _characterCommands.Add(new TurnRightCommand(_character));
+                        _characterCommands.Add(new TurnRightCommand(_character, _camera));
                         break;
                     }
                     

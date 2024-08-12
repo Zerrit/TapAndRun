@@ -102,18 +102,6 @@ namespace TapAndRun.Tools.LevelConstructor
 
                     ActivateBuilder(builder);
                 }
-                /*if (GUILayout.Button("Middle Road", GUILayout.Height(30)))
-                {
-                    var builder = new RoadSegmentBuilder(_config, _creatingLevel);
-
-                    ActivateBuilder(builder);
-                }
-                if (GUILayout.Button("Long Road", GUILayout.Height(30)))
-                {
-                    var builder = new RoadSegmentBuilder(_config, _creatingLevel, 3);
-
-                    ActivateBuilder(builder);
-                }*/
 
                 EditorGUILayout.EndHorizontal();
 

@@ -1,22 +1,26 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
-using TapAndRun.MVP.Levels.Model;
+using TapAndRun.Configs;
 using UnityEngine;
 
 namespace TapAndRun.CameraLogic
 {
     public class CharacterCamera : MonoBehaviour
     {
-        [SerializeField] private Vector3 _offset;
-        [SerializeField] private float _smoothSpeed;
+        public int Difficulty { get; private set; }
 
+        [SerializeField] private CameraConfig _config;
         [SerializeField] private Camera _camera;
 
+        private int _maxDifficultyLevel;
         private Transform _character;
 
-        public void SetCharacter(Transform character)
+        public void Initialize(Transform character)
         {
             _character = character;
+            _maxDifficultyLevel = _config.RotationDifficulties.Length;
+            Difficulty = 1;
+            _camera.orthographicSize = _config.Height;
         }
 
         private void LateUpdate()
@@ -31,67 +35,56 @@ namespace TapAndRun.CameraLogic
                 return;
             }
             
-            Vector3 targetPosition = _character.position + _offset;
-            
+            Vector3 targetPosition = _character.position + _config.Offset;
             transform.position = targetPosition;
-            /*Vector3 smoothedPosition = Vector3.Lerp(transform.position, targetPosition, _smoothSpeed);
-            transform.position = smoothedPosition;*/
         }
 
-        private void TapRotation(InteractType commandType)
+        public void ResetRotation()
         {
-            /*switch (cameraDificulty)
-        {
-            case 1:
-                if (commandType == CommandType.TurnLeft) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, 90f)); 
-                if (commandType == CommandType.TurnRight) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, -90f));   
-                break;
-
-            case 2:
-                if (commandType == CommandType.TurnLeft) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, 40f));
-                if (commandType == CommandType.TurnRight) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, -40f));
-                break;
-
-            case 3:
-                if (commandType == CommandType.TurnLeft) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, Random.Range(-100, 100)));
-                if (commandType == CommandType.TurnRight) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, Random.Range(-100, 100)));
-                if (commandType == CommandType.Jump) StartCoroutine(TurnCamera(camTransform.eulerAngles.z, Random.Range(-200, 200)));
-                break;
-        }*/
+            _camera.transform.rotation = Quaternion.identity;
         }
+        
+        public void ChangeDifficulty(int newDifficulty, CancellationToken token)
+        {
+            Difficulty = Mathf.Clamp(newDifficulty, 1, _maxDifficultyLevel);
 
-        /*private void ChangeCameraDistance(int value)
-        {
-            StartCoroutine(ResizeCamera((_camera).orthographicSize, value * .5f));
+            var targetHeight = Difficulty * _config.HeightStep;
+            ChangeDistanceAsync(targetHeight, token).Forget();
         }
-
-        public void ChangeCameraDificulty()
-        {
-            cameraDificulty = Mathf.Clamp(++cameraDificulty, 1, 3);
-            ChangeCameraDistance(cameraDificulty);
-        }
-        public void ChangeCameraDificulty(int value)
-        {
-            cameraDificulty = value;
-            ChangeCameraDistance(value);
-        }*/
 
         public async UniTask FlyUpAsync(CancellationToken token)
         {
-            await ChangeDistanceAsync(6f, token);
+            await ChangeDistanceAsync(_config.LoseHeight, token);
         }
 
-        public async UniTask TurnAsync(float angle, CancellationToken token)
+        public async UniTask TurnAsync(int direction)
+        {
+            var originRotation = _camera.transform.eulerAngles.z;
+            var angle = _config.RotationDifficulties[Difficulty - 1 * direction];
+            float t = 0;
+
+            while (t < 1)
+            {
+                t += _config.TurnSpeed * Time.deltaTime;
+                _camera.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(originRotation, originRotation + angle, t));
+
+                await UniTask.NextFrame(this.GetCancellationTokenOnDestroy());
+            }
+
+            await UniTask.CompletedTask;
+        }
+        
+        public async UniTask TurnAsync(float angle)
         {
             var originRotation = _camera.transform.eulerAngles.z;
             float t = 0;
 
             while (t < 1)
             {
-                t += 10 * Time.deltaTime;
+                t += _config.TurnSpeed * Time.deltaTime;
                 _camera.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(originRotation, originRotation + angle, t));
 
-                await UniTask.NextFrame(token);
+                await UniTask.NextFrame(this.GetCancellationTokenOnDestroy());
             }
 
             await UniTask.CompletedTask;
@@ -105,18 +98,12 @@ namespace TapAndRun.CameraLogic
             while (t < 1)
             {
                 t += 3 * Time.deltaTime;
-                _camera.orthographicSize = Mathf.Lerp(originDistance, 3.75f + target, t);
+                _camera.orthographicSize = Mathf.Lerp(originDistance, _config.Height + target, t);
 
                 await UniTask.NextFrame(token);
             }
 
             await UniTask.CompletedTask;
-        }
-
-        private void SetDefault()
-        {
-            _camera.transform.rotation = _character.rotation;
-            _camera.orthographicSize = 4; //TODO 
         }
     }
 }

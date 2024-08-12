@@ -15,8 +15,10 @@ namespace TapAndRun.MVP.Levels.Model
         int CurrentInteractionIndex { get; set; }
         int InteractionCount { get; set; }
 
-        bool IsLevelBuild { set; }
+        int CurrentDifficulty { get;}
 
+        void IncreaseCrystals();
+        void LoseLevel();
         void CompleteLevel();
     }
 }

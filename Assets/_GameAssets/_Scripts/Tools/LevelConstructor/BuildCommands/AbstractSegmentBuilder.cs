@@ -1,4 +1,5 @@
 ﻿using TapAndRun.MVP.Levels.View;
+using TapAndRun.MVP.Levels.View.SegmentViews;
 using UnityEngine;
 
 namespace TapAndRun.Tools.LevelConstructor.BuildCommands

@@ -17,6 +17,7 @@ namespace TapAndRun.MVP.Levels.View
 
         [field: SerializeField] public List<AbstractSegmentView> Segments { get; private set; } = new();
         [field: SerializeField] public List<InteractType> Interactions { get; private set; } = new();
+        [field: SerializeField] public List<CrystalView> Crystals { get; private set; } = new();
 
         public void Configure(int level)
         {
