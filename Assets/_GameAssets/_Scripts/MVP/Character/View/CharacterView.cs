@@ -19,17 +19,21 @@ namespace TapAndRun.MVP.Character.View
         private bool _isMoving;
         
         private float _currentSpeed;
+        private float _animMultiplier;
 
         private float _baseMoveSpeed = 2f; // Вынести в конфиг
         private float _turnSpeed = 12f; // Вынести в конфиг
         private float _centeringSpeed = 4f; // Вынести в конфиг
         
+        private const float BaseAnimSpeed = 1f;
+        private const float JumpDuration = 1f;
         private static readonly Vector2 MoveDirection = Vector2.up;
         
         private static readonly int Idle = Animator.StringToHash("Idle");
         private static readonly int Run = Animator.StringToHash("Run");
         private static readonly int Jump = Animator.StringToHash("Jump");
         private static readonly int Fall = Animator.StringToHash("Fall");
+        private static readonly int JumpSpeed = Animator.StringToHash("Speed");
 
         public void Update()
         {
@@ -47,7 +51,12 @@ namespace TapAndRun.MVP.Character.View
         public void ChangeSpeed(int difficultyLevel)
         {
             _currentSpeed = _baseMoveSpeed + difficultyLevel;
+
+            _animMultiplier = BaseAnimSpeed + difficultyLevel / _baseMoveSpeed;
+            _characterAnimator.SetFloat(JumpSpeed, _animMultiplier);
+            
             Debug.Log(_currentSpeed);
+            Debug.Log(_animMultiplier);
         }
         
         public void StartMove()
@@ -118,8 +127,10 @@ namespace TapAndRun.MVP.Character.View
             ActivateAnimation(Jump);
 
             var t = Time.time;
+            var totalJumpDuration = JumpDuration / _animMultiplier;
+            Debug.Log(totalJumpDuration);
 
-            while ((t+0.5f) >= Time.time) //TODO добавить логику согласно изменению сложности
+            while ((t + (JumpDuration / _animMultiplier)) >= Time.time) //TODO добавить логику согласно изменению сложности
             {
                 await UniTask.NextFrame(this.GetCancellationTokenOnDestroy());
             }
