@@ -6,30 +6,30 @@ using Object = UnityEngine.Object;
 
 namespace TapAndRun.Tools.LevelConstructor.BuildCommands
 {
-    public class RoadSegmentBuilder : AbstractSegmentBuilder
+    public class InteractSegmentBuilder : AbstractSegmentBuilder
     {
-        private RoadSegmentView _instance;
-        
-        private readonly RoadSegmentView _segmentPrefab;
-        
-        public RoadSegmentBuilder(LevelView level, RoadSegmentView roadViewPrefab) : base(level)
-        {
-            _segmentPrefab = roadViewPrefab;
-        }
+        private InteractSegmentView _instance;
 
+        private readonly InteractSegmentView _segmentPrefab;
+
+        public InteractSegmentBuilder(LevelView level, InteractSegmentView interactViewPrefab) : base(level)
+        {
+            _segmentPrefab = interactViewPrefab;
+        }
+        
         public override void Build()
         {
             var segmentsCount = _level.Segments.Count;
 
             if (segmentsCount > 0)
             {
-                var snapPoint = _level.Segments[segmentsCount - 1].SnapPoint;
+                var snapPoint = _level.Segments[segmentsCount-1].SnapPoint;
 
                 _instance = Object.Instantiate(_segmentPrefab, snapPoint.position, snapPoint.rotation, _level.transform);
-                _instance.transform.Rotate(Vector3.forward, _level.Segments[segmentsCount - 1].SnapAngleOffset);
-
-                _level.Crystals.AddRange(_instance.Crystals);
-
+                _instance.transform.Rotate(Vector3.forward, _level.Segments[segmentsCount-1].SnapAngleOffset);
+                
+                _level.InteractionPoints.Add(_instance.Interaction);
+                
                 _level.Segments.Add(_instance);
             }
             else
@@ -41,13 +41,10 @@ namespace TapAndRun.Tools.LevelConstructor.BuildCommands
 
         public override void Debuild()
         {
-            var crystalsCount = _level.Crystals.Count;
-            var amountToRemove = _instance.Crystals.Length;
-            
-            _level.Crystals.RemoveRange(crystalsCount - amountToRemove, amountToRemove);
+            var segmentCount = _level.InteractionPoints.Count;
+            _level.InteractionPoints.RemoveAt(segmentCount - 1);
 
             base.Debuild();
         }
-        
     }
 }

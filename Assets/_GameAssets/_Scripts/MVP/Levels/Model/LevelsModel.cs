@@ -15,17 +15,15 @@ namespace TapAndRun.MVP.Levels.Model
         public int CurrentLevelId { get; private set; }
         public int LastUnlockedLevelId { get; private set; }
         public int LevelCount { get; private set; }
-        
+
         public SimpleReactiveProperty<int> AvailableCrystals { get; private set; }
         public SimpleReactiveProperty<int> CrystalsByLevel { get; private set; }
-        
+
         public int CurrentDifficulty { get; private set; }
         public int MaxDifficulty { get; private set; } = 3;
-        
+
         public int CurrentInteractionIndex { get; set; }
         public int InteractionCount { get; set; }
-        
-        public bool IsLevelBuild { private get; set; }
 
         private CancellationTokenSource _cts;
 
@@ -47,15 +45,13 @@ namespace TapAndRun.MVP.Levels.Model
 
         public void LoadLevel()
         {
-            LoadLevelAsync(0, _cts.Token).Forget(); //TODO Заменить уровень на последний доступный
+            LoadLevel(0); //TODO Заменить уровень на последний доступный
         }
 
-        public async UniTask LoadLevelAsync(int levelId, CancellationToken token)
+        public void LoadLevel(int levelId)
         {
             CurrentLevelId = levelId;
             OnLevelChanged?.Invoke();
-
-            await UniTask.WaitUntil(() => IsLevelBuild, cancellationToken: token);
         }
 
         public void StartLevel()
@@ -66,7 +62,6 @@ namespace TapAndRun.MVP.Levels.Model
         public void IncreaseCrystals()
         {
             CrystalsByLevel.Value++;
-            Debug.Log("Получен кристалик!");
         }
 
         public void LoseLevel()
@@ -86,6 +81,9 @@ namespace TapAndRun.MVP.Levels.Model
             {
                 LastUnlockedLevelId++;
             }
+
+            AvailableCrystals.Value += CrystalsByLevel.Value;
+            CrystalsByLevel.Value = 0;
 
             CurrentDifficulty = Mathf.Clamp(++CurrentDifficulty, MinDifficulty, MaxDifficulty);
             CurrentLevelId++;

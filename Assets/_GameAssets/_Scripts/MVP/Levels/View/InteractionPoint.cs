@@ -6,16 +6,16 @@ namespace TapAndRun.MVP.Levels.View
 {
     public class InteractionPoint : MonoBehaviour
     {
-        [field:SerializeField] public SpriteRenderer Icon { get; private set; }
+        [field:SerializeField] public InteractType CommandType { get; private set; }
 
-        public InteractType CommandType { get; private set; }
+        [field:SerializeField] public SpriteRenderer Icon { get; private set; }
 
         public void Activate()
         {
             Icon.DOFade(1, 0);
         }
 
-        public void TurnOff()
+        public void Deactivate()
         {
             Icon.DOFade(0, .2f);
         }

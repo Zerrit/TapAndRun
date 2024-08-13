@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
@@ -22,7 +23,7 @@ namespace TapAndRun.MVP.Screens.Wallet
         {
             if (newValue <= 0)
             {
-                CrystalsByLevel.text = "";
+                CrystalsByLevel.text = string.Empty;
                 return;
             }
 
@@ -44,6 +45,12 @@ namespace TapAndRun.MVP.Screens.Wallet
             _cts.Cancel();
             _cts.Dispose();
             _cts = new CancellationTokenSource();
+        }
+
+        private void OnDestroy()
+        {
+            _cts.Cancel();
+            _cts.Dispose();
         }
     }
 }

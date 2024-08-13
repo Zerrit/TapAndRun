@@ -194,12 +194,12 @@ namespace TapAndRun.MVP.Levels.Presenter
         {
             _characterCommands.Clear();
 
-            _selfModel.InteractionCount = _currentLevel.Interactions.Count;
+            _selfModel.InteractionCount = _currentLevel.InteractionPoints.Count;
             _selfModel.CurrentInteractionIndex = 0;
 
-            foreach (var interact in _currentLevel.Interactions)
+            foreach (var interact in _currentLevel.InteractionPoints)
             {
-                switch (interact)
+                switch (interact.CommandType)
                 {
                     case InteractType.Jump:
                     {
