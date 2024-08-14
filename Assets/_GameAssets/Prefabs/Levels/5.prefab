@@ -261,7 +261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CommandType>k__BackingField: 1
-  <Icon>k__BackingField: {fileID: 370449513976008342}
+  <Icon>k__BackingField: {fileID: 1906161800812254934}
 --- !u!1 &1387261357022426333
 GameObject:
   m_ObjectHideFlags: 0
@@ -2024,7 +2024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CommandType>k__BackingField: 2
-  <Icon>k__BackingField: {fileID: 5508943738409097891}
+  <Icon>k__BackingField: {fileID: 8875457637643216143}
 --- !u!1 &5142137517004643719
 GameObject:
   m_ObjectHideFlags: 0

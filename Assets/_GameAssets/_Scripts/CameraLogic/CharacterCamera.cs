@@ -15,12 +15,17 @@ namespace TapAndRun.CameraLogic
         private int _maxDifficultyLevel;
         private Transform _character;
 
+        private CancellationTokenSource _cts;
+
         public void Initialize(Transform character)
         {
             _character = character;
+            _cts = new CancellationTokenSource();
+            
             _maxDifficultyLevel = _config.RotationDifficulties.Length;
-            Difficulty = 1;
             _camera.orthographicSize = _config.Height;
+            
+            Difficulty = 1;
         }
 
         private void LateUpdate()
@@ -39,17 +44,17 @@ namespace TapAndRun.CameraLogic
             transform.position = targetPosition;
         }
 
-        public void ResetRotation()
+        public void ChangeRotation(Quaternion rotation = default)
         {
-            _camera.transform.rotation = Quaternion.identity;
+            _camera.transform.rotation = rotation;
         }
         
-        public void ChangeDifficulty(int newDifficulty, CancellationToken token)
+        public void ChangeDifficulty(int newDifficulty)
         {
             Difficulty = Mathf.Clamp(newDifficulty, 1, _maxDifficultyLevel);
-
             var targetHeight = Difficulty * _config.HeightStep;
-            ChangeDistanceAsync(targetHeight, token).Forget();
+
+            ChangeDistanceAsync(targetHeight, _cts.Token).Forget();
         }
 
         public async UniTask FlyUpAsync(CancellationToken token)

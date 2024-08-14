@@ -66,12 +66,18 @@ namespace TapAndRun.MVP.Levels.Model
 
         public void LoseLevel()
         {
+            CurrentInteractionIndex = 0;
             CurrentDifficulty = MinDifficulty;
             CrystalsByLevel.Value = 0;
         }
         
         public void CompleteLevel()
         {
+            AvailableCrystals.Value += CrystalsByLevel.Value;
+            CrystalsByLevel.Value = 0;
+            
+            CurrentInteractionIndex = 0;
+            
             if (LevelCount - 1 <= CurrentLevelId)
             {
                 return;
@@ -81,9 +87,6 @@ namespace TapAndRun.MVP.Levels.Model
             {
                 LastUnlockedLevelId++;
             }
-
-            AvailableCrystals.Value += CrystalsByLevel.Value;
-            CrystalsByLevel.Value = 0;
 
             CurrentDifficulty = Mathf.Clamp(++CurrentDifficulty, MinDifficulty, MaxDifficulty);
             CurrentLevelId++;

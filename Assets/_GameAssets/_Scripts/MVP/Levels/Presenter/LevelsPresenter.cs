@@ -35,7 +35,8 @@ namespace TapAndRun.MVP.Levels.Presenter
         private readonly ILevelFactory _levelFactory;
 
         public LevelsPresenter(ILevelsSelfModel selfModel, ILevelFactory levelFactory, 
-            CharacterView character, CharacterCamera camera, WalletView walletView, LevelScreenView levelScreen, LoseScreenView loseScreen)
+            CharacterView character, CharacterCamera camera, WalletView walletView, 
+            LevelScreenView levelScreen, LoseScreenView loseScreen)
         {
             _selfModel = selfModel;
             _levelFactory = levelFactory;
@@ -72,15 +73,21 @@ namespace TapAndRun.MVP.Levels.Presenter
             _character.StartMove();
         }
 
-        private async void RestartGameplay()
+        private void RestartGameplay()
         {
+            ClearOldLevel();
+
+            _currentLevel.ResetLevel();
+            _currentLevel.ActivateArrow();
+
+            var startRotation = _currentLevel.transform.rotation;
+            _character.MoveTo(_currentLevel.StartSegment.SegmentCenter.position, startRotation);
+            _camera.ChangeRotation(startRotation);
+
+            UpdateDifficulty();
+
             _loseScreen.Hide();
-            
-            await BuildLevelAsync(_cts.Token);
-            
             StartGameplay();
-            //_levelScreen.Show();
-            //_character.StartMove();
         }
         
         private void ShowLose()
@@ -110,7 +117,7 @@ namespace TapAndRun.MVP.Levels.Presenter
             BuildNextLevel(); 
 
             _character.MoveTo(_currentLevel.StartSegment.SegmentCenter.position);
-            _camera.ResetRotation();
+            _camera.ChangeRotation();
         }
 
         private void BuildNextLevel()
@@ -142,11 +149,11 @@ namespace TapAndRun.MVP.Levels.Presenter
         private void ActivateNextLevel()
         {
             _currentLevel = _nextLevel;
-            
+
             UpdateCommands();
-            _character.ChangeSpeed(_selfModel.CurrentDifficulty);
-            _camera.ChangeDifficulty(_selfModel.CurrentDifficulty, _cts.Token);
-            //TODO Включение учета интерактивных стрелок
+            UpdateDifficulty();
+
+            _nextLevel.ActivateArrow();
 
             foreach (var crystal in _currentLevel.Crystals)
             {
@@ -182,9 +189,20 @@ namespace TapAndRun.MVP.Levels.Presenter
             {
                 return;
             }
-            
+
             _characterCommands[_selfModel.CurrentInteractionIndex].Execute();
+
+            _currentLevel.SwitchToNextArrow(_selfModel.CurrentInteractionIndex);
             _selfModel.CurrentInteractionIndex++;
+        }
+
+        /// <summary>
+        /// Передает индекс текущей сложности в объект персонажа и камеры, чтобы те изменили своё поведение.
+        /// </summary>
+        private void UpdateDifficulty()
+        {
+            _character.ChangeSpeed(_selfModel.CurrentDifficulty);
+            _camera.ChangeDifficulty(_selfModel.CurrentDifficulty);
         }
 
         /// <summary>
@@ -195,7 +213,6 @@ namespace TapAndRun.MVP.Levels.Presenter
             _characterCommands.Clear();
 
             _selfModel.InteractionCount = _currentLevel.InteractionPoints.Count;
-            _selfModel.CurrentInteractionIndex = 0;
 
             foreach (var interact in _currentLevel.InteractionPoints)
             {

@@ -8,7 +8,10 @@ namespace TapAndRun.MVP.Levels.View.SegmentViews
 
         public override void ResetSegment()
         {
-            
+            foreach (var crystal in Crystals)
+            {
+                crystal.Reset();
+            }
         }
     }
 }

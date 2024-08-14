@@ -54,9 +54,6 @@ namespace TapAndRun.MVP.Character.View
 
             _animMultiplier = BaseAnimSpeed + difficultyLevel / _baseMoveSpeed;
             _characterAnimator.SetFloat(JumpSpeed, _animMultiplier);
-            
-            Debug.Log(_currentSpeed);
-            Debug.Log(_animMultiplier);
         }
         
         public void StartMove()
@@ -77,6 +74,12 @@ namespace TapAndRun.MVP.Character.View
         {
             CharacterTransform.position = position;
             CharacterTransform.rotation = Quaternion.identity;
+        }
+        
+        public void MoveTo(Vector2 position, Quaternion rotation)
+        {
+            CharacterTransform.position = position;
+            CharacterTransform.rotation = rotation;
         }
         
         public async UniTaskVoid CenteringAsync(Vector3 centre)
@@ -128,7 +131,6 @@ namespace TapAndRun.MVP.Character.View
 
             var t = Time.time;
             var totalJumpDuration = JumpDuration / _animMultiplier;
-            Debug.Log(totalJumpDuration);
 
             while ((t + (JumpDuration / _animMultiplier)) >= Time.time) //TODO добавить логику согласно изменению сложности
             {

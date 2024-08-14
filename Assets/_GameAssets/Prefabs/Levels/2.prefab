@@ -1729,7 +1729,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CommandType>k__BackingField: 1
-  <Icon>k__BackingField: {fileID: 5479903759615712964}
+  <Icon>k__BackingField: {fileID: 8373197806751626065}
 --- !u!1 &5302988944228284174
 GameObject:
   m_ObjectHideFlags: 0

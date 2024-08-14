@@ -898,7 +898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CommandType>k__BackingField: 2
-  <Icon>k__BackingField: {fileID: 8382734295598035906}
+  <Icon>k__BackingField: {fileID: 5274794641677884054}
 --- !u!1 &1824666006286343814
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,6 @@
-﻿using DG.Tweening;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using TapAndRun.MVP.Levels.Model;
 using UnityEngine;
 
@@ -12,17 +14,28 @@ namespace TapAndRun.MVP.Levels.View
 
         public void Activate()
         {
-            Icon.DOFade(1, 0);
+            FadeAsync(1f, 0f, this.GetCancellationTokenOnDestroy()).Forget();
         }
 
         public void Deactivate()
         {
-            Icon.DOFade(0, .2f);
+            FadeAsync(0f, 0.2f, this.GetCancellationTokenOnDestroy()).Forget();
         }
 
         public void SetDefault()
         {
-            Icon.DOFade(.3f, 0);
+            FadeAsync(0.3f, 0f, this.GetCancellationTokenOnDestroy()).Forget();
         }
+
+        private async UniTask FadeAsync(float value, float duration, CancellationToken token)
+        {
+            await Icon.DOFade(value, duration)
+                .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
+        }
+
+        /*private void SetTransparent(float alpha)
+        {
+            Icon.color = new Color(Icon.color.r, Icon.color.g, Icon.color.b, alpha);
+        }*/
     }
 }
