@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using TapAndRun.Configs;
 using TapAndRun.MVP.Levels.View;
@@ -204,3 +205,4 @@ namespace TapAndRun.Tools.LevelConstructor
         }
     }
 }
+#endif
