@@ -65,7 +65,9 @@ namespace TapAndRun.CameraLogic
         public async UniTask TurnAsync(int direction)
         {
             var originRotation = _camera.transform.eulerAngles.z;
-            var angle = _config.RotationDifficulties[Difficulty - 1 * direction];
+            var angle = _config.RotationDifficulties[Difficulty - 1] * direction;
+            
+            Debug.Log(angle);
             float t = 0;
 
             while (t < 1)

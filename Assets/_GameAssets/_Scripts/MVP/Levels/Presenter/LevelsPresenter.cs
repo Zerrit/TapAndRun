@@ -201,6 +201,7 @@ namespace TapAndRun.MVP.Levels.Presenter
         /// </summary>
         private void UpdateDifficulty()
         {
+            Debug.Log(_selfModel.CurrentDifficulty);
             _character.ChangeSpeed(_selfModel.CurrentDifficulty);
             _camera.ChangeDifficulty(_selfModel.CurrentDifficulty);
         }
