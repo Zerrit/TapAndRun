@@ -8,7 +8,7 @@ using TapAndRun.MVP.Character.Commands;
 using TapAndRun.MVP.Character.View;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.View;
-using TapAndRun.MVP.Screens.Level;
+using TapAndRun.MVP.Screens.Gameplay;
 using TapAndRun.MVP.Screens.Lose;
 using TapAndRun.MVP.Screens.Wallet;
 using UnityEngine;
@@ -28,7 +28,7 @@ namespace TapAndRun.MVP.Levels.Presenter
         private readonly CharacterView _character;
         private readonly CharacterCamera _camera;
         private readonly WalletView _walletView;
-        private readonly LevelScreenView _levelScreen;
+        private readonly GameplayScreenView _gameplayScreen;
         private readonly LoseScreenView _loseScreen;
 
         private readonly ILevelsSelfModel _selfModel;
@@ -36,14 +36,14 @@ namespace TapAndRun.MVP.Levels.Presenter
 
         public LevelsPresenter(ILevelsSelfModel selfModel, ILevelFactory levelFactory, 
             CharacterView character, CharacterCamera camera, WalletView walletView, 
-            LevelScreenView levelScreen, LoseScreenView loseScreen)
+            GameplayScreenView gameplayScreen, LoseScreenView loseScreen)
         {
             _selfModel = selfModel;
             _levelFactory = levelFactory;
             _character = character;
             _camera = camera;
             _walletView = walletView;
-            _levelScreen = levelScreen;
+            _gameplayScreen = gameplayScreen;
             _loseScreen = loseScreen;
         }
 
@@ -62,12 +62,12 @@ namespace TapAndRun.MVP.Levels.Presenter
             _selfModel.OnLevelCompleted += UpdateLevelViews;
 
             _character.OnFalling += ShowLose;
-            _levelScreen.OnClicked += ProcessClick;
+            _gameplayScreen.OnClicked += ProcessClick;
         }
 
         private void StartGameplay()
         {
-            _levelScreen.Show();
+            _gameplayScreen.Show();
             //TODO Возможно сделать задержку для анимаций перед запуском персонажа
 
             _character.StartMove();
@@ -97,115 +97,25 @@ namespace TapAndRun.MVP.Levels.Presenter
             async UniTaskVoid ShowLoseAsync(CancellationToken token)
             {
                 _selfModel.LoseLevel();
-                _levelScreen.Hide();
+                _gameplayScreen.Hide();
 
                 await _camera.FlyUpAsync(_cts.Token);
 
                 _loseScreen.Show();
             }
         }
-
-        private async UniTask BuildLevelAsync(CancellationToken token)
-        {
-            await ClearLevels(token);
-
-            _nextLevel = await _levelFactory.CreateLevelViewAsync(_selfModel.CurrentLevelId, Vector2.zero, Quaternion.identity, token);
-
-            _nextLevel.Configure(_selfModel.CurrentLevelId);
-
-            ActivateNextLevel();
-            BuildNextLevel(); 
-
-            _character.MoveTo(_currentLevel.StartSegment.SegmentCenter.position);
-            _camera.ChangeRotation();
-        }
-
-        private void BuildNextLevel()
-        {
-            BuildNextLevelAsync(_cts.Token).Forget();
-            
-            async UniTask BuildNextLevelAsync(CancellationToken token)
-            {
-                var nextLevelId = _selfModel.CurrentLevelId + 1;
-
-                _nextLevel = await _levelFactory.CreateLevelViewAsync(nextLevelId, _currentLevel.FinishSegment.SnapPoint.position, _currentLevel.FinishSegment.SnapPoint.rotation, token);
-
-                _nextLevel.Configure(nextLevelId);
-            }
-        }
-
-        private void UpdateLevelViews()
-        {
-            ClearOldLevel();
-
-            DeactivateLevel();
-            ActivateNextLevel();
-
-            BuildNextLevel();
-
-            _character.CenteringAsync(_currentLevel.StartSegment.SegmentCenter.position).Forget();
-        }
-
-        private void ActivateNextLevel()
-        {
-            _currentLevel = _nextLevel;
-
-            UpdateCommands();
-            UpdateDifficulty();
-
-            _nextLevel.ActivateArrow();
-
-            foreach (var crystal in _currentLevel.Crystals)
-            {
-                crystal.OnTaken += _selfModel.IncreaseCrystals;
-            }
-
-            _currentLevel.FinishSegment.OnPlayerEntered += _selfModel.CompleteLevel;
-        }
-
-        private void DeactivateLevel()
-        {
-            if (!_currentLevel)
-            {
-                return;
-            }
-
-            _oldLevel = _currentLevel;
-
-            foreach (var crystal in _currentLevel.Crystals)
-            {
-                crystal.OnTaken -= _selfModel.IncreaseCrystals;
-            }
- 
-            _currentLevel.OnFinishReached -= _selfModel.CompleteLevel;
-        }
-
-        /// <summary>
-        /// Обрабатывает клик игрока.
-        /// </summary>
-        private void ProcessClick()
-        {
-            if (_selfModel.CurrentInteractionIndex >= _selfModel.InteractionCount)
-            {
-                return;
-            }
-
-            _characterCommands[_selfModel.CurrentInteractionIndex].Execute();
-
-            _currentLevel.SwitchToNextArrow(_selfModel.CurrentInteractionIndex);
-            _selfModel.CurrentInteractionIndex++;
-        }
+        
+        #region Character
 
         /// <summary>
         /// Передает индекс текущей сложности в объект персонажа и камеры, чтобы те изменили своё поведение.
         /// </summary>
         private void UpdateDifficulty()
         {
-            Debug.Log(_selfModel.CurrentDifficulty);
             _character.ChangeSpeed(_selfModel.CurrentDifficulty);
             _camera.ChangeDifficulty(_selfModel.CurrentDifficulty);
         }
-
+        
         /// <summary>
         /// Обновляет список команд для персонажа, согласно активному уровню.
         /// </summary>
@@ -241,6 +151,101 @@ namespace TapAndRun.MVP.Levels.Presenter
             }
         }
 
+        /// <summary>
+        /// Обрабатывает клик игрока.
+        /// </summary>
+        private void ProcessClick()
+        {
+            if (_selfModel.CurrentInteractionIndex >= _selfModel.InteractionCount)
+            {
+                return;
+            }
+
+            _characterCommands[_selfModel.CurrentInteractionIndex].Execute();
+
+            _currentLevel.SwitchToNextArrow(_selfModel.CurrentInteractionIndex);
+            _selfModel.CurrentInteractionIndex++;
+        }
+        
+        #endregion
+        
+        #region Levels
+
+        private async UniTask BuildLevelAsync(CancellationToken token)
+        {
+            await ClearLevels(token);
+
+            _nextLevel = await _levelFactory.CreateLevelViewAsync(_selfModel.CurrentLevelId, Vector2.zero, Quaternion.identity, token);
+
+            _nextLevel.Configure(_selfModel.CurrentLevelId);
+
+            ActivateNextLevel();
+            BuildNextLevel(); 
+
+            _character.MoveTo(_currentLevel.StartSegment.SegmentCenter.position);
+            _camera.ChangeRotation();
+        }
+
+        private void BuildNextLevel()
+        {
+            BuildNextLevelAsync(_cts.Token).Forget();
+            
+            async UniTask BuildNextLevelAsync(CancellationToken token)
+            {
+                var nextLevelId = _selfModel.CurrentLevelId + 1;
+
+                _nextLevel = await _levelFactory.CreateLevelViewAsync(nextLevelId, _currentLevel.FinishSegment.SnapPoint.position, _currentLevel.FinishSegment.SnapPoint.rotation, token);
+
+                _nextLevel.Configure(nextLevelId);
+            }
+        }
+        
+        private void UpdateLevelViews()
+        {
+            ClearOldLevel();
+
+            DeactivateLevel();
+            ActivateNextLevel();
+
+            BuildNextLevel();
+
+            _character.CenteringAsync(_currentLevel.StartSegment.SegmentCenter.position).Forget();
+        }
+        
+        private void DeactivateLevel()
+        {
+            if (!_currentLevel)
+            {
+                return;
+            }
+
+            _oldLevel = _currentLevel;
+
+            foreach (var crystal in _currentLevel.Crystals)
+            {
+                crystal.OnTaken -= _selfModel.IncreaseCrystals;
+            }
+ 
+            _currentLevel.OnFinishReached -= _selfModel.CompleteLevel;
+        }
+        
+        private void ActivateNextLevel()
+        {
+            _currentLevel = _nextLevel;
+
+            UpdateCommands();
+            UpdateDifficulty();
+
+            _nextLevel.ActivateArrow();
+
+            foreach (var crystal in _currentLevel.Crystals)
+            {
+                crystal.OnTaken += _selfModel.IncreaseCrystals;
+            }
+
+            _currentLevel.FinishSegment.OnPlayerEntered += _selfModel.CompleteLevel;
+        }
+        
         private void ClearOldLevel()
         {
             if (_oldLevel)
@@ -270,6 +275,8 @@ namespace TapAndRun.MVP.Levels.Presenter
 
             _levelFactory.Dispose();
         }
+        
+        #endregion
 
         public void Dispose()
         {

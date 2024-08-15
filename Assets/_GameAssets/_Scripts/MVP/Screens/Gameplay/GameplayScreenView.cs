@@ -2,9 +2,9 @@
 using TapAndRun.UI;
 using UnityEngine.EventSystems;
 
-namespace TapAndRun.MVP.Screens.Level
+namespace TapAndRun.MVP.Screens.Gameplay
 {
-    public class LevelScreenView : ScreenView, IPointerClickHandler
+    public class GameplayScreenView : ScreenView, IPointerClickHandler
     {
         public event Action OnClicked;
 

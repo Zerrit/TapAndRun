@@ -1,14 +1,17 @@
 ﻿using TapAndRun.CameraLogic;
 using TapAndRun.Configs;
+using TapAndRun.Factories.LevelButtons;
 using TapAndRun.Factories.Levels;
 using TapAndRun.MVP.Character.View;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.Presenter;
-using TapAndRun.MVP.Screens.Level;
+using TapAndRun.MVP.Screens.Gameplay;
 using TapAndRun.MVP.Screens.Lose;
 using TapAndRun.MVP.Screens.Main;
 using TapAndRun.MVP.Screens.Wallet;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.Serialization;
 using VContainer;
 using VContainer.Unity;
 
@@ -22,6 +25,9 @@ namespace TapAndRun.Architecture
         [Header("Objects")]
         [SerializeField] private Transform _levelsParent;
         
+        [Header("Prefabs")]
+        [SerializeField] private AssetReference _levelButtonPrefab;
+        
         [Header("Configs")]
         [SerializeField] private LevelsConfig _levelsConfig;
 
@@ -30,7 +36,7 @@ namespace TapAndRun.Architecture
         [SerializeField] private CharacterCamera _camera;
         [SerializeField] private WalletView _wallet;
         [SerializeField] private MainScreenView _mainScreen;
-        [SerializeField] private LevelScreenView _levelScreen;
+        [FormerlySerializedAs("_levelScreen")] [SerializeField] private GameplayScreenView _gameplayScreen;
         [SerializeField] private LoseScreenView _loseScreen;
         
         protected override void Configure(IContainerBuilder builder)
@@ -54,6 +60,9 @@ namespace TapAndRun.Architecture
             builder.Register<LevelFactory>(Lifetime.Singleton).As<ILevelFactory>()
                 .WithParameter(_levelsConfig)
                 .WithParameter(_levelsParent);
+
+            builder.Register<LevelButtonFactory>(Lifetime.Singleton).As<ILevelButtonFactory>()
+                .WithParameter(_levelButtonPrefab);
         }
 
         private void RegisterLevels(IContainerBuilder builder)
@@ -62,7 +71,7 @@ namespace TapAndRun.Architecture
             builder.Register<LevelsPresenter>(Lifetime.Singleton)
                 .WithParameter(_characterView)
                 .WithParameter(_camera)
-                .WithParameter(_levelScreen)
+                .WithParameter(_gameplayScreen)
                 .WithParameter(_loseScreen)
                 .WithParameter(_wallet);
         }
