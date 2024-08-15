@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 
 namespace TapAndRun.UI
@@ -8,25 +9,45 @@ namespace TapAndRun.UI
     {
         [field:SerializeField] public CanvasGroup Fade { get; private set; }
         [field:SerializeField] public Transform Parent { get; private set; }
+
+        [SerializeField, Range(-1, 1)] private int _xAnimDirection;
+        [SerializeField, Range(-1, 1)] private int _yAnimDirection;
+        
+        private Vector2 HideAnimPosition => new(Screen.width * 2 * _xAnimDirection, Screen.height * 2 * _yAnimDirection);
         
         public void Show()
         {
-            Parent.gameObject.SetActive(true);
+            ShowAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
         public async UniTask ShowAsync(CancellationToken token)
         {
-            
+            Fade.gameObject.SetActive(true);
+            Fade.DOFade(1f, 0.1f)
+                .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
+
+            Parent.gameObject.SetActive(true);
+            await Parent.DOMove(Vector3.zero, 0.3f)
+                .From(HideAnimPosition)
+                .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
         }
         
         public void Hide()
         {
-            Parent.gameObject.SetActive(false);
+            HideAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
         
         public async UniTask HideAsync(CancellationToken token)
         {
-            
+            await Parent.DOMove(HideAnimPosition, 0.3f)
+                .SetEase(Ease.InBounce)
+                .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
+
+            await Fade.DOFade(0f, 0.1f)
+                .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
+
+            Fade.gameObject.SetActive(true);
+            Parent.gameObject.SetActive(true);
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿using TapAndRun.Tools;
-using TapAndRun.Tools.Reactivity;
+﻿using TapAndRun.Tools.Reactivity;
 
-namespace TapAndRun.MVP.Screens.Main
+namespace TapAndRun.MVP.Screens.Main.Model
 {
     public interface IMainScreenSelfModel
     {

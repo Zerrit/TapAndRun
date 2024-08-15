@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.Presenter;
 using TapAndRun.MVP.Screens.Main;
+using TapAndRun.MVP.Screens.Main.Model;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;

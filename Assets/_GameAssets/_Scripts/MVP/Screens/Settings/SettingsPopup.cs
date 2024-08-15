@@ -2,7 +2,7 @@
 
 namespace TapAndRun.MVP.Screens.Settings
 {
-    public class SettingsView : PopupView
+    public class SettingsPopup : PopupView
     {
         
     }

@@ -9,6 +9,7 @@ using TapAndRun.MVP.Character.View;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.View;
 using TapAndRun.MVP.Screens.Gameplay;
+using TapAndRun.MVP.Screens.LevelSelect;
 using TapAndRun.MVP.Screens.Lose;
 using TapAndRun.MVP.Screens.Wallet;
 using UnityEngine;
@@ -34,9 +35,8 @@ namespace TapAndRun.MVP.Levels.Presenter
         private readonly ILevelsSelfModel _selfModel;
         private readonly ILevelFactory _levelFactory;
 
-        public LevelsPresenter(ILevelsSelfModel selfModel, ILevelFactory levelFactory, 
-            CharacterView character, CharacterCamera camera, WalletView walletView, 
-            GameplayScreenView gameplayScreen, LoseScreenView loseScreen)
+        public LevelsPresenter(ILevelsSelfModel selfModel, ILevelFactory levelFactory, CharacterView character, 
+            CharacterCamera camera, WalletView walletView, GameplayScreenView gameplayScreen, LoseScreenView loseScreen)
         {
             _selfModel = selfModel;
             _levelFactory = levelFactory;
@@ -90,6 +90,8 @@ namespace TapAndRun.MVP.Levels.Presenter
             StartGameplay();
         }
         
+        #region Screens
+
         private void ShowLose()
         {
             ShowLoseAsync(_cts.Token).Forget();
@@ -104,6 +106,8 @@ namespace TapAndRun.MVP.Levels.Presenter
                 _loseScreen.Show();
             }
         }
+
+        #endregion
         
         #region Character
 

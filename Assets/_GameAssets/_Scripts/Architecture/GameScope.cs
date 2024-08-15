@@ -8,6 +8,8 @@ using TapAndRun.MVP.Levels.Presenter;
 using TapAndRun.MVP.Screens.Gameplay;
 using TapAndRun.MVP.Screens.Lose;
 using TapAndRun.MVP.Screens.Main;
+using TapAndRun.MVP.Screens.Main.Model;
+using TapAndRun.MVP.Screens.Main.Views;
 using TapAndRun.MVP.Screens.Wallet;
 using UnityEngine;
 using UnityEngine.AddressableAssets;

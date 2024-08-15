@@ -1,6 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
-using TapAndRun.MVP.Levels.View;
 using TapAndRun.MVP.Screens.LevelSelect;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -12,7 +12,7 @@ namespace TapAndRun.Factories.LevelButtons
     {
     }
 
-    public class LevelButtonFactory : ILevelButtonFactory
+    public class LevelButtonFactory : ILevelButtonFactory, IDisposable
     {
         private readonly LevelButtonView _levelButtonPrefab;
 
