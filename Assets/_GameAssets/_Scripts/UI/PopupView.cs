@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
 
 namespace TapAndRun.UI
@@ -9,12 +10,21 @@ namespace TapAndRun.UI
     {
         [field:SerializeField] public CanvasGroup Fade { get; private set; }
         [field:SerializeField] public Transform Parent { get; private set; }
-
+        
+        [Header("Fade")]
+        [SerializeField] private float _fadeInDuration;
+        [SerializeField] private float _fadeOutDuration;
+        
+        [Header("Parent")]
+        [SerializeField] private float _moveInDuration;
+        [SerializeField] private float _moveOutDuration;
+        
+        [Header("Parent Anim")]
         [SerializeField, Range(-1, 1)] private int _xAnimDirection;
         [SerializeField, Range(-1, 1)] private int _yAnimDirection;
-        
+
         private Vector2 HideAnimPosition => new(Screen.width * 2 * _xAnimDirection, Screen.height * 2 * _yAnimDirection);
-        
+
         public void Show()
         {
             ShowAsync(this.GetCancellationTokenOnDestroy()).Forget();
@@ -27,27 +37,26 @@ namespace TapAndRun.UI
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
 
             Parent.gameObject.SetActive(true);
-            await Parent.DOMove(Vector3.zero, 0.3f)
+            await Parent.DOLocalMove(Vector3.zero, _moveInDuration)
                 .From(HideAnimPosition)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
         }
-        
+
         public void Hide()
         {
             HideAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
-        
+
         public async UniTask HideAsync(CancellationToken token)
         {
-            await Parent.DOMove(HideAnimPosition, 0.3f)
-                .SetEase(Ease.InBounce)
+            await Parent.DOLocalMove(HideAnimPosition, _moveOutDuration)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
 
             await Fade.DOFade(0f, 0.1f)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
 
-            Fade.gameObject.SetActive(true);
-            Parent.gameObject.SetActive(true);
+            Fade.gameObject.SetActive(false);
+            Parent.gameObject.SetActive(false);
         }
     }
 }

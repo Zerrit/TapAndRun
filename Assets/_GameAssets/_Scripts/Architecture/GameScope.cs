@@ -6,10 +6,14 @@ using TapAndRun.MVP.Character.View;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.Presenter;
 using TapAndRun.MVP.Screens.Gameplay;
+using TapAndRun.MVP.Screens.LevelSelect;
 using TapAndRun.MVP.Screens.Lose;
 using TapAndRun.MVP.Screens.Main;
 using TapAndRun.MVP.Screens.Main.Model;
 using TapAndRun.MVP.Screens.Main.Views;
+using TapAndRun.MVP.Screens.Settings;
+using TapAndRun.MVP.Screens.Settings.Model;
+using TapAndRun.MVP.Screens.Settings.Views;
 using TapAndRun.MVP.Screens.Wallet;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -38,16 +42,19 @@ namespace TapAndRun.Architecture
         [SerializeField] private CharacterCamera _camera;
         [SerializeField] private WalletView _wallet;
         [SerializeField] private MainScreenView _mainScreen;
-        [FormerlySerializedAs("_levelScreen")] [SerializeField] private GameplayScreenView _gameplayScreen;
+        [SerializeField] private SettingView _settingsView;
+        [SerializeField] private LevelSelectView _levelSelectPopup;
+        [SerializeField] private GameplayScreenView _gameplayScreen;
         [SerializeField] private LoseScreenView _loseScreen;
-        
+
         protected override void Configure(IContainerBuilder builder)
         {
             RegisterConfigs(builder);
             RegisterFactories(builder);
 
             RegisterLevels(builder);
-            RegisterMainScreen(builder);
+            RegisterSettings(builder);
+            RegisterMainMenu(builder);
 
             builder.RegisterInstance(_entryPoint).As<IAsyncStartable>();
         }
@@ -78,7 +85,14 @@ namespace TapAndRun.Architecture
                 .WithParameter(_wallet);
         }
         
-        private void RegisterMainScreen(IContainerBuilder builder)
+        private void RegisterSettings(IContainerBuilder builder)
+        {
+            builder.Register<SettingsModel>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<SettingsPresenter>(Lifetime.Singleton)
+                .WithParameter(_settingsView);
+        }
+        
+        private void RegisterMainMenu(IContainerBuilder builder)
         {
             builder.Register<MainScreenModel>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<MainScreenPresenter>(Lifetime.Singleton)

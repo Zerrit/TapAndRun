@@ -22,7 +22,7 @@ namespace TapAndRun.UI
             Parent.alpha = 0;
             Parent.gameObject.SetActive(true);
             
-            await Parent.DOFade(1f, 0.3f)
+            await Parent.DOFade(1f, _fadeInDuration)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
         }
         
@@ -35,7 +35,7 @@ namespace TapAndRun.UI
         {
             Parent.alpha = 1;
 
-            await Parent.DOFade(1f, 0.3f)
+            await Parent.DOFade(0f, _fadeOutDuration)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
 
             Parent.gameObject.SetActive(false);
