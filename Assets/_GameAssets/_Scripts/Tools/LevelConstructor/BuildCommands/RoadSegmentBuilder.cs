@@ -1,6 +1,6 @@
 ﻿using System;
-using TapAndRun.MVP.Levels.View;
-using TapAndRun.MVP.Levels.View.SegmentViews;
+using TapAndRun.MVP.Gameplay.Views;
+using TapAndRun.MVP.Gameplay.Views.SegmentViews;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

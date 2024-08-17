@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
-using TapAndRun.MVP.Levels.View;
+using TapAndRun.MVP.Gameplay.Views;
 using UnityEngine;
 
 namespace TapAndRun.Factories.Levels

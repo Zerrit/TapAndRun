@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using TapAndRun.Audio;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -14,6 +15,7 @@ namespace TapAndRun.MVP.Character.View
 
         [SerializeField] private Transform _roadChecker;
         [SerializeField] private Animator _characterAnimator;
+        [SerializeField] private CharacterSfx _characterSfx;
 
         private bool _isInteractive;
         private bool _isMoving;
@@ -54,13 +56,16 @@ namespace TapAndRun.MVP.Character.View
 
             _animMultiplier = BaseAnimSpeed + difficultyLevel / _baseMoveSpeed;
             _characterAnimator.SetFloat(JumpSpeed, _animMultiplier);
+            _characterSfx.ChangeSpeed(difficultyLevel);
         }
         
         public void StartMove()
         {
             _isMoving = true;
             _isInteractive = true;
+
             ActivateAnimation(Run);
+            _characterSfx.PlayRunSfx();
         }
 
         public void StopMove()
@@ -110,6 +115,8 @@ namespace TapAndRun.MVP.Character.View
         {
             var originAngle = CharacterTransform.eulerAngles.z;
             var t = 0f;
+            
+            _characterSfx.PlayTurnSfx();
 
             while (t < 1f)
             {
@@ -128,17 +135,19 @@ namespace TapAndRun.MVP.Character.View
         {
             _isInteractive = false;
             ActivateAnimation(Jump);
+            _characterSfx.PlayJumpSfx();
 
             var t = Time.time;
             var totalJumpDuration = JumpDuration / _animMultiplier;
 
-            while ((t + (JumpDuration / _animMultiplier)) >= Time.time) //TODO добавить логику согласно изменению сложности
+            while ((t + totalJumpDuration) >= Time.time) //TODO добавить логику согласно изменению сложности
             {
                 await UniTask.NextFrame(this.GetCancellationTokenOnDestroy());
             }
 
             _isInteractive = true;
-
+            _characterSfx.PlayRunSfx();
+            
             await UniTask.CompletedTask;
         }
 
@@ -161,6 +170,7 @@ namespace TapAndRun.MVP.Character.View
                 _isInteractive = false;
                 _isMoving = false;
                 _characterAnimator.SetTrigger(Fall);
+                _characterSfx.PlayLoseSfx();
 
                 OnFalling?.Invoke();
             }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8829271575042978226}
   - component: {fileID: 1594783538710130250}
   m_Layer: 5
-  m_Name: CrystalsText
+  m_Name: Available Crystals Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 4940241325284636816}
   - component: {fileID: 2868335463755731958}
   m_Layer: 5
-  m_Name: CrystalsByLevelText
+  m_Name: Crystals By Level Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -317,7 +317,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ' +21'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f3ee4b81dff54944abebb079b90a70f6, type: 2}
   m_sharedMaterial: {fileID: 2401615511579294002, guid: f3ee4b81dff54944abebb079b90a70f6, type: 2}
@@ -575,5 +575,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dbdc3756f874bb69762293fc124579c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <AvailableCrystals>k__BackingField: {fileID: 0}
-  <CrystalsByLevel>k__BackingField: {fileID: 0}
+  <AvailableCrystals>k__BackingField: {fileID: 8829271575042978226}
+  <CrystalsByLevel>k__BackingField: {fileID: 4940241325284636816}

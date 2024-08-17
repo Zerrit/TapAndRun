@@ -1,7 +1,7 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
 using TapAndRun.Configs;
-using TapAndRun.MVP.Levels.View;
+using TapAndRun.MVP.Gameplay.Views;
 using TapAndRun.Tools.LevelConstructor.BuildCommands;
 using UnityEditor;
 using UnityEngine;

@@ -3,18 +3,17 @@ using TapAndRun.Configs;
 using TapAndRun.Factories.LevelButtons;
 using TapAndRun.Factories.Levels;
 using TapAndRun.MVP.Character.View;
-using TapAndRun.MVP.Levels.Model;
-using TapAndRun.MVP.Levels.Presenter;
-using TapAndRun.MVP.Screens.Gameplay;
+using TapAndRun.MVP.Gameplay.Model;
+using TapAndRun.MVP.Gameplay.Presenter;
+using TapAndRun.MVP.Gameplay.Views;
+using TapAndRun.MVP.MainMenu;
+using TapAndRun.MVP.MainMenu.Model;
+using TapAndRun.MVP.MainMenu.Views;
 using TapAndRun.MVP.Screens.LevelSelect;
-using TapAndRun.MVP.Screens.Lose;
-using TapAndRun.MVP.Screens.Main;
-using TapAndRun.MVP.Screens.Main.Model;
-using TapAndRun.MVP.Screens.Main.Views;
-using TapAndRun.MVP.Screens.Settings;
-using TapAndRun.MVP.Screens.Settings.Model;
-using TapAndRun.MVP.Screens.Settings.Views;
-using TapAndRun.MVP.Screens.Wallet;
+using TapAndRun.MVP.Settings;
+using TapAndRun.MVP.Settings.Model;
+using TapAndRun.MVP.Settings.Views;
+using TapAndRun.MVP.Wallet;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Serialization;
@@ -76,7 +75,7 @@ namespace TapAndRun.Architecture
 
         private void RegisterLevels(IContainerBuilder builder)
         {
-            builder.Register<LevelsModel>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<GameplayModel>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<LevelsPresenter>(Lifetime.Singleton)
                 .WithParameter(_characterView)
                 .WithParameter(_camera)

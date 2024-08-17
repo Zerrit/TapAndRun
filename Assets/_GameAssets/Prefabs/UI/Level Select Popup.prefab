@@ -334,8 +334,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc672438cd594d81b55f59be1e0061e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Fade>k__BackingField: {fileID: 0}
+  <Fade>k__BackingField: {fileID: 2441647720226991900}
   <Parent>k__BackingField: {fileID: 5269592211603601930}
+  _fadeInDuration: 0
+  _fadeOutDuration: 0
+  _moveInDuration: 0
+  _moveOutDuration: 0
+  _animType: 0
   _xAnimDirection: 0
   _yAnimDirection: 0
 --- !u!1 &9214460517454409224
@@ -463,7 +468,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1708565549061190338, guid: c451b03f99dcb4241ae01cf78a9598f5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1708565549061190338, guid: c451b03f99dcb4241ae01cf78a9598f5, type: 3}
       propertyPath: m_AnchorMin.x
@@ -471,23 +476,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1708565549061190338, guid: c451b03f99dcb4241ae01cf78a9598f5, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1708565549061190338, guid: c451b03f99dcb4241ae01cf78a9598f5, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 250
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1708565549061190338, guid: c451b03f99dcb4241ae01cf78a9598f5, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 250
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1708565549061190338, guid: c451b03f99dcb4241ae01cf78a9598f5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 540.00006
+      value: 540
       objectReference: {fileID: 0}
     - target: {fileID: 1708565549061190338, guid: c451b03f99dcb4241ae01cf78a9598f5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -375
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3332128446226885100, guid: c451b03f99dcb4241ae01cf78a9598f5, type: 3}
       propertyPath: m_Pivot.x
