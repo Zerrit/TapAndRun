@@ -1,6 +1,7 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using TapAndRun.Configs;
-using TapAndRun.MVP.Levels.View;
+using TapAndRun.MVP.Gameplay.Views;
 using TapAndRun.Tools.LevelConstructor.BuildCommands;
 using UnityEditor;
 using UnityEngine;
@@ -98,22 +99,10 @@ namespace TapAndRun.Tools.LevelConstructor
 
                 if (GUILayout.Button("Small Road", GUILayout.Height(30)))
                 {
-                    var builder = new RoadSegmentBuilder(_creatingLevel, _config);
+                    var builder = new RoadSegmentBuilder(_creatingLevel, _config.RoadSegment);
 
                     ActivateBuilder(builder);
                 }
-                /*if (GUILayout.Button("Middle Road", GUILayout.Height(30)))
-                {
-                    var builder = new RoadSegmentBuilder(_config, _creatingLevel);
-
-                    ActivateBuilder(builder);
-                }
-                if (GUILayout.Button("Long Road", GUILayout.Height(30)))
-                {
-                    var builder = new RoadSegmentBuilder(_config, _creatingLevel, 3);
-
-                    ActivateBuilder(builder);
-                }*/
 
                 EditorGUILayout.EndHorizontal();
 
@@ -124,13 +113,13 @@ namespace TapAndRun.Tools.LevelConstructor
 
                 if (GUILayout.Button("Left Turn", GUILayout.Height(50)))
                 {
-                    var builder = new TurnLeftSegmentBuilder(_creatingLevel, _config);
+                    var builder = new InteractSegmentBuilder(_creatingLevel, _config.LeftTurnSegment);
 
                     ActivateBuilder(builder);
                 }
                 if (GUILayout.Button("Right Turn", GUILayout.Height(50)))
                 {
-                    var builder = new RightTurnSegmentBuilder(_creatingLevel, _config);
+                    var builder = new InteractSegmentBuilder(_creatingLevel, _config.RightTurnSegment);
 
                     ActivateBuilder(builder);
                 }
@@ -144,19 +133,19 @@ namespace TapAndRun.Tools.LevelConstructor
 
                 if (GUILayout.Button("Start Jump", GUILayout.Height(30)))
                 {
-                    var builder = new StartJumpSegmentBuilder(_creatingLevel, _config);
+                    var builder = new InteractSegmentBuilder(_creatingLevel, _config.JumpStartSegment);
 
                     ActivateBuilder(builder);
                 }
                 if (GUILayout.Button("Single Jump", GUILayout.Height(30)))
                 {
-                    var builder = new JumpSegmentBuilder(_creatingLevel, _config);
+                    var builder = new InteractSegmentBuilder(_creatingLevel, _config.JumpSegment);
 
                     ActivateBuilder(builder);
                 }
                 if (GUILayout.Button("End Jump", GUILayout.Height(30)))
                 {
-                    var builder = new EndJumpSegmentBuilder(_creatingLevel, _config);
+                    var builder = new RoadSegmentBuilder(_creatingLevel, _config.JumpEndSegment);
 
                     ActivateBuilder(builder);
                 }
@@ -216,3 +205,4 @@ namespace TapAndRun.Tools.LevelConstructor
         }
     }
 }
+#endif

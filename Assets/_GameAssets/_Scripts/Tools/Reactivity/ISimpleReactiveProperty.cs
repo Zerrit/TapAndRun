@@ -5,6 +5,9 @@ namespace TapAndRun.Tools.Reactivity
     public interface ISimpleReactiveProperty<T>
     {
         event Action<T> OnChanged;
+
         T Value { get; }
+
+        void SubscribeAndUpdate(Action<T> method);
     }
 }

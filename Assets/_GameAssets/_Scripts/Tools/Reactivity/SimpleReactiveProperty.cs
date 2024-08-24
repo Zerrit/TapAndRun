@@ -23,5 +23,11 @@ namespace TapAndRun.Tools.Reactivity
             _value = startValue;
         }
 
+        public void SubscribeAndUpdate(Action<T> method)
+        {
+            OnChanged += method;
+            
+            OnChanged?.Invoke(_value);
+        }
     }
 }

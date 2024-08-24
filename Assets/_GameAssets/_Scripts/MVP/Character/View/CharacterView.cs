@@ -1,6 +1,8 @@
 using System;
 using Cysharp.Threading.Tasks;
+using TapAndRun.Audio;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace TapAndRun.MVP.Character.View
 {
@@ -8,26 +10,32 @@ namespace TapAndRun.MVP.Character.View
     {
         public event Action OnFalling;
 
-        public bool _isInteractive;
-        
         [field:SerializeField] public Transform CharacterTransform { get; private set; }
         [field:SerializeField] public Transform SkinHandler { get; private set; }
 
         [SerializeField] private Transform _roadChecker;
         [SerializeField] private Animator _characterAnimator;
+        [SerializeField] private CharacterSfx _characterSfx;
 
+        private bool _isInteractive;
         private bool _isMoving;
+        
         private float _currentSpeed;
+        private float _animMultiplier;
 
+        private float _baseMoveSpeed = 2f; // Вынести в конфиг
         private float _turnSpeed = 12f; // Вынести в конфиг
         private float _centeringSpeed = 4f; // Вынести в конфиг
         
+        private const float BaseAnimSpeed = 1f;
+        private const float JumpDuration = 1f;
         private static readonly Vector2 MoveDirection = Vector2.up;
         
         private static readonly int Idle = Animator.StringToHash("Idle");
         private static readonly int Run = Animator.StringToHash("Run");
         private static readonly int Jump = Animator.StringToHash("Jump");
         private static readonly int Fall = Animator.StringToHash("Fall");
+        private static readonly int JumpSpeed = Animator.StringToHash("Speed");
 
         public void Update()
         {
@@ -42,13 +50,22 @@ namespace TapAndRun.MVP.Character.View
             }
         }
 
-        public void StartMove(float speed = 4)
+        public void ChangeSpeed(int difficultyLevel)
         {
-            _currentSpeed = speed;
+            _currentSpeed = _baseMoveSpeed + difficultyLevel;
 
+            _animMultiplier = BaseAnimSpeed + difficultyLevel / _baseMoveSpeed;
+            _characterAnimator.SetFloat(JumpSpeed, _animMultiplier);
+            _characterSfx.ChangeSpeed(difficultyLevel);
+        }
+        
+        public void StartMove()
+        {
             _isMoving = true;
             _isInteractive = true;
+
             ActivateAnimation(Run);
+            _characterSfx.PlayRunSfx();
         }
 
         public void StopMove()
@@ -62,6 +79,12 @@ namespace TapAndRun.MVP.Character.View
         {
             CharacterTransform.position = position;
             CharacterTransform.rotation = Quaternion.identity;
+        }
+        
+        public void MoveTo(Vector2 position, Quaternion rotation)
+        {
+            CharacterTransform.position = position;
+            CharacterTransform.rotation = rotation;
         }
         
         public async UniTaskVoid CenteringAsync(Vector3 centre)
@@ -92,6 +115,8 @@ namespace TapAndRun.MVP.Character.View
         {
             var originAngle = CharacterTransform.eulerAngles.z;
             var t = 0f;
+            
+            _characterSfx.PlayTurnSfx();
 
             while (t < 1f)
             {
@@ -110,16 +135,19 @@ namespace TapAndRun.MVP.Character.View
         {
             _isInteractive = false;
             ActivateAnimation(Jump);
+            _characterSfx.PlayJumpSfx();
 
             var t = Time.time;
+            var totalJumpDuration = JumpDuration / _animMultiplier;
 
-            while ((t+0.5f) >= Time.time) //TODO добавить логику согласно изменению сложности
+            while ((t + totalJumpDuration) >= Time.time) //TODO добавить логику согласно изменению сложности
             {
                 await UniTask.NextFrame(this.GetCancellationTokenOnDestroy());
             }
 
             _isInteractive = true;
-
+            _characterSfx.PlayRunSfx();
+            
             await UniTask.CompletedTask;
         }
 
@@ -142,6 +170,7 @@ namespace TapAndRun.MVP.Character.View
                 _isInteractive = false;
                 _isMoving = false;
                 _characterAnimator.SetTrigger(Fall);
+                _characterSfx.PlayLoseSfx();
 
                 OnFalling?.Invoke();
             }

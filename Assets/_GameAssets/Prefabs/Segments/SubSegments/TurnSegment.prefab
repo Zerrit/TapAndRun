@@ -144,7 +144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bb6ab0d71953b64a8c6f9e91aef99aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Icon>k__BackingField: {fileID: 1108070607534651974}
+  <CommandType>k__BackingField: 2
+  <Icon>k__BackingField: {fileID: 6151925429050982075}
 --- !u!1 &8936525250004712769
 GameObject:
   m_ObjectHideFlags: 0
