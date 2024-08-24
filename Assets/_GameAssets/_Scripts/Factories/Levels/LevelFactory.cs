@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Configs;
-using TapAndRun.MVP.Gameplay.Views;
+using TapAndRun.MVP.Levels.Views;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -21,6 +21,11 @@ namespace TapAndRun.Factories.Levels
         {
             _levelsConfig = levelsConfig;
             _parentContainer = parentContainer;
+        }
+
+        public int GetLevelCount()
+        {
+            return _levelsConfig.LevelPrefabs.Length;
         }
 
         public async UniTask<LevelView> CreateLevelViewAsync(int levelId, Vector2 position, Quaternion rotation, CancellationToken token)

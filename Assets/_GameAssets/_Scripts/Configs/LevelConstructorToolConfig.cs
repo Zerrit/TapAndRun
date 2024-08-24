@@ -1,4 +1,4 @@
-﻿using TapAndRun.MVP.Gameplay.Views.SegmentViews;
+﻿using TapAndRun.MVP.Levels.Views.SegmentViews;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 

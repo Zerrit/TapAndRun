@@ -8,6 +8,8 @@ namespace TapAndRun.Tools.Reactivity
 
         T Value { get; }
 
+        void Subscribe(Action<T> method);
         void SubscribeAndUpdate(Action<T> method);
+        void Unsubscribe(Action<T> method);
     }
 }
