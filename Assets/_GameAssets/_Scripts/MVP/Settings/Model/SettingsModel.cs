@@ -1,18 +1,19 @@
-﻿using TapAndRun.Tools.Reactivity;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
+using TapAndRun.Interfaces;
+using TapAndRun.Tools.Reactivity;
 
 namespace TapAndRun.MVP.Settings.Model
 {
-    public interface ISettingsModel
+    public interface ISettingsModel : IInitializableAsync
     {
-        public SimpleReactiveProperty<bool> IsDisplaying { get; }
-
-        void Initialize();
+        SimpleReactiveProperty<bool> IsDisplaying { get; }
     }
 
     public interface ISelfSettingsModel
     {
         SimpleReactiveProperty<bool> IsDisplaying { get; }
-        
+
         bool AudioStatus { get; set; }
         bool VibroStatus { get; set; }
         string Language { get; set; }
@@ -30,7 +31,7 @@ namespace TapAndRun.MVP.Settings.Model
         {
         }
 
-        public void Initialize()
+        public UniTask InitializeAsync(CancellationToken token)
         {
             IsDisplaying = new SimpleReactiveProperty<bool>(false);
             
@@ -39,6 +40,8 @@ namespace TapAndRun.MVP.Settings.Model
             AudioStatus = true;
             VibroStatus = true;
             Language = "en";
+            
+            return UniTask.CompletedTask;
         }
     }
 }

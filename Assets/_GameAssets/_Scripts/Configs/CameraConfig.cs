@@ -1,5 +1,4 @@
-﻿using TapAndRun.CameraLogic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace TapAndRun.Configs
 {

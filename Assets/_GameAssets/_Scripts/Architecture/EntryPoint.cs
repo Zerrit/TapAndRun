@@ -1,11 +1,21 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
-using TapAndRun.MVP.Gameplay.Model;
-using TapAndRun.MVP.Gameplay.Presenter;
+using TapAndRun.Architecture.GameStates;
+using TapAndRun.Interfaces;
+using TapAndRun.MVP.Character;
+using TapAndRun.MVP.Character.Model;
+using TapAndRun.MVP.CharacterCamera;
+using TapAndRun.MVP.Levels.Model;
+using TapAndRun.MVP.Levels.Presenter;
+using TapAndRun.MVP.Lose;
+using TapAndRun.MVP.Lose.Model;
 using TapAndRun.MVP.MainMenu;
 using TapAndRun.MVP.MainMenu.Model;
 using TapAndRun.MVP.Settings;
 using TapAndRun.MVP.Settings.Model;
+using TapAndRun.MVP.Wallet;
+using TapAndRun.MVP.Wallet.Model;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -14,39 +24,53 @@ namespace TapAndRun.Architecture
 {
     public class EntryPoint : MonoBehaviour, IAsyncStartable
     {
-        private IGameplayModel _levelModel;
-        private IMainScreenModel _mainScreenModel;
-        private ISettingsModel _settingsModel;
-        private SettingsPresenter _settingsPresenter;
-        private LevelsPresenter _levelsPresenter;
-        private MainScreenPresenter _mainScreenPresenter;
+        private List<IInitializableAsync> _initializationQueue;
+
+        private GameStateMachine _gameStateMachine;
 
         [Inject]
         public void Construct(
-            IGameplayModel levelModel,
-            IMainScreenModel mainScreenModel,
-            ISettingsModel settingsModel,
-            SettingsPresenter settingsPresenter,
-            LevelsPresenter levelsPresenter,
-            MainScreenPresenter mainScreenPresenter)
+            ICharacterModel characterModel, CharacterPresenter characterPresenter,
+            ICameraModel cameraModel, CameraPresenter cameraPresenter,
+            ILevelsModel levelsModel, LevelsPresenter levelsPresenter,
+            IMainMenuModel mainMenuModel, MainMenuPresenter mainMenuPresenter,
+            ILoseModel loseModel, LosePresenter losePresenter,
+            ISettingsModel settingsModel,SettingsPresenter settingsPresenter,
+            IWalletModel walletModel, WalletPresenter walletPresenter,
+            GameStateMachine gameStateMachine)
         {
-            _levelModel = levelModel;
-            _mainScreenModel = mainScreenModel;
-            _settingsModel = settingsModel;
-            _settingsPresenter = settingsPresenter;
-            _levelsPresenter = levelsPresenter;
-            _mainScreenPresenter = mainScreenPresenter;
+            _initializationQueue = new List<IInitializableAsync>
+            {
+                characterModel,
+                characterPresenter,
+                cameraModel,
+                cameraPresenter,
+                levelsModel,
+                levelsPresenter,
+                mainMenuModel,
+                mainMenuPresenter,
+                loseModel,
+                losePresenter,
+                settingsModel,
+                settingsPresenter,
+                walletModel,
+                walletPresenter
+            };
+
+            _gameStateMachine = gameStateMachine;
         }
 
         public async UniTask StartAsync(CancellationToken cancellation)
         {
-            _levelModel.Initialize();
-            await _levelsPresenter.InitializeAsync(cancellation);
-
-            _settingsModel.Initialize();
-            _settingsPresenter.Initialize();
-            _mainScreenModel.Initialize();
-            _mainScreenPresenter.Initialize();
+            // Initialization of all game entities in the specified order //
+            foreach (var entity in _initializationQueue)
+            {
+                await entity.InitializeAsync(cancellation);
+            }
+            
+            // Initialization and start Game State Machine //
+            _gameStateMachine.Initialize();
+            _gameStateMachine.StartMachineAsync<MainMenuState>(cancellation).Forget();
         }
     }
 }

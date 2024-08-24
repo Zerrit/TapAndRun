@@ -18,9 +18,14 @@ namespace TapAndRun.Tools.Reactivity
 
         private T _value;
 
-        public SimpleReactiveProperty(T startValue)
+        public SimpleReactiveProperty(T startValue = default)
         {
             _value = startValue;
+        }
+        
+        public void Subscribe(Action<T> method)
+        {
+            OnChanged += method;
         }
 
         public void SubscribeAndUpdate(Action<T> method)
@@ -28,6 +33,11 @@ namespace TapAndRun.Tools.Reactivity
             OnChanged += method;
             
             OnChanged?.Invoke(_value);
+        }
+        
+        public void Unsubscribe(Action<T> method)
+        {
+            OnChanged -= method;
         }
     }
 }
