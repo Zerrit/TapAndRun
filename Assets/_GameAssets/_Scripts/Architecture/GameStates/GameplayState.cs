@@ -19,8 +19,6 @@ namespace TapAndRun.Architecture.GameStates
 
         public UniTask EnterAsync(CancellationToken token)
         {
-            Debug.Log($"Запущен ----{typeof(GameplayState)}----");
-            
             _levelsModel.StartGameplay();
 
             _levelsModel.OnLevelFailed += ToLose;
@@ -30,8 +28,6 @@ namespace TapAndRun.Architecture.GameStates
 
         public UniTask ExitAsync(CancellationToken token)
         {
-            Debug.Log($"Завешён ----{typeof(GameplayState)}----");
-            
             _levelsModel.OnLevelFailed -= ToLose;
             
             return UniTask.CompletedTask;

@@ -90,7 +90,7 @@ namespace TapAndRun.MVP.Character.Model
             //CharacterSfx.ChangeSpeed(difficultyLevel);
         }
         
-        public async UniTaskVoid CenteringAsync(Vector3 centre)
+        public async UniTask CenteringAsync(Vector3 centre)
         {
             var origin = Position.Value;
             var t = 0f;
@@ -112,7 +112,7 @@ namespace TapAndRun.MVP.Character.Model
             }
         }
 
-        public async UniTaskVoid TurnAsync(float targetAngle)
+        public async UniTask TurnAsync(float targetAngle)
         {
             var originAngle = Rotation.Value;
             var t = 0f;
@@ -129,7 +129,7 @@ namespace TapAndRun.MVP.Character.Model
             }
         }
 
-        public async UniTaskVoid JumpAsync()
+        public async UniTask JumpAsync()
         {
             _isVulnerable = false;
             OnBeganJumping?.Invoke();

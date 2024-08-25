@@ -22,15 +22,11 @@ namespace TapAndRun.Architecture.GameStates
 
         public UniTask EnterAsync(CancellationToken token)
         {
-            Debug.Log($"Запущен ----{typeof(MainMenuState)}----");
-
-            _levelsModel.LoadLevel();
-            // await UniTask.WaitUntil(()=> _levelModel.IsLevelPrepeared);
-            
+            _levelsModel.PrepeareCurrentLevel();
             _mainMenuModel.IsDisplaying.Value = true;
-            
+
             _mainMenuModel.OnGameStarted += ToGameplay;
-            
+
             return UniTask.CompletedTask;
         }
 
@@ -39,7 +35,7 @@ namespace TapAndRun.Architecture.GameStates
             _mainMenuModel.OnGameStarted -= ToGameplay;
 
             _mainMenuModel.IsDisplaying.Value = false;
-            
+
             return UniTask.CompletedTask;
         }
 

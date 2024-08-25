@@ -40,7 +40,7 @@ namespace TapAndRun.Architecture.GameStates
 
         private void ToGameplay()
         {
-            _levelsModel.LoadLevel();
+            _levelsModel.PrepeareCurrentLevel();
 
             _stateMachine.ChangeStateAsync<GameplayState>().Forget();
         }
