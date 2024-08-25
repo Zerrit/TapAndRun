@@ -70,7 +70,7 @@ namespace TapAndRun.MVP.Levels.Presenter
             
             async UniTask BuildLevelAsync(CancellationToken token)
             {
-                await ClearLevels(token);
+                ClearLevels();
 
                 _nextLevel = await _levelFactory.CreateLevelViewAsync(_model.CurrentLevelId, Vector2.zero, Quaternion.identity, token);
 
@@ -86,6 +86,11 @@ namespace TapAndRun.MVP.Levels.Presenter
 
         private void BuildNextLevel()
         {
+            if (!_model.CheckLevelExist(_model.CurrentLevelId + 1))
+            {
+                return;
+            }
+
             BuildNextLevelAsync(_cts.Token).Forget();
             
             async UniTask BuildNextLevelAsync(CancellationToken token)
@@ -127,7 +132,6 @@ namespace TapAndRun.MVP.Levels.Presenter
         /// </summary>
         private void ProcessClick()
         {
-            Debug.Log(_commandHandler.CheckAvailability());
             if (!_commandHandler.CheckAvailability())
             {
                 return;
@@ -150,7 +154,7 @@ namespace TapAndRun.MVP.Levels.Presenter
         {
             _model.CompleteLevel();
             _walletModel.GainCrystalsByLevel();
-            
+
             ClearOldLevel();
 
             DeactivateLevel();
@@ -200,12 +204,13 @@ namespace TapAndRun.MVP.Levels.Presenter
             if (_oldLevel)
             {
                 _oldLevel.Destroy();
+                _levelFactory.DisposeOldLevel();
             }
 
             //TODO Удалить ссылку на операцию в фабрике.
         }
         
-        private async UniTask ClearLevels(CancellationToken token)
+        private void ClearLevels()
         {
             if (_oldLevel)
             {

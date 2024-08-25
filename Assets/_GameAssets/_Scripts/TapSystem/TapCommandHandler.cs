@@ -65,7 +65,6 @@ namespace TapAndRun.TapSystem
 
         public async UniTaskVoid ExecuteCommand()
         {
-            Debug.Log("Вызов команды");
             if (!CheckAvailability())
             {
                 throw new Exception("Попытка запуска команды вопреки доступности!");
