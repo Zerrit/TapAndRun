@@ -15,5 +15,7 @@ namespace TapAndRun.MVP.Levels.Model
 
         void LoseLevel();
         void CompleteLevel();
+
+        bool CheckLevelExist(int levelId);
     }
 }

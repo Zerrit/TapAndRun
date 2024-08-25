@@ -21,7 +21,6 @@ namespace TapAndRun.MVP.CharacterCamera
         
         public void UpdateHeight(float height)
         {
-            Debug.Log($"Изменение высоты камеры {height}");
             Camera.orthographicSize = height;
         }
     }

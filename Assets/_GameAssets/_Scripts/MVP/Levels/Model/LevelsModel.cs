@@ -79,7 +79,7 @@ namespace TapAndRun.MVP.Levels.Model
         {
             if (LevelCount - 1 <= CurrentLevelId)
             {
-                return;
+                throw new Exception("Уровни закончились");
             }
 
             if (LastUnlockedLevelId == CurrentLevelId)
@@ -89,6 +89,11 @@ namespace TapAndRun.MVP.Levels.Model
 
             CurrentDifficulty = Mathf.Clamp(++CurrentDifficulty, MinDifficulty, MaxDifficulty);
             CurrentLevelId++;
+        }
+
+        public bool CheckLevelExist(int levelId)
+        {
+            return (levelId < LevelCount);
         }
 
         public void Dispose()

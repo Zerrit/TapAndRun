@@ -40,6 +40,12 @@ namespace TapAndRun.Factories.Levels
             return levelInstance.GetComponent<LevelView>();
         }
 
+        public void DisposeOldLevel()
+        {
+            var oldLevel = _levelOperationHandles.Dequeue();
+            Addressables.Release(oldLevel);
+        }
+        
         public void Dispose()
         {
             foreach (var handle in _levelOperationHandles)
