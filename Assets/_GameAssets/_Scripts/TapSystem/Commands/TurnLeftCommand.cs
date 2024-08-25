@@ -1,7 +1,8 @@
-﻿using TapAndRun.MVP.Character.Model;
+﻿using Cysharp.Threading.Tasks;
+using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.CharacterCamera;
 
-namespace TapAndRun.MVP.TapCommands.Commands
+namespace TapAndRun.TapSystem.Commands
 {
     public class TurnLeftCommand : ICommand
     {
@@ -14,10 +15,11 @@ namespace TapAndRun.MVP.TapCommands.Commands
             _cameraModel = cameraModel;
         }
 
-        public void Execute()
+        public async UniTask ExecuteAsync()
         {
-            _character.TurnAsync(90).Forget();
             _cameraModel.TurnAsync(1).Forget();
+
+            await _character.TurnAsync(90);
         }
     }
 }

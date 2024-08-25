@@ -1,7 +1,8 @@
-﻿using TapAndRun.MVP.Character.Model;
+﻿using Cysharp.Threading.Tasks;
+using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.CharacterCamera;
 
-namespace TapAndRun.MVP.TapCommands.Commands
+namespace TapAndRun.TapSystem.Commands
 {
     public class JumpCommand : ICommand
     {
@@ -14,14 +15,14 @@ namespace TapAndRun.MVP.TapCommands.Commands
             _cameraModel = cameraModel;
         }
 
-        public void Execute()
+        public async UniTask ExecuteAsync()
         {
-            _character.JumpAsync().Forget();
-
             if (_cameraModel.Difficulty >= 3)
             {
                 _cameraModel.TurnAsync(1).Forget();
             }
+
+            await _character.JumpAsync();
         }
     }
 }

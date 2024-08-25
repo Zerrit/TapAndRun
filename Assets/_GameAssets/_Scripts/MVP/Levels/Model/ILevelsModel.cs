@@ -7,8 +7,8 @@ namespace TapAndRun.MVP.Levels.Model
     {
         event Action OnLevelFailed;
 
-        void LoadLevel();
-        void LoadLevel(int levelId);
+        void PrepeareCurrentLevel();
+        void PrepareLevel(int levelId);
         void StartGameplay();
     }
 }

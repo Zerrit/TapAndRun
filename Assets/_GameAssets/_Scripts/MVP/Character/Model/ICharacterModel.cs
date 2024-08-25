@@ -19,8 +19,8 @@ namespace TapAndRun.MVP.Character.Model
 
         void ChangeSpeed(int difficultyLevel);
 
-        UniTaskVoid CenteringAsync(Vector3 centre);
-        UniTaskVoid TurnAsync(float targetAngle);
-        UniTaskVoid JumpAsync();
+        UniTask CenteringAsync(Vector3 centre);
+        UniTask TurnAsync(float targetAngle);
+        UniTask JumpAsync();
     }
 }

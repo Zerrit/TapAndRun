@@ -21,73 +21,8 @@ namespace TapAndRun.MVP.CharacterCamera
         
         public void UpdateHeight(float height)
         {
+            Debug.Log($"Изменение высоты камеры {height}");
             Camera.orthographicSize = height;
         }
-
-        public void Initialize(Transform character)
-        {
-            //_maxDifficultyLevel = _config.RotationDifficulties.Length;
-            //_camera.orthographicSize = _config.Height;
-            
-            //Difficulty = 1;
-        }
-
-
-
-        /*public async UniTask FlyUpAsync(CancellationToken token)
-        {
-            await ChangeDistanceAsync(_config.LoseHeight, token);
-        }
-
-        public async UniTask TurnAsync(int direction)
-        {
-            var originRotation = _camera.transform.eulerAngles.z;
-            var angle = _config.RotationDifficulties[Difficulty - 1] * direction;
-            
-            Debug.Log(angle);
-            float t = 0;
-
-            while (t < 1)
-            {
-                t += _config.TurnSpeed * Time.deltaTime;
-                _camera.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(originRotation, originRotation + angle, t));
-
-                await UniTask.NextFrame(this.GetCancellationTokenOnDestroy());
-            }
-
-            await UniTask.CompletedTask;
-        }
-        
-        public async UniTask TurnAsync(float angle)
-        {
-            var originRotation = _camera.transform.eulerAngles.z;
-            float t = 0;
-
-            while (t < 1)
-            {
-                t += _config.TurnSpeed * Time.deltaTime;
-                _camera.transform.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(originRotation, originRotation + angle, t));
-
-                await UniTask.NextFrame(this.GetCancellationTokenOnDestroy());
-            }
-
-            await UniTask.CompletedTask;
-        }
-
-        public async UniTask ChangeDistanceAsync(float target, CancellationToken token)
-        {
-            var originDistance = _camera.orthographicSize;
-            float t = 0;
-
-            while (t < 1)
-            {
-                t += 3 * Time.deltaTime;
-                _camera.orthographicSize = Mathf.Lerp(originDistance, _config.Height + target, t);
-
-                await UniTask.NextFrame(token);
-            }
-
-            await UniTask.CompletedTask;
-        }*/
     }
 }

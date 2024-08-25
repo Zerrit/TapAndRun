@@ -7,8 +7,8 @@ using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.CharacterCamera;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.Views;
-using TapAndRun.MVP.TapCommands;
 using TapAndRun.MVP.Wallet.Model;
+using TapAndRun.TapSystem;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Levels.Presenter
@@ -104,6 +104,7 @@ namespace TapAndRun.MVP.Levels.Presenter
 
             _currentLevel.Refresh();
             _currentLevel.ActivateArrow();
+            _commandHandler.ResetCommandIndex();
 
             var startRotation = _currentLevel.transform.eulerAngles.z;
             _characterModel.MoveTo(_currentLevel.StartSegment.SegmentCenter.position, startRotation);
@@ -122,28 +123,18 @@ namespace TapAndRun.MVP.Levels.Presenter
         }
 
         /// <summary>
-        /// Обновляет список команд для персонажа, согласно активному уровню.
-        /// </summary>
-        private void UpdateCommands()
-        {
-            _model.InteractionCount = _currentLevel.InteractionPoints.Count;
-
-            _commandHandler.GenerateCommand(_currentLevel.InteractionPoints);
-        }
-
-        /// <summary>
         /// Обрабатывает клик игрока.
         /// </summary>
         private void ProcessClick()
         {
-            if (_model.CurrentInteractionIndex >= _model.InteractionCount)
+            Debug.Log(_commandHandler.CheckAvailability());
+            if (!_commandHandler.CheckAvailability())
             {
                 return;
             }
 
-            _commandHandler.ExecuteCommand(_model.CurrentInteractionIndex);
-            _currentLevel.SwitchToNextArrow(_model.CurrentInteractionIndex);
-            _model.CurrentInteractionIndex++;
+            _commandHandler.ExecuteCommand().Forget();
+            _currentLevel.SwitchToNextArrow(_commandHandler.CurrentInteractionIndex);
         }
 
         private void ProcessLevelLose()  //TODO Подумать ещё над неймингом
@@ -191,7 +182,7 @@ namespace TapAndRun.MVP.Levels.Presenter
         {
             _currentLevel = _nextLevel;
 
-            UpdateCommands();
+            _commandHandler.GenerateCommand(_currentLevel.InteractionPoints);
             UpdateDifficulty();
 
             _nextLevel.ActivateArrow();

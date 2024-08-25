@@ -21,6 +21,7 @@ namespace TapAndRun.MVP.CharacterCamera
         private int _maxDifficultyLevel;
         private int _minDifficultyLevel = 1;
         private bool _isFollowActive;
+
         private CancellationTokenSource _cts;
 
         private readonly CameraConfig _config;
@@ -39,7 +40,7 @@ namespace TapAndRun.MVP.CharacterCamera
             _cts = new CancellationTokenSource();
             Position = new SimpleReactiveProperty<Vector3>();
             Rotation = new SimpleReactiveProperty<float>();
-            Height = new SimpleReactiveProperty<float>(_config.Height);
+            Height = new SimpleReactiveProperty<float>(_config.Height + _config.HeightStep);
 
             _maxDifficultyLevel = _config.RotationDifficulties.Length;
             _isFollowActive = true;

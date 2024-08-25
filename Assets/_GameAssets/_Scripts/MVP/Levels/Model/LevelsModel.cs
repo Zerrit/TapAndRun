@@ -19,9 +19,6 @@ namespace TapAndRun.MVP.Levels.Model
         public int CurrentDifficulty { get; private set; }
         public int MaxDifficulty { get; } = 3; //TODO Вынести в конфиг
 
-        public int CurrentInteractionIndex { get; set; }
-        public int InteractionCount { get; set; }
-
         private CancellationTokenSource _cts;
 
         private const int NonSelectedLevelId = -1;
@@ -39,11 +36,11 @@ namespace TapAndRun.MVP.Levels.Model
             return UniTask.CompletedTask;
         }
 
-        public void LoadLevel()
+        public void PrepeareCurrentLevel()
         {
             if (CurrentLevelId == NonSelectedLevelId)
             {
-                LoadLevel(LastUnlockedLevelId);
+                PrepareLevel(LastUnlockedLevelId);
             }
             else
             {
@@ -51,7 +48,7 @@ namespace TapAndRun.MVP.Levels.Model
             }
         }
 
-        public void LoadLevel(int levelId)
+        public void PrepareLevel(int levelId)
         {
             //TODO Проверка доступности уровня
             
@@ -73,7 +70,6 @@ namespace TapAndRun.MVP.Levels.Model
 
         public void LoseLevel()
         {
-            CurrentInteractionIndex = 0;
             CurrentDifficulty = MinDifficulty;
 
             OnLevelFailed?.Invoke();
@@ -81,8 +77,6 @@ namespace TapAndRun.MVP.Levels.Model
         
         public void CompleteLevel()
         {
-            CurrentInteractionIndex = 0;
-            
             if (LevelCount - 1 <= CurrentLevelId)
             {
                 return;
