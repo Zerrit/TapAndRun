@@ -79,7 +79,7 @@ namespace TapAndRun.MVP.Levels.Presenter
                 ActivateNextLevel();
                 BuildNextLevel();
 
-                _characterModel.Position.Value = _currentLevel.StartSegment.SegmentCenter.position;
+                _characterModel.MoveTo(_currentLevel.StartSegment.SegmentCenter.position);
                 _cameraModel.SetRotation();
             }
         }

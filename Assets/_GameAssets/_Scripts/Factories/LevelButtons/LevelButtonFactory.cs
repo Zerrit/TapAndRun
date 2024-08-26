@@ -8,25 +8,21 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace TapAndRun.Factories.LevelButtons
 {
-    public interface ILevelButtonFactory
-    {
-    }
-
     public class LevelButtonFactory : ILevelButtonFactory, IDisposable
     {
-        private readonly LevelButtonView _levelButtonPrefab;
+        private readonly AssetReference _levelButtonPrefab;
 
-        private readonly AsyncOperationHandle<GameObject> _levelButtonOperationHandle = new();
+        private AsyncOperationHandle<GameObject> _levelButtonOperationHandle = new();
 
-        public LevelButtonFactory(LevelButtonView levelButtonPrefab)
+        public LevelButtonFactory(AssetReference levelButtonPrefab)
         {
             _levelButtonPrefab = levelButtonPrefab;
         }
 
-        public async UniTask<LevelButtonView> CreateLevelViewAsync(Vector2 position, Quaternion rotation, Transform parent, CancellationToken token)
+        public async UniTask<LevelButtonView> CreateAsynс(Transform parent, CancellationToken token)
         {
-            var operationHandle = Addressables.InstantiateAsync(_levelButtonPrefab, position, rotation, parent);
-            var levelInstance = await operationHandle.WithCancellation(token);
+            _levelButtonOperationHandle = Addressables.InstantiateAsync(_levelButtonPrefab, parent);
+            var levelInstance = await _levelButtonOperationHandle.WithCancellation(token);
 
             return levelInstance.GetComponent<LevelButtonView>();
         }

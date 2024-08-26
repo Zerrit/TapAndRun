@@ -27,11 +27,10 @@ using TapAndRun.Services;
 using TapAndRun.Services.Update;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Serialization;
 using VContainer;
 using VContainer.Unity;
 
-namespace TapAndRun.Architecture
+namespace TapAndRun.Architecture.Installers
 {
     public class GameScope : LifetimeScope
     {
@@ -148,7 +147,8 @@ namespace TapAndRun.Architecture
         {
             builder.Register<SelfMainMenuModel>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<MainMenuPresenter>(Lifetime.Singleton)
-                .WithParameter(_mainMenu);
+                .WithParameter(_mainMenu)
+                .WithParameter(_levelSelectView);
         }
         
         private void RegisterGameStates(IContainerBuilder builder)

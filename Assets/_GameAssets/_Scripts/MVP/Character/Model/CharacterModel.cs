@@ -12,18 +12,17 @@ namespace TapAndRun.MVP.Character.Model
 {
     public class CharacterModel : ISelfCharacterModel, ICharacterModel, IUpdatable, IDisposable
     {
-        public event Action OnBeganIdle;
-        public event Action OnBeganRunning;
         public event Action OnBeganTurning;
         public event Action OnBeganJumping;
         public event Action OnFalled;
 
         public SimpleReactiveProperty<Vector3> Position { get; private set; }
         public SimpleReactiveProperty<float> Rotation { get; private set; }
+        public SimpleReactiveProperty<bool> IsMoving { get; private set; }
+        public SimpleReactiveProperty<bool> IsFall { get; private set; }
         public SimpleReactiveProperty<float> AnimMultiplier { get; private set; }
 
         private Vector3 _roadCheckerPosition;
-        private bool _isMoving;
         private float _currentSpeed;
         private bool _isVulnerable;
 
@@ -48,6 +47,8 @@ namespace TapAndRun.MVP.Character.Model
             _cts = new CancellationTokenSource();
             Position = new SimpleReactiveProperty<Vector3>();
             Rotation = new SimpleReactiveProperty<float>();
+            IsMoving = new SimpleReactiveProperty<bool>();
+            IsFall = new SimpleReactiveProperty<bool>();
             AnimMultiplier = new SimpleReactiveProperty<float>(BaseAnimSpeed);
 
             _updateService.Subscribe(this);
@@ -62,25 +63,22 @@ namespace TapAndRun.MVP.Character.Model
 
         public void MoveTo(Vector2 position, float rotation = 0)
         {
-            SetIdle();
+            ResetState();
             Position.Value = position;
             Rotation.Value = rotation;
         }
 
         public void StartMove()
         {
-            _isMoving = true;
+            IsMoving.Value = true;
             _isVulnerable = true;
-            
-            OnBeganRunning?.Invoke();
-            //_characterSfx.PlayRunSfx(); --
         }
 
-        public void SetIdle()
+        public void ResetState()
         {
             _isVulnerable = false;
-            _isMoving = false;
-            OnBeganIdle?.Invoke();
+            IsMoving.Value = false;
+            IsFall.Value = false;
         }
 
         public void ChangeSpeed(int difficultyLevel)
@@ -133,8 +131,6 @@ namespace TapAndRun.MVP.Character.Model
         {
             _isVulnerable = false;
             OnBeganJumping?.Invoke();
-            //ActivateAnimation(Jump); --
-            //_characterSfx.PlayJumpSfx(); --
 
             var t = Time.time;
             var totalJumpDuration = JumpDuration / AnimMultiplier.Value;
@@ -145,12 +141,11 @@ namespace TapAndRun.MVP.Character.Model
             }
 
             _isVulnerable = true;
-            //_characterSfx.PlayRunSfx();
         }
 
         private void TryMove()
         {
-            if (!_isMoving) return;
+            if (!IsMoving.Value) return;
 
             var rotatedDirection = Quaternion.Euler(0, 0, Rotation.Value) * MoveDirection;
 
@@ -160,11 +155,10 @@ namespace TapAndRun.MVP.Character.Model
             if (!CheckRoad())
             {
                 _isVulnerable = false;
-                _isMoving = false;
+                IsFall.Value = true;
+                IsMoving.Value = false;
 
                 OnFalled?.Invoke();
-                //_characterAnimator.SetTrigger(Fall); --
-                //_characterSfx.PlayLoseSfx(); --
             }
         }
 

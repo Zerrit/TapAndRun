@@ -13,9 +13,9 @@ namespace TapAndRun.MVP.Character.Model
         SimpleReactiveProperty<Vector3> Position { get; }
         SimpleReactiveProperty<float> Rotation { get; }
 
-        void MoveTo(Vector2 position, float rotation);
+        void MoveTo(Vector2 position, float rotation = 0);
         void StartMove();
-        void SetIdle();
+        void ResetState();
 
         void ChangeSpeed(int difficultyLevel);
 
