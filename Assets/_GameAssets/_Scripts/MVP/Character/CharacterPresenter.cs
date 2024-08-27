@@ -26,23 +26,11 @@ namespace TapAndRun.MVP.Character
             _model.IsFall.OnChanged += _view.UpdateFalling;
             _model.AnimMultiplier.OnChanged += _view.UpdateAnimMultiplier;
 
-            _model.OnBeganTurning += DisplayTurnning;
-            _model.OnBeganJumping += DisplayJumping;
+            _model.OnBeganTurning += _view.DisplayTurning;
+            _model.OnBeganJumping += _view.DisplayJumping;
             _model.OnFinishedJumping += _view.Sfx.PlayRunSfx;
 
             return UniTask.CompletedTask;
-        }
-
-        private void DisplayJumping()
-        {
-            _view.ActivateAnimation(_view.Jump);
-            _view.Sfx.StopRunSfx();
-            _view.Sfx.PlayJumpSfx();
-        }
-
-        private void DisplayTurnning()
-        {
-            _view.Sfx.PlayTurnSfx();
         }
 
         public void Dispose()
@@ -53,8 +41,8 @@ namespace TapAndRun.MVP.Character
             _model.IsFall.OnChanged -= _view.UpdateFalling;
             _model.AnimMultiplier.OnChanged -= _view.UpdateAnimMultiplier;
 
-            _model.OnBeganTurning -= DisplayTurnning;
-            _model.OnBeganJumping -= DisplayJumping;
+            _model.OnBeganTurning -= _view.DisplayTurning;
+            _model.OnBeganJumping -= _view.DisplayJumping;
         }
     }
 }

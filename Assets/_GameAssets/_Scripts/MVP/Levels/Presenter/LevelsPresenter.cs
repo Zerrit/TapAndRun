@@ -202,6 +202,7 @@ namespace TapAndRun.MVP.Levels.Presenter
             BuildNextLevel();
 
             _characterModel.CenteringAsync(_currentLevel.StartSegment.SegmentCenter.position).Forget();
+            _audioService.PlaySound("Finish");
         }
 
         private void TakeCrystal()
