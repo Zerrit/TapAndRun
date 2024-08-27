@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace TapAndRun.Services
+namespace TapAndRun.Services.Ads
 {
     public class AdsService : MonoBehaviour ,IAdsService, IDisposable
     {

@@ -7,12 +7,12 @@ namespace TapAndRun.MVP.Settings.Model
 {
     public interface ISettingsModel : IInitializableAsync
     {
-        SimpleReactiveProperty<bool> IsDisplaying { get; }
+        ReactiveProperty<bool> IsDisplaying { get; }
     }
 
     public interface ISelfSettingsModel
     {
-        SimpleReactiveProperty<bool> IsDisplaying { get; }
+        ReactiveProperty<bool> IsDisplaying { get; }
 
         bool AudioStatus { get; set; }
         bool VibroStatus { get; set; }
@@ -21,7 +21,7 @@ namespace TapAndRun.MVP.Settings.Model
 
     public class SettingsModel : ISettingsModel, ISelfSettingsModel
     {
-        public SimpleReactiveProperty<bool> IsDisplaying { get; set; }
+        public ReactiveProperty<bool> IsDisplaying { get; set; }
         
         public bool AudioStatus { get; set; }
         public bool VibroStatus { get; set; }
@@ -33,7 +33,7 @@ namespace TapAndRun.MVP.Settings.Model
 
         public UniTask InitializeAsync(CancellationToken token)
         {
-            IsDisplaying = new SimpleReactiveProperty<bool>(false);
+            IsDisplaying = new ReactiveProperty<bool>(false);
             
             //TODO Try Load Data
 

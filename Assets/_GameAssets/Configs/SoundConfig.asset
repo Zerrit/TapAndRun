@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21d65d8892443b3879c17cffc70568d, type: 3}
+  m_Name: SoundConfig
+  m_EditorClassIdentifier: 
+  <Sounds>k__BackingField:
+  - <SoundId>k__BackingField: TakeCrystal
+    <Volume>k__BackingField: 0.301
+    <Clip>k__BackingField: {fileID: 8300000, guid: bd64cae8dca11154d8306ffcfd60c2e9, type: 3}
+  - <SoundId>k__BackingField: Finish
+    <Volume>k__BackingField: 1
+    <Clip>k__BackingField: {fileID: 8300000, guid: 360784ad7c1551c4dbe5cd8614b3c5f4, type: 3}

@@ -19,8 +19,8 @@ namespace TapAndRun.MVP.Wallet
 
         public UniTask InitializeAsync(CancellationToken token)
         {
-            _walletModel.AvailableCrystals.SubscribeAndUpdate(_walletView.UpdateAvailableCrystals);
-            _walletModel.CrystalsByLevel.SubscribeAndUpdate(_walletView.UpdateCrystalsByLevel);
+            _walletModel.AvailableCrystals.Subscribe(_walletView.UpdateAvailableCrystals, true);
+            _walletModel.CrystalsByLevel.Subscribe(_walletView.UpdateCrystalsByLevel, true);
 
             return UniTask.CompletedTask;
         }

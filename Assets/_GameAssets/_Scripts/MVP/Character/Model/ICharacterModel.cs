@@ -8,10 +8,9 @@ namespace TapAndRun.MVP.Character.Model
 {
     public interface ICharacterModel : IInitializableAsync
     {
-        public event Action OnFalled;
-
-        SimpleReactiveProperty<Vector3> Position { get; }
-        SimpleReactiveProperty<float> Rotation { get; }
+        ReactiveProperty<Vector3> Position { get; }
+        ReactiveProperty<float> Rotation { get; }
+        BoolReactiveProperty IsFall { get; }
 
         void MoveTo(Vector2 position, float rotation = 0);
         void StartMove();

@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 using TapAndRun.Configs;
 using TapAndRun.Interfaces;
 using TapAndRun.Services.Update;
-using TapAndRun.Tools;
 using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
@@ -14,13 +13,13 @@ namespace TapAndRun.MVP.Character.Model
     {
         public event Action OnBeganTurning;
         public event Action OnBeganJumping;
-        public event Action OnFalled;
+        public event Action OnFinishedJumping;
 
-        public SimpleReactiveProperty<Vector3> Position { get; private set; }
-        public SimpleReactiveProperty<float> Rotation { get; private set; }
-        public SimpleReactiveProperty<bool> IsMoving { get; private set; }
-        public SimpleReactiveProperty<bool> IsFall { get; private set; }
-        public SimpleReactiveProperty<float> AnimMultiplier { get; private set; }
+        public ReactiveProperty<Vector3> Position { get; private set; }
+        public ReactiveProperty<float> Rotation { get; private set; }
+        public ReactiveProperty<bool> IsMoving { get; private set; }
+        public BoolReactiveProperty IsFall { get; private set; }
+        public ReactiveProperty<float> AnimMultiplier { get; private set; }
 
         private Vector3 _roadCheckerPosition;
         private float _currentSpeed;
@@ -45,11 +44,11 @@ namespace TapAndRun.MVP.Character.Model
         public UniTask InitializeAsync(CancellationToken token)
         {
             _cts = new CancellationTokenSource();
-            Position = new SimpleReactiveProperty<Vector3>();
-            Rotation = new SimpleReactiveProperty<float>();
-            IsMoving = new SimpleReactiveProperty<bool>();
-            IsFall = new SimpleReactiveProperty<bool>();
-            AnimMultiplier = new SimpleReactiveProperty<float>(BaseAnimSpeed);
+            Position = new ReactiveProperty<Vector3>();
+            Rotation = new ReactiveProperty<float>();
+            IsMoving = new ReactiveProperty<bool>();
+            IsFall = new BoolReactiveProperty();
+            AnimMultiplier = new ReactiveProperty<float>(BaseAnimSpeed);
 
             _updateService.Subscribe(this);
             
@@ -115,7 +114,7 @@ namespace TapAndRun.MVP.Character.Model
             var originAngle = Rotation.Value;
             var t = 0f;
             
-            //_characterSfx.PlayTurnSfx();
+            OnBeganTurning?.Invoke();
 
             while (t < 1f)
             {
@@ -140,6 +139,7 @@ namespace TapAndRun.MVP.Character.Model
                 await UniTask.NextFrame(_cts.Token);
             }
 
+            OnFinishedJumping?.Invoke();
             _isVulnerable = true;
         }
 
@@ -155,10 +155,8 @@ namespace TapAndRun.MVP.Character.Model
             if (!CheckRoad())
             {
                 _isVulnerable = false;
-                IsFall.Value = true;
                 IsMoving.Value = false;
-
-                OnFalled?.Invoke();
+                IsFall.Value = true;
             }
         }
 

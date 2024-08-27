@@ -16,6 +16,7 @@ using TapAndRun.MVP.Settings;
 using TapAndRun.MVP.Settings.Model;
 using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
+using TapAndRun.Services.Audio;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -30,6 +31,7 @@ namespace TapAndRun.Architecture
 
         [Inject]
         public void Construct(
+            IAudioService audioService,
             ICharacterModel characterModel, CharacterPresenter characterPresenter,
             ICameraModel cameraModel, CameraPresenter cameraPresenter,
             ILevelsModel levelsModel, LevelsPresenter levelsPresenter,
@@ -41,6 +43,7 @@ namespace TapAndRun.Architecture
         {
             _initializationQueue = new List<IInitializableAsync>
             {
+                audioService,
                 characterModel,
                 characterPresenter,
                 cameraModel,

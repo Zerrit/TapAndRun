@@ -2,7 +2,7 @@
 
 namespace TapAndRun.Tools.Reactivity
 {
-    public class SimpleReactiveProperty<T> : ISimpleReactiveProperty<T>
+    public class ReactiveProperty<T> : IReactiveProperty<T>
     {
         public event Action<T> OnChanged;
 
@@ -18,23 +18,21 @@ namespace TapAndRun.Tools.Reactivity
 
         private T _value;
 
-        public SimpleReactiveProperty(T startValue = default)
+        public ReactiveProperty(T startValue = default)
         {
             _value = startValue;
         }
         
-        public void Subscribe(Action<T> method)
+        public void Subscribe(Action<T> method, bool isNeedUpdate = false)
         {
             OnChanged += method;
+
+            if (isNeedUpdate)
+            {
+                OnChanged?.Invoke(_value);
+            }
         }
 
-        public void SubscribeAndUpdate(Action<T> method)
-        {
-            OnChanged += method;
-            
-            OnChanged?.Invoke(_value);
-        }
-        
         public void Unsubscribe(Action<T> method)
         {
             OnChanged -= method;

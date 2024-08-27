@@ -4,7 +4,7 @@ namespace TapAndRun.MVP.Wallet.Model
 {
     public interface ISelfWalletModel
     {
-        SimpleReactiveProperty<int> AvailableCrystals { get; }
-        SimpleReactiveProperty<int> CrystalsByLevel { get; }
+        ReactiveProperty<int> AvailableCrystals { get; }
+        ReactiveProperty<int> CrystalsByLevel { get; }
     }
 }

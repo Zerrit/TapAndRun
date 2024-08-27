@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Interfaces;
 using TapAndRun.MVP.Character.Model;
@@ -6,7 +7,7 @@ using TapAndRun.MVP.Character.View;
 
 namespace TapAndRun.MVP.Character
 {
-    public class CharacterPresenter : IInitializableAsync
+    public class CharacterPresenter : IInitializableAsync, IDisposable
     {
         private readonly ISelfCharacterModel _model;
         private readonly CharacterView _view;
@@ -27,6 +28,7 @@ namespace TapAndRun.MVP.Character
 
             _model.OnBeganTurning += DisplayTurnning;
             _model.OnBeganJumping += DisplayJumping;
+            _model.OnFinishedJumping += _view.Sfx.PlayRunSfx;
 
             return UniTask.CompletedTask;
         }
@@ -34,12 +36,25 @@ namespace TapAndRun.MVP.Character
         private void DisplayJumping()
         {
             _view.ActivateAnimation(_view.Jump);
+            _view.Sfx.StopRunSfx();
             _view.Sfx.PlayJumpSfx();
         }
 
         private void DisplayTurnning()
         {
+            _view.Sfx.PlayTurnSfx();
+        }
 
+        public void Dispose()
+        {
+            _model.Position.OnChanged -= _view.UpdatePosition;
+            _model.Rotation.OnChanged -= _view.UpdateRotation;
+            _model.IsMoving.OnChanged -= _view.UpdateMoving;
+            _model.IsFall.OnChanged -= _view.UpdateFalling;
+            _model.AnimMultiplier.OnChanged -= _view.UpdateAnimMultiplier;
+
+            _model.OnBeganTurning -= DisplayTurnning;
+            _model.OnBeganJumping -= DisplayJumping;
         }
     }
 }

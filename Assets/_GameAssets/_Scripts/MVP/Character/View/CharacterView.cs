@@ -41,6 +41,7 @@ namespace TapAndRun.MVP.Character.View
 
             if (isFall)
             {
+                Debug.Log("Звук падения");
                 Sfx.PlayLoseSfx();
             }
         }

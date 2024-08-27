@@ -1,4 +1,4 @@
-﻿namespace TapAndRun.Services
+﻿namespace TapAndRun.Services.Ads
 {
     public interface IAdsService
     {

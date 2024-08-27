@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TapAndRun.Services.Update
 {
-    public class UpdateService : MonoBehaviour, IUpdateService
+    public class UpdateService : MonoBehaviour, IUpdateService, ILateUpdateService
     {
         public event Action OnUpdated;
         public event Action OnLateUpdated;

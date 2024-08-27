@@ -6,15 +6,15 @@ namespace TapAndRun.MVP.Wallet.Model
 {
     public class WalletModel : IWalletModel, ISelfWalletModel
     {
-        public SimpleReactiveProperty<int> AvailableCrystals { get; private set; }
-        public SimpleReactiveProperty<int> CrystalsByLevel { get; private set; }
+        public ReactiveProperty<int> AvailableCrystals { get; private set; }
+        public ReactiveProperty<int> CrystalsByLevel { get; private set; }
 
         public UniTask InitializeAsync(CancellationToken token)
         {
             //TODO Try Load DATA
             
-            AvailableCrystals = new SimpleReactiveProperty<int>(0);
-            CrystalsByLevel = new SimpleReactiveProperty<int>(0);
+            AvailableCrystals = new ReactiveProperty<int>(0);
+            CrystalsByLevel = new ReactiveProperty<int>(0);
             
             return UniTask.CompletedTask;
         }

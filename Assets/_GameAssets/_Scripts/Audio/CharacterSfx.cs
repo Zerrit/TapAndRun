@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace TapAndRun.Audio
@@ -27,19 +26,19 @@ namespace TapAndRun.Audio
         {
             if (isOn)
             {
-                _audioSource.Play();
+                PlayRunSfx();
             }
             else
             {
-                _audioSource.Stop();
+                StopRunSfx();
             }
         }
-        
+
         public void PlayRunSfx()
         {
             _audioSource.Play();
         }
-        
+
         public void StopRunSfx()
         {
             _audioSource.Stop();
