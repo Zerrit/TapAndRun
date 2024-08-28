@@ -25,12 +25,13 @@ namespace TapAndRun.Services.Audio
         [SerializeField] private AudioMixer _mixer;
 
         [SerializeField] private float _defaultVolume;
-        [SerializeField] private float _muteVolume;
 
         private bool _isVibroActive;
         private Dictionary<string, Sound> _sounds;
 
         private ISettingsModel _settingsModel;
+
+        private const float MuteVolume = 0.0001f;
 
         [Inject]
         public void Construct(ISettingsModel settingsModel)
@@ -78,22 +79,29 @@ namespace TapAndRun.Services.Audio
         {
             if (status)
             {
-                _mixer.SetFloat("Volume", _defaultVolume);
+                _mixer.SetFloat("Volume", CalculateVolume(_defaultVolume));
             }
             else
             {
-                _mixer.SetFloat("Volume", _muteVolume);
+                _mixer.SetFloat("Volume", CalculateVolume(MuteVolume));
             }
-            
-            Debug.Log($"Статус звука изменён на {status}");
         }
 
         private void SetVibroStatus(bool status)
         {
             _isVibroActive = status;
-            Debug.Log($"Статуc вибро изменён на {status}");
+
+            if (status)
+            {
+                CallVibration();
+            }
         }
 
+        private float CalculateVolume(float value)
+        {
+            return Mathf.Log10(value) * 20;
+        }
+        
         public void Dispose()
         {
             _settingsModel.AudioStatus.Unsubscribe(SetAudioStatus);

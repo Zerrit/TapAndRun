@@ -1793,7 +1793,6 @@ MonoBehaviour:
   _source: {fileID: 497500035}
   _mixer: {fileID: 24100000, guid: 00cfbbb2df5560b42b430e8abca1ec47, type: 2}
   _defaultVolume: 1
-  _muteVolume: 0.001
 --- !u!4 &1253423115
 Transform:
   m_ObjectHideFlags: 0
@@ -2568,6 +2567,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects:
+  - {fileID: 1253423113}
   - {fileID: 1482358646}
   _entryPoint: {fileID: 1482358647}
   _levelsParent: {fileID: 1065271343}
@@ -3238,6 +3238,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1434436528}
     m_Modifications:
+    - target: {fileID: 259757171252884924, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3249158561126660258, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
       propertyPath: m_Name
       value: Lose Screen View
@@ -3246,6 +3250,22 @@ PrefabInstance:
       propertyPath: <HomeButton>k__BackingField
       value: 
       objectReference: {fileID: 1150726417}
+    - target: {fileID: 7178599989721790074, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7178599989721790074, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d488a86a641aecb4b8910909b4d71303, type: 3}
+    - target: {fileID: 7178599989721790074, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
+      propertyPath: m_FillCenter
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7178599989721790074, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 27.7
+      objectReference: {fileID: 0}
     - target: {fileID: 7544860985697885585, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3325,6 +3345,22 @@ PrefabInstance:
     - target: {fileID: 7544860985697885585, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825180913306768107, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825180913306768107, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825180913306768107, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825180913306768107, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

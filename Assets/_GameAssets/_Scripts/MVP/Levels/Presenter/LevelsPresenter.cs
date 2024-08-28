@@ -187,6 +187,8 @@ namespace TapAndRun.MVP.Levels.Presenter
 
             _gameplayScreen.Hide();  //TODO Донастроить скрипт окна геймплейного
             _cameraModel.FlyUpAsync().Forget(); //TODO Возвомжно изменить логику
+            
+            _audioService.CallVibration();
         }
 
         private void ProcessLevelComplete() //TODO Подумать ещё над неймингом
