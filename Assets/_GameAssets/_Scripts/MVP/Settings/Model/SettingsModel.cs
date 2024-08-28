@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Interfaces;
-using TapAndRun.Services.Audio;
 using TapAndRun.Tools.Reactivity;
 
 namespace TapAndRun.MVP.Settings.Model
@@ -20,8 +19,7 @@ namespace TapAndRun.MVP.Settings.Model
 
         ReactiveProperty<bool> AudioStatus { get; }
         ReactiveProperty<bool> VibroStatus { get; }
-        
-        string Language { get; }
+        ReactiveProperty<string> Language { get; }
     }
 
     public class SettingsModel : ISelfSettingsModel, ISettingsModel
@@ -30,7 +28,7 @@ namespace TapAndRun.MVP.Settings.Model
 
         public ReactiveProperty<bool> AudioStatus { get; private set; }
         public ReactiveProperty<bool> VibroStatus { get; private set; }
-        public string Language { get; private set; }
+        public ReactiveProperty<string> Language { get; private set; }
 
         public SettingsModel()
         {
@@ -45,9 +43,8 @@ namespace TapAndRun.MVP.Settings.Model
 
             AudioStatus = new ReactiveProperty<bool>(true);
             VibroStatus = new ReactiveProperty<bool>(true);
-            
-            Language = "en";
-            
+            Language = new ReactiveProperty<string>("en");
+
             return UniTask.CompletedTask;
         }
     }

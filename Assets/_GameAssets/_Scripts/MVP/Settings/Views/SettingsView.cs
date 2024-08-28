@@ -10,5 +10,6 @@ namespace TapAndRun.MVP.Settings.Views
         [field:SerializeField] public CustomToggle AudioToggle { get; private set; }
         [field:SerializeField] public CustomToggle VibroToggle { get; private set; }
         [field:SerializeField] public Button LanguagueButton { get; private set; }
+        [field:SerializeField] public PopupView LanguagePopup { get; private set; }
     }
 }

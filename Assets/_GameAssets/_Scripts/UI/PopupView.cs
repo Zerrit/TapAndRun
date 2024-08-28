@@ -9,7 +9,7 @@ namespace TapAndRun.UI
     public class PopupView : MonoBehaviour
     {
         [field:SerializeField] public CanvasGroup Fade { get; private set; }
-        [field:SerializeField] public Transform Parent { get; private set; }
+        [field:SerializeField] public Transform Content { get; private set; }
         
         [Header("Fade")]
         [SerializeField] private float _fadeInDuration;
@@ -38,8 +38,8 @@ namespace TapAndRun.UI
             Fade.DOFade(1f, _fadeInDuration)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
 
-            Parent.gameObject.SetActive(true);
-            await Parent.DOLocalMove(Vector3.zero, _moveInDuration)
+            Content.gameObject.SetActive(true);
+            await Content.DOLocalMove(Vector3.zero, _moveInDuration)
                 .SetEase(_animType)
                 .From(HideAnimPosition)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
@@ -55,12 +55,12 @@ namespace TapAndRun.UI
             Fade.DOFade(0f, _fadeOutDuration)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
 
-            await Parent.DOLocalMove(HideAnimPosition, _moveOutDuration)
+            await Content.DOLocalMove(HideAnimPosition, _moveOutDuration)
                 .SetEase(_animType)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
 
             Fade.gameObject.SetActive(false);
-            Parent.gameObject.SetActive(false);
+            Content.gameObject.SetActive(false);
         }
     }
 }

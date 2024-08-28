@@ -1,19 +1,37 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using Assets.SimpleLocalization.Scripts;
+using Cysharp.Threading.Tasks;
+using TapAndRun.Configs;
 using UnityEngine;
 
 namespace TapAndRun.Services.Localization
 {
-    public class LocalisationService : MonoBehaviour
+    public class LocalisationService : MonoBehaviour, ILocalisationService
     {
-        // Start is called before the first frame update
-        void Start()
+        [SerializeField] private LanguageConfig[] _languages;
+
+        private Dictionary<string, Sprite> _langIcons;
+
+        public UniTask InitializeAsync(CancellationToken token)
         {
-        
+            _langIcons = new Dictionary<string, Sprite>();
+            _langIcons = _languages.ToDictionary(x => x.Id, x => x.Icon);
+            
+            LocalizationManager.Read();
+            
+            return UniTask.CompletedTask;
         }
 
-        // Update is called once per frame
-        void Update()
+        public Sprite GetLangIcon(string id)
         {
-        
+            return _langIcons[id];
+        }
+
+        public void ChangeLanguage(string langId)
+        {
+            LocalizationManager.Language = langId;
         }
     }
 }
