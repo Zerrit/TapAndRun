@@ -31,18 +31,20 @@ namespace TapAndRun.Architecture
 
         [Inject]
         public void Construct(
+            ISettingsModel settingsModel,SettingsPresenter settingsPresenter,
             IAudioService audioService,
             ICharacterModel characterModel, CharacterPresenter characterPresenter,
             ICameraModel cameraModel, CameraPresenter cameraPresenter,
             ILevelsModel levelsModel, LevelsPresenter levelsPresenter,
             IMainMenuModel mainMenuModel, MainMenuPresenter mainMenuPresenter,
             ILoseModel loseModel, LosePresenter losePresenter,
-            ISettingsModel settingsModel,SettingsPresenter settingsPresenter,
             IWalletModel walletModel, WalletPresenter walletPresenter,
             GameStateMachine gameStateMachine)
         {
             _initializationQueue = new List<IInitializableAsync>
             {
+                settingsModel,
+                settingsPresenter,
                 audioService,
                 characterModel,
                 characterPresenter,
@@ -54,8 +56,6 @@ namespace TapAndRun.Architecture
                 mainMenuPresenter,
                 loseModel,
                 losePresenter,
-                settingsModel,
-                settingsPresenter,
                 walletModel,
                 walletPresenter
             };

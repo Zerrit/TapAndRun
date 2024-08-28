@@ -19,8 +19,8 @@ namespace TapAndRun.MVP.Settings
 
         public UniTask InitializeAsync(CancellationToken token)
         {
-            _view.AudioToggle.SetState(_model.AudioStatus);
-            _view.VibroToggle.SetState(_model.VibroStatus);
+            _view.AudioToggle.SetState(_model.AudioStatus.Value);
+            _view.VibroToggle.SetState(_model.VibroStatus.Value);
 
             _model.IsDisplaying.OnChanged += UpdateDisplaying;
 
@@ -47,16 +47,16 @@ namespace TapAndRun.MVP.Settings
 
         private void ChangeAudioStatus()
         {
-            _model.AudioStatus = !_model.AudioStatus;
+            _model.AudioStatus.Value = !_model.AudioStatus.Value;
 
-            _view.AudioToggle.Switch(_model.AudioStatus);
+            _view.AudioToggle.Switch(_model.AudioStatus.Value);
         }
 
         private void ChangeVibroStatus()
         {
-            _model.VibroStatus = !_model.VibroStatus;
+            _model.VibroStatus.Value = !_model.VibroStatus.Value;
 
-            _view.VibroToggle.Switch(_model.VibroStatus);
+            _view.VibroToggle.Switch(_model.VibroStatus.Value);
         }
     }
 }
