@@ -9,11 +9,11 @@ namespace TapAndRun.MVP.MainMenu.Model
     {
         public event Action OnGameStarted;
 
-        public SimpleReactiveProperty<bool> IsDisplaying { get; private set; }
+        public ReactiveProperty<bool> IsDisplaying { get; private set; }
 
         public UniTask InitializeAsync(CancellationToken token)
         {
-            IsDisplaying = new SimpleReactiveProperty<bool>();
+            IsDisplaying = new ReactiveProperty<bool>();
 
             return UniTask.CompletedTask;
         }

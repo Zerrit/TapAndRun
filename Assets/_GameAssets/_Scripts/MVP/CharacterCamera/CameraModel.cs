@@ -12,9 +12,9 @@ namespace TapAndRun.MVP.CharacterCamera
 {
     public class CameraModel : ISelfCameraModel, ICameraModel, ILateUpdatable, IDisposable
     {
-        public SimpleReactiveProperty<Vector3> Position { get; private set; }
-        public SimpleReactiveProperty<float> Rotation { get; private set; }
-        public SimpleReactiveProperty<float> Height { get; private set; }
+        public ReactiveProperty<Vector3> Position { get; private set; }
+        public ReactiveProperty<float> Rotation { get; private set; }
+        public ReactiveProperty<float> Height { get; private set; }
 
         public int Difficulty { get; private set; } //??
 
@@ -25,10 +25,10 @@ namespace TapAndRun.MVP.CharacterCamera
         private CancellationTokenSource _cts;
 
         private readonly CameraConfig _config;
-        private readonly IUpdateService _updateService;
+        private readonly ILateUpdateService _updateService;
         private readonly ICharacterModel _characterModel;
 
-        public CameraModel(CameraConfig config, IUpdateService updateService, ICharacterModel characterModel)
+        public CameraModel(CameraConfig config, ILateUpdateService updateService, ICharacterModel characterModel)
         {
             _config = config;
             _updateService = updateService;
@@ -38,9 +38,9 @@ namespace TapAndRun.MVP.CharacterCamera
         public UniTask InitializeAsync(CancellationToken token)
         {
             _cts = new CancellationTokenSource();
-            Position = new SimpleReactiveProperty<Vector3>();
-            Rotation = new SimpleReactiveProperty<float>();
-            Height = new SimpleReactiveProperty<float>(_config.Height + _config.HeightStep);
+            Position = new ReactiveProperty<Vector3>();
+            Rotation = new ReactiveProperty<float>();
+            Height = new ReactiveProperty<float>(_config.Height + _config.HeightStep);
 
             _maxDifficultyLevel = _config.RotationDifficulties.Length;
             _isFollowActive = true;

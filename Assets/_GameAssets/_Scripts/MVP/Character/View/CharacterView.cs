@@ -12,11 +12,10 @@ namespace TapAndRun.MVP.Character.View
         [field:SerializeField] public Animator Animator { get; private set; }
         [field:SerializeField] public CharacterSfx Sfx { get; private set; }
 
-        public readonly int Idle = Animator.StringToHash("Idle");
-        public readonly int Run = Animator.StringToHash("Run");
-        public readonly int Jump = Animator.StringToHash("Jump");
-        public readonly int Fall = Animator.StringToHash("Fall");
-        public readonly int Speed = Animator.StringToHash("Speed");
+        public readonly int _isMoving = Animator.StringToHash("IsMoving");
+        public readonly int _isFall = Animator.StringToHash("IsFall");
+        public readonly int _jump = Animator.StringToHash("Jump");
+        public readonly int _speed = Animator.StringToHash("Speed");
 
         public void UpdatePosition(Vector3 position)
         {
@@ -28,10 +27,39 @@ namespace TapAndRun.MVP.Character.View
             var rotationEuler = Quaternion.Euler(0f, 0f, rotation);
             Transform.rotation = rotationEuler;
         }
-        
+
+        public void UpdateMoving(bool isMoving)
+        {
+            Animator.SetBool(_isMoving, isMoving);
+
+            Sfx.SwitchRunSfx(isMoving);
+        }
+
+        public void UpdateFalling(bool isFall)
+        {
+            Animator.SetBool(_isFall, isFall);
+
+            if (isFall)
+            {
+                Sfx.PlayLoseSfx();
+            }
+        }
+
         public void UpdateAnimMultiplier(float multiplier)
         {
-            Animator.SetFloat(Speed, multiplier);
+            Animator.SetFloat(_speed, multiplier);
+        }
+
+        public void DisplayJumping()
+        {
+            ActivateAnimation(_jump);
+            Sfx.StopRunSfx();
+            Sfx.PlayJumpSfx();
+        }
+
+        public void DisplayTurning()
+        {
+            Sfx.PlayTurnSfx();
         }
         
         public void ActivateAnimation(int animHash)

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace TapAndRun.Audio
@@ -22,10 +21,27 @@ namespace TapAndRun.Audio
         {
             _audioSource.pitch = _baseSpeedPitch + (0.1f * speed);
         }
-        
+
+        public void SwitchRunSfx(bool isOn)
+        {
+            if (isOn)
+            {
+                PlayRunSfx();
+            }
+            else
+            {
+                StopRunSfx();
+            }
+        }
+
         public void PlayRunSfx()
         {
             _audioSource.Play();
+        }
+
+        public void StopRunSfx()
+        {
+            _audioSource.Stop();
         }
 
         public void PlayTurnSfx()
@@ -35,7 +51,6 @@ namespace TapAndRun.Audio
 
         public void PlayJumpSfx()
         {
-            _audioSource.Stop();
             _audioSource.PlayOneShot(_jumpSound);
         }
 

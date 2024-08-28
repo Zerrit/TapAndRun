@@ -5,8 +5,8 @@ namespace TapAndRun.MVP.CharacterCamera
 {
     public interface ISelfCameraModel
     {
-        SimpleReactiveProperty<Vector3> Position { get; }
-        SimpleReactiveProperty<float> Rotation { get; }
-        SimpleReactiveProperty<float> Height { get; }
+        ReactiveProperty<Vector3> Position { get; }
+        ReactiveProperty<float> Rotation { get; }
+        ReactiveProperty<float> Height { get; }
     }
 }

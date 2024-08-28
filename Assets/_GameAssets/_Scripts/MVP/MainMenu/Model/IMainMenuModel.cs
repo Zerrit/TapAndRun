@@ -8,6 +8,6 @@ namespace TapAndRun.MVP.MainMenu.Model
     {
         event Action OnGameStarted;
         
-        SimpleReactiveProperty<bool> IsDisplaying { get; }
+        ReactiveProperty<bool> IsDisplaying { get; }
     }
 }

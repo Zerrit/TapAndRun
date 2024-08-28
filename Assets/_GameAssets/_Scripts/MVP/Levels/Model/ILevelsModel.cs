@@ -6,6 +6,9 @@ namespace TapAndRun.MVP.Levels.Model
     public interface ILevelsModel : IInitializableAsync
     {
         event Action OnLevelFailed;
+        
+        int LastUnlockedLevelId { get; }
+        int LevelCount { get; set; }
 
         void PrepeareCurrentLevel();
         void PrepareLevel(int levelId);

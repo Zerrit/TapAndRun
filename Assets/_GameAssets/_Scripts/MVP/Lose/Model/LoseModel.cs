@@ -10,7 +10,7 @@ namespace TapAndRun.MVP.Lose.Model
         public event Action OnHomeSelected;
         public event Action OnRestartSelected;
         
-        public SimpleReactiveProperty<bool> IsDisplaying { get; private set; }
+        public ReactiveProperty<bool> IsDisplaying { get; private set; }
 
         public LoseModel()
         {
@@ -18,7 +18,7 @@ namespace TapAndRun.MVP.Lose.Model
         
         public UniTask InitializeAsync(CancellationToken token)
         {
-            IsDisplaying = new SimpleReactiveProperty<bool>();
+            IsDisplaying = new ReactiveProperty<bool>();
 
             return UniTask.CompletedTask;
         }

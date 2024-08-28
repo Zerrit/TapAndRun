@@ -52,11 +52,11 @@ namespace TapAndRun.UI
 
         public async UniTask HideAsync(CancellationToken token)
         {
-            await Parent.DOLocalMove(HideAnimPosition, _moveOutDuration)
-                .SetEase(_animType)
+            Fade.DOFade(0f, _fadeOutDuration)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
 
-            await Fade.DOFade(0f, _fadeOutDuration)
+            await Parent.DOLocalMove(HideAnimPosition, _moveOutDuration)
+                .SetEase(_animType)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
 
             Fade.gameObject.SetActive(false);

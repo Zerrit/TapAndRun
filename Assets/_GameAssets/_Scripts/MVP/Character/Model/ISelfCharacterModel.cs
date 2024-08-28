@@ -6,15 +6,14 @@ namespace TapAndRun.MVP.Character.Model
 {
     public interface ISelfCharacterModel
     {
-        event Action OnBeganIdle;
-        event Action OnBeganRunning;
         event Action OnBeganTurning;
         event Action OnBeganJumping;
-        event Action OnFalled;
+        event Action OnFinishedJumping;
 
-        SimpleReactiveProperty<Vector3> Position { get; }
-        SimpleReactiveProperty<float> Rotation { get; }
-
-        SimpleReactiveProperty<float> AnimMultiplier { get; }
+        ReactiveProperty<Vector3> Position { get; }
+        ReactiveProperty<float> Rotation { get; }
+        ReactiveProperty<bool> IsMoving { get; }
+        BoolReactiveProperty IsFall { get; }
+        ReactiveProperty<float> AnimMultiplier { get; }
     }
 }

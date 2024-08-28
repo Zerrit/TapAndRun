@@ -23,15 +23,15 @@ using TapAndRun.MVP.Settings.Views;
 using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.MVP.Wallet.View;
-using TapAndRun.Services;
+using TapAndRun.Services.Audio;
+using TapAndRun.Services.Localization;
 using TapAndRun.Services.Update;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Serialization;
 using VContainer;
 using VContainer.Unity;
 
-namespace TapAndRun.Architecture
+namespace TapAndRun.Architecture.Installers
 {
     public class GameScope : LifetimeScope
     {
@@ -45,6 +45,7 @@ namespace TapAndRun.Architecture
         [SerializeField] private AssetReference _levelButtonPrefab;
 
         [Header("Configs")]
+        [SerializeField] private SoundConfig _soundConfig;
         [SerializeField] private CameraConfig _cameraConfig;
         [SerializeField] private LevelsConfig _levelsConfig;
         [SerializeField] private CharacterConfig _characterConfig;
@@ -97,7 +98,9 @@ namespace TapAndRun.Architecture
 
         private void RegisterServices(IContainerBuilder builder)
         {
-            builder.RegisterInstance(_updateService).As<IUpdateService>();
+            builder.RegisterInstance(_updateService).AsImplementedInterfaces();
+
+            builder.RegisterInstance(_audioService).AsImplementedInterfaces();
         }
 
         private void RegisterCamera(IContainerBuilder builder)
@@ -148,7 +151,8 @@ namespace TapAndRun.Architecture
         {
             builder.Register<SelfMainMenuModel>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<MainMenuPresenter>(Lifetime.Singleton)
-                .WithParameter(_mainMenu);
+                .WithParameter(_mainMenu)
+                .WithParameter(_levelSelectView);
         }
         
         private void RegisterGameStates(IContainerBuilder builder)

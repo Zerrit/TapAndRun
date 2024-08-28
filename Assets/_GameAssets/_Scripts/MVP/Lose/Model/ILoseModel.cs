@@ -9,6 +9,6 @@ namespace TapAndRun.MVP.Lose.Model
         event Action OnHomeSelected;
         event Action OnRestartSelected;
         
-        public SimpleReactiveProperty<bool> IsDisplaying { get; }
+        public ReactiveProperty<bool> IsDisplaying { get; }
     }
 }
