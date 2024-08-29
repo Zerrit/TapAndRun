@@ -4,34 +4,34 @@ using System.Threading;
 using Assets.SimpleLocalization.Scripts;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Configs;
+using TapAndRun.MVP.Settings.Model;
 using UnityEngine;
 
 namespace TapAndRun.Services.Localization
 {
-    public class LocalisationService : MonoBehaviour, ILocalisationService
+    public class LocalizationService : ILocalizationService
     {
-        [SerializeField] private LanguageConfig[] _languages;
+        private readonly ISettingsModel _settingsModel;
 
-        private Dictionary<string, Sprite> _langIcons;
+        public LocalizationService(ISettingsModel settingsModel)
+        {
+            _settingsModel = settingsModel;
+        }
 
         public UniTask InitializeAsync(CancellationToken token)
         {
-            _langIcons = new Dictionary<string, Sprite>();
-            _langIcons = _languages.ToDictionary(x => x.Id, x => x.Icon);
-            
             LocalizationManager.Read();
+            Debug.Log(_settingsModel);
+            Debug.Log(_settingsModel.Language);
+            _settingsModel.Language.Subscribe(ChangeLanguage, true);
             
             return UniTask.CompletedTask;
-        }
-
-        public Sprite GetLangIcon(string id)
-        {
-            return _langIcons[id];
         }
 
         public void ChangeLanguage(string langId)
         {
             LocalizationManager.Language = langId;
+            Debug.Log($"Установлен язык: {langId}");
         }
     }
 }

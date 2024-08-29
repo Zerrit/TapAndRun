@@ -53,7 +53,6 @@ namespace TapAndRun.Architecture.Installers
 
         [Header("Services")]
         [SerializeField] private UpdateService _updateService;
-        [SerializeField] private LocalisationService _localisationService;
         [SerializeField] private AudioService _audioService;
 
         [Header("Views")]
@@ -103,8 +102,9 @@ namespace TapAndRun.Architecture.Installers
 
         private void RegisterServices(IContainerBuilder builder)
         {
+            builder.Register<LocalizationService>(Lifetime.Singleton).AsImplementedInterfaces();
+            
             builder.RegisterInstance(_updateService).AsImplementedInterfaces();
-
             builder.RegisterInstance(_audioService).AsImplementedInterfaces();
         }
 

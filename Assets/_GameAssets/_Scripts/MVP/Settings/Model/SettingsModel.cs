@@ -1,27 +1,9 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
-using TapAndRun.Interfaces;
 using TapAndRun.Tools.Reactivity;
 
 namespace TapAndRun.MVP.Settings.Model
 {
-    public interface ISettingsModel : IInitializableAsync
-    {
-        ReactiveProperty<bool> IsDisplaying { get; }
-        
-        public ReactiveProperty<bool> AudioStatus { get; }
-        public ReactiveProperty<bool> VibroStatus { get; }
-    }
-
-    public interface ISelfSettingsModel
-    {
-        ReactiveProperty<bool> IsDisplaying { get; }
-
-        ReactiveProperty<bool> AudioStatus { get; }
-        ReactiveProperty<bool> VibroStatus { get; }
-        ReactiveProperty<string> Language { get; }
-    }
-
     public class SettingsModel : ISelfSettingsModel, ISettingsModel
     {
         public ReactiveProperty<bool> IsDisplaying { get; set; }
