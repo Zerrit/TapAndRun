@@ -17,6 +17,7 @@ using TapAndRun.MVP.Settings.Model;
 using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.Services.Audio;
+using TapAndRun.Services.Localization;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -32,7 +33,7 @@ namespace TapAndRun.Architecture
         [Inject]
         public void Construct(
             ISettingsModel settingsModel,SettingsPresenter settingsPresenter,
-            IAudioService audioService,
+            IAudioService audioService, ILocalizationService localizationService,
             ICharacterModel characterModel, CharacterPresenter characterPresenter,
             ICameraModel cameraModel, CameraPresenter cameraPresenter,
             ILevelsModel levelsModel, LevelsPresenter levelsPresenter,
@@ -46,6 +47,7 @@ namespace TapAndRun.Architecture
                 settingsModel,
                 settingsPresenter,
                 audioService,
+                localizationService,
                 characterModel,
                 characterPresenter,
                 cameraModel,

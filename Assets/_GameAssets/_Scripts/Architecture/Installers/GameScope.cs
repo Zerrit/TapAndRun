@@ -1,6 +1,7 @@
 ﻿using TapAndRun.Architecture.GameStates;
 using TapAndRun.Configs;
 using TapAndRun.Factories.GameStates;
+using TapAndRun.Factories.LangButtons;
 using TapAndRun.Factories.LevelButtons;
 using TapAndRun.Factories.Levels;
 using TapAndRun.MVP.Character;
@@ -16,7 +17,6 @@ using TapAndRun.MVP.Lose.View;
 using TapAndRun.MVP.MainMenu;
 using TapAndRun.MVP.MainMenu.Model;
 using TapAndRun.MVP.MainMenu.Views;
-using TapAndRun.MVP.Screens.LevelSelect;
 using TapAndRun.MVP.Settings;
 using TapAndRun.MVP.Settings.Model;
 using TapAndRun.MVP.Settings.Views;
@@ -42,17 +42,17 @@ namespace TapAndRun.Architecture.Installers
         [SerializeField] private Transform _levelsParent;
 
         [Header("Prefabs")]
+        [SerializeField] private AssetReference _langButtonPrefab;
         [SerializeField] private AssetReference _levelButtonPrefab;
 
         [Header("Configs")]
-        [SerializeField] private SoundConfig _soundConfig;
+        [SerializeField] private LanguagePoolConfig _languageConfig;
         [SerializeField] private CameraConfig _cameraConfig;
         [SerializeField] private LevelsConfig _levelsConfig;
         [SerializeField] private CharacterConfig _characterConfig;
 
         [Header("Services")]
         [SerializeField] private UpdateService _updateService;
-        [SerializeField] private LocalisationService _localisationService;
         [SerializeField] private AudioService _audioService;
 
         [Header("Views")]
@@ -94,12 +94,17 @@ namespace TapAndRun.Architecture.Installers
 
             builder.Register<LevelButtonFactory>(Lifetime.Singleton).As<ILevelButtonFactory>()
                 .WithParameter(_levelButtonPrefab);
+
+            builder.Register<LangButtonFactory>(Lifetime.Singleton).As<ILangButtonFactory>()
+                .WithParameter(_langButtonPrefab)
+                .WithParameter(_languageConfig);
         }
 
         private void RegisterServices(IContainerBuilder builder)
         {
+            builder.Register<LocalizationService>(Lifetime.Singleton).AsImplementedInterfaces();
+            
             builder.RegisterInstance(_updateService).AsImplementedInterfaces();
-
             builder.RegisterInstance(_audioService).AsImplementedInterfaces();
         }
 

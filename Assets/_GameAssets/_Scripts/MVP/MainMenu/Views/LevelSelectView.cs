@@ -3,7 +3,7 @@ using TapAndRun.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TapAndRun.MVP.Screens.LevelSelect
+namespace TapAndRun.MVP.MainMenu.Views
 {
     public class LevelSelectView : PopupView
     {

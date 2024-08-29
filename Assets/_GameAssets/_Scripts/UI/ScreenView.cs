@@ -7,7 +7,7 @@ namespace TapAndRun.UI
 {
     public abstract class ScreenView : MonoBehaviour
     {
-        [field:SerializeField] public CanvasGroup Parent { get; private set; }
+        [field:SerializeField] public CanvasGroup Content { get; private set; }
 
         [SerializeField] private float _fadeOutDuration;
         [SerializeField] private float _fadeInDuration;
@@ -19,10 +19,10 @@ namespace TapAndRun.UI
 
         public async UniTask ShowAsync(CancellationToken token)
         {
-            Parent.alpha = 0;
-            Parent.gameObject.SetActive(true);
+            Content.alpha = 0;
+            Content.gameObject.SetActive(true);
             
-            await Parent.DOFade(1f, _fadeInDuration)
+            await Content.DOFade(1f, _fadeInDuration)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
         }
         
@@ -33,12 +33,12 @@ namespace TapAndRun.UI
         
         public async UniTask HideAsync(CancellationToken token)
         {
-            Parent.alpha = 1;
+            Content.alpha = 1;
 
-            await Parent.DOFade(0f, _fadeOutDuration)
+            await Content.DOFade(0f, _fadeOutDuration)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
 
-            Parent.gameObject.SetActive(false);
+            Content.gameObject.SetActive(false);
         }
     }
 }

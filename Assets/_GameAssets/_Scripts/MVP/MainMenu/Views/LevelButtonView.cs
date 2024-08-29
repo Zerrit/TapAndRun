@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace TapAndRun.MVP.Screens.LevelSelect
+namespace TapAndRun.MVP.MainMenu.Views
 {
     public class LevelButtonView : MonoBehaviour, IPointerClickHandler
     {
