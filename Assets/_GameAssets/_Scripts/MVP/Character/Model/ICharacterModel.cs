@@ -14,6 +14,7 @@ namespace TapAndRun.MVP.Character.Model
 
         void MoveTo(Vector2 position, float rotation = 0);
         void StartMove();
+        void StopMove();
         void ResetState();
 
         void ChangeSpeed(int difficultyLevel);

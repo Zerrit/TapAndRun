@@ -21,7 +21,6 @@ namespace TapAndRun.MVP.Levels.Presenter
         private LevelView _nextLevel;
 
         private CancellationTokenSource _cts;
-
         private TapCommandHandler _commandHandler;
 
         private readonly GameplayScreenView _gameplayScreen;
@@ -66,6 +65,12 @@ namespace TapAndRun.MVP.Levels.Presenter
         {
             _gameplayScreen.Show();
             _characterModel.StartMove();
+        }
+
+        private void PauseGameplay()
+        {
+            _gameplayScreen.Hide();
+            _characterModel.StopMove();
         }
 
         private void BuildLevel()
@@ -131,10 +136,6 @@ namespace TapAndRun.MVP.Levels.Presenter
             _cameraModel.ChangeDifficulty(_model.CurrentDifficulty);
         }
 
-        /// <summary>
-        /// Обрабатывает клик игрока.
-        /// </summary>
-
         private void DeactivateLevel()
         {
             if (!_currentLevel)
@@ -151,7 +152,7 @@ namespace TapAndRun.MVP.Levels.Presenter
  
             _currentLevel.OnFinishReached -= ProcessLevelComplete;
         }
-        
+
         private void ActivateNextLevel()
         {
             _currentLevel = _nextLevel;
@@ -159,7 +160,7 @@ namespace TapAndRun.MVP.Levels.Presenter
             _commandHandler.GenerateCommand(_currentLevel.InteractionPoints);
             UpdateDifficulty();
 
-            _nextLevel.ActivateArrow();
+            _currentLevel.ActivateArrow(); //TODO Заименил переменную. (На случай ошибки)
 
             foreach (var crystal in _currentLevel.Crystals)
             {
@@ -167,8 +168,20 @@ namespace TapAndRun.MVP.Levels.Presenter
             }
 
             _currentLevel.FinishSegment.OnPlayerEntered += ProcessLevelComplete;
+            
+            //
+            if (_model.CurrentLevelId == 0 & _currentLevel is TutorialLevelView)
+            {
+                var tutorLevel = _currentLevel as TutorialLevelView;
+                //TODO Проверка на Null;
+                tutorLevel.TutorialInteractPoint.OnPlayerEntered += StartTapTutorial;
+
+            }
         }
-        
+
+        /// <summary>
+        /// Обрабатывает клик игрока.
+        /// </summary>
         private void ProcessClick()
         {
             if (!_commandHandler.CheckAvailability())
@@ -213,6 +226,16 @@ namespace TapAndRun.MVP.Levels.Presenter
             _walletModel.IncreaseCrystalsByLevel();
         }
         
+        //TUTORIAL
+        private void StartTapTutorial()
+        {
+            Debug.Log("Инициализирована зона обучения");
+            PauseGameplay();
+            _gameplayScreen._tutorialView.gameObject.SetActive(true);
+            _gameplayScreen._tutorialView.PlayTapAnimAsync();
+        }
+        //TUTORIAL
+
         private void ClearOldLevel()
         {
             if (_oldLevel)
@@ -223,7 +246,7 @@ namespace TapAndRun.MVP.Levels.Presenter
 
             //TODO Удалить ссылку на операцию в фабрике.
         }
-        
+
         private void ClearLevels()
         {
             if (_oldLevel)

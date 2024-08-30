@@ -73,6 +73,12 @@ namespace TapAndRun.MVP.Character.Model
             _isVulnerable = true;
         }
 
+        public void StopMove()
+        {
+            IsMoving.Value = false;
+            _isVulnerable = false;
+        }
+
         public void ResetState()
         {
             _isVulnerable = false;
