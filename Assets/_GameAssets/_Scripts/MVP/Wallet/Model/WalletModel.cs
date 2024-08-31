@@ -6,13 +6,16 @@ namespace TapAndRun.MVP.Wallet.Model
 {
     public class WalletModel : IWalletModel, ISelfWalletModel
     {
+        public ReactiveProperty<bool> IsTutorialDisplayed { get; private set; }
+        
         public ReactiveProperty<int> AvailableCrystals { get; private set; }
         public ReactiveProperty<int> CrystalsByLevel { get; private set; }
 
         public UniTask InitializeAsync(CancellationToken token)
         {
             //TODO Try Load DATA
-            
+
+            IsTutorialDisplayed = new ReactiveProperty<bool>();
             AvailableCrystals = new ReactiveProperty<int>(0);
             CrystalsByLevel = new ReactiveProperty<int>(0);
             

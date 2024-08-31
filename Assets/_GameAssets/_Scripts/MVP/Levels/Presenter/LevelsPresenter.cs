@@ -224,23 +224,46 @@ namespace TapAndRun.MVP.Levels.Presenter
                     tutorLevel.TutorialInteractPoint.OnPlayerEntered += StartTapTutorial;
                     _gameplayScreen.TapButton.onClick.RemoveListener(ProcessClick);
 
-                    Debug.Log("Инициализирован Tap Tutorial");
+                    _currentLevel.Crystals[0].OnTaken += StartCrystalsTutorial;
                 }
             }
         }
-        
-        private async void StartTapTutorial()
+
+        private void StartCrystalsTutorial()
         {
-            _characterModel.StopMove();
-            _gameplayScreen.TutorialView.Show();
-
-            await _gameplayScreen.TapButton.OnClickAsync();
-
-            _gameplayScreen.TutorialView.Hide();
-            _characterModel.StartMove();
-            ProcessClick();
+            StartCrystalsTutorialAsync().Forget();
             
-            _gameplayScreen.TapButton.onClick.AddListener(ProcessClick);
+            async UniTaskVoid StartCrystalsTutorialAsync()
+            {
+                _currentLevel.Crystals[0].OnTaken -= StartCrystalsTutorial;
+                
+                _characterModel.StopMove();
+                _walletModel.IsTutorialDisplayed.Value = true;
+                
+                await _gameplayScreen.TapButton.OnClickAsync();
+                
+                _walletModel.IsTutorialDisplayed.Value = false;
+                _characterModel.StartMove();
+            }
+        }
+
+        private void StartTapTutorial()
+        {
+            StartTapTutorialAsync().Forget();
+
+            async UniTaskVoid StartTapTutorialAsync()
+            {
+                _characterModel.StopMove();
+                _gameplayScreen.TutorialView.Show();
+
+                await _gameplayScreen.TapButton.OnClickAsync();
+
+                _gameplayScreen.TutorialView.Hide();
+                _characterModel.StartMove();
+                ProcessClick();
+
+                _gameplayScreen.TapButton.onClick.AddListener(ProcessClick);
+            }
         }
         #endregion
 
