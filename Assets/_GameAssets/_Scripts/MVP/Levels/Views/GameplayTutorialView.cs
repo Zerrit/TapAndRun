@@ -1,18 +1,14 @@
 ﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using TapAndRun.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace TapAndRun.MVP.Levels.Views
 {
-    public class GameplayTutorialView : MonoBehaviour
+    public class GameplayTutorialView : ScreenView
     {
         [SerializeField] private Image _cursor;
-
-        private void Start()
-        {
-            PlayTapAnimAsync();
-        }
 
         public void PlayTapAnimAsync()
         {
@@ -20,6 +16,18 @@ namespace TapAndRun.MVP.Levels.Views
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(Ease.InOutSine)
                 .AwaitForComplete(TweenCancelBehaviour.KillAndCancelAwait, destroyCancellationToken);
+        }
+
+        public override void Show()
+        {
+            base.Show();
+
+            PlayTapAnimAsync();
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
         }
     }
 }

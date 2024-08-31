@@ -56,8 +56,8 @@ namespace TapAndRun.MVP.Levels.Presenter
             _model.OnLevelStarted += StartGameplay;
 
             _characterModel.IsFall.OnChangedToTrue += ProcessLevelLose;
-            _gameplayScreen.OnClicked += ProcessClick;
-
+            _gameplayScreen.TapButton.onClick.AddListener(ProcessClick);
+            
             return UniTask.CompletedTask;
         }
 
@@ -65,12 +65,6 @@ namespace TapAndRun.MVP.Levels.Presenter
         {
             _gameplayScreen.Show();
             _characterModel.StartMove();
-        }
-
-        private void PauseGameplay()
-        {
-            _gameplayScreen.Hide();
-            _characterModel.StopMove();
         }
 
         private void BuildLevel()
@@ -168,15 +162,8 @@ namespace TapAndRun.MVP.Levels.Presenter
             }
 
             _currentLevel.FinishSegment.OnPlayerEntered += ProcessLevelComplete;
-            
-            //
-            if (_model.CurrentLevelId == 0 & _currentLevel is TutorialLevelView)
-            {
-                var tutorLevel = _currentLevel as TutorialLevelView;
-                //TODO Проверка на Null;
-                tutorLevel.TutorialInteractPoint.OnPlayerEntered += StartTapTutorial;
 
-            }
+            CheckForTutorials();
         }
 
         /// <summary>
@@ -225,16 +212,37 @@ namespace TapAndRun.MVP.Levels.Presenter
             _audioService.PlaySound("TakeCrystal");
             _walletModel.IncreaseCrystalsByLevel();
         }
-        
-        //TUTORIAL
-        private void StartTapTutorial()
+
+        #region TUTORIALS
+        private void CheckForTutorials()
         {
-            Debug.Log("Инициализирована зона обучения");
-            PauseGameplay();
-            _gameplayScreen._tutorialView.gameObject.SetActive(true);
-            _gameplayScreen._tutorialView.PlayTapAnimAsync();
+            if (_model.CurrentLevelId == 0 & _currentLevel is TutorialLevelView) //TODO Проверка на прохождение обучяения
+            {
+                var tutorLevel = _currentLevel as TutorialLevelView;
+                if (tutorLevel)
+                {
+                    tutorLevel.TutorialInteractPoint.OnPlayerEntered += StartTapTutorial;
+                    _gameplayScreen.TapButton.onClick.RemoveListener(ProcessClick);
+
+                    Debug.Log("Инициализирован Tap Tutorial");
+                }
+            }
         }
-        //TUTORIAL
+        
+        private async void StartTapTutorial()
+        {
+            _characterModel.StopMove();
+            _gameplayScreen.TutorialView.Show();
+
+            await _gameplayScreen.TapButton.OnClickAsync();
+
+            _gameplayScreen.TutorialView.Hide();
+            _characterModel.StartMove();
+            ProcessClick();
+            
+            _gameplayScreen.TapButton.onClick.AddListener(ProcessClick);
+        }
+        #endregion
 
         private void ClearOldLevel()
         {
@@ -243,8 +251,6 @@ namespace TapAndRun.MVP.Levels.Presenter
                 _oldLevel.Destroy();
                 _levelFactory.DisposeOldLevel();
             }
-
-            //TODO Удалить ссылку на операцию в фабрике.
         }
 
         private void ClearLevels()
@@ -274,7 +280,7 @@ namespace TapAndRun.MVP.Levels.Presenter
             _model.OnLevelStarted -= StartGameplay;
 
             _characterModel.IsFall.OnChangedToTrue -= ProcessLevelLose;
-            _gameplayScreen.OnClicked -= ProcessClick;
+            _gameplayScreen.TapButton.onClick.RemoveListener(ProcessClick);
 
             _cts.Cancel();
             _cts?.Dispose();

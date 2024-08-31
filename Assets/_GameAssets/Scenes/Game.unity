@@ -725,17 +725,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &490031698 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1934724866999232969, guid: 661b825f6af027c4c9ee87a70fb8e6b9, type: 3}
-  m_PrefabInstance: {fileID: 8656405258357711806}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf6401f82cf44a469d04b910ab0236ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &497500033
 GameObject:
   m_ObjectHideFlags: 0
@@ -1178,6 +1167,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d838c1e565a4435bd0990685aa69670, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &875690419 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5979066087966816129, guid: 661b825f6af027c4c9ee87a70fb8e6b9, type: 3}
+  m_PrefabInstance: {fileID: 8656405258357711806}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6401f82cf44a469d04b910ab0236ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &941335577
@@ -2019,11 +2019,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 36148813}
-  - {fileID: 759011316}
   - {fileID: 1849911698}
   - {fileID: 6327457182583055371}
   - {fileID: 283622774926796357}
   - {fileID: 1596073704}
+  - {fileID: 759011316}
   m_Father: {fileID: 1031559974}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3471,14 +3471,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 954874747090273979, guid: 661b825f6af027c4c9ee87a70fb8e6b9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3779190606072123980, guid: 661b825f6af027c4c9ee87a70fb8e6b9, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4751702396472849447, guid: 661b825f6af027c4c9ee87a70fb8e6b9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5584629168572741905, guid: 661b825f6af027c4c9ee87a70fb8e6b9, type: 3}
-      propertyPath: _tutorialView
+      propertyPath: <TutorialView>k__BackingField
       value: 
-      objectReference: {fileID: 490031698}
+      objectReference: {fileID: 875690419}
+    - target: {fileID: 6406415526011675633, guid: 661b825f6af027c4c9ee87a70fb8e6b9, type: 3}
+      propertyPath: m_Color.b
+      value: 0.42745098
+      objectReference: {fileID: 0}
+    - target: {fileID: 6406415526011675633, guid: 661b825f6af027c4c9ee87a70fb8e6b9, type: 3}
+      propertyPath: m_Color.g
+      value: 0.26666668
+      objectReference: {fileID: 0}
+    - target: {fileID: 6406415526011675633, guid: 661b825f6af027c4c9ee87a70fb8e6b9, type: 3}
+      propertyPath: m_Color.r
+      value: 0.14901961
+      objectReference: {fileID: 0}
+    - target: {fileID: 6406415526011675633, guid: 661b825f6af027c4c9ee87a70fb8e6b9, type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6406415526011675633, guid: 661b825f6af027c4c9ee87a70fb8e6b9, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 8929193914770540698, guid: 661b825f6af027c4c9ee87a70fb8e6b9, type: 3}
       propertyPath: m_Name
       value: Gameplay Screen View
