@@ -11,7 +11,13 @@ namespace TapAndRun.UI
 
         [SerializeField] private float _fadeOutDuration;
         [SerializeField] private float _fadeInDuration;
-        
+
+        public virtual void ShowInstant()
+        {
+            Content.alpha = 1f;
+            Content.gameObject.SetActive(true);
+        }
+
         public virtual void Show()
         {
             ShowAsync(this.GetCancellationTokenOnDestroy()).Forget();
@@ -24,6 +30,12 @@ namespace TapAndRun.UI
             
             await Content.DOFade(1f, _fadeInDuration)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
+        }
+
+        public virtual void HideInstant()
+        {
+            Content.alpha = 0f;
+            Content.gameObject.SetActive(false);
         }
         
         public virtual void Hide()

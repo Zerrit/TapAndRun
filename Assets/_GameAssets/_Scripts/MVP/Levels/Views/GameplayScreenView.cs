@@ -1,16 +1,14 @@
 ﻿using System;
 using TapAndRun.UI;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace TapAndRun.MVP.Levels.Views
 {
-    public class GameplayScreenView : ScreenView, IPointerClickHandler
+    public class GameplayScreenView : ScreenView
     {
-        public event Action OnClicked;
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            OnClicked?.Invoke();
-        }
+        [field: SerializeField] public Button TapButton { get; private set; }
+        [field: SerializeField] public GameplayTutorialView TutorialView { get; private set; }
     }
 }

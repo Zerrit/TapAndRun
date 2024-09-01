@@ -141,7 +141,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4387418454642966262, guid: 4fa530bc7758fe54f9431b0b68f5090b, type: 3}
       propertyPath: m_Name
-      value: Cristal
+      value: Crystal
       objectReference: {fileID: 0}
     - target: {fileID: 6667116973669002863, guid: 4fa530bc7758fe54f9431b0b68f5090b, type: 3}
       propertyPath: m_LocalScale.x

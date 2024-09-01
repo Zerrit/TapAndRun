@@ -10,6 +10,7 @@ namespace TapAndRun.MVP.Wallet.View
     {
         [field:SerializeField] public TextMeshProUGUI AvailableCrystals { get; private set; }
         [field:SerializeField] public TextMeshProUGUI CrystalsByLevel { get; private set; }
+        [field:SerializeField] public WalletTutorialView WalletTutorialView { get; private set; }
 
         private CancellationTokenSource _cts = new();
 

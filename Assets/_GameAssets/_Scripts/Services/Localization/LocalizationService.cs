@@ -21,10 +21,9 @@ namespace TapAndRun.Services.Localization
         public UniTask InitializeAsync(CancellationToken token)
         {
             LocalizationManager.Read();
-            Debug.Log(_settingsModel);
-            Debug.Log(_settingsModel.Language);
+
             _settingsModel.Language.Subscribe(ChangeLanguage, true);
-            
+
             return UniTask.CompletedTask;
         }
 
