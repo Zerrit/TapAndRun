@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TapAndRun.UI;
 using UnityEngine;
@@ -13,15 +14,19 @@ namespace TapAndRun.MVP.Wallet.View
         [SerializeField] private Vector3 _targetffset;
         [SerializeField] private Vector3 _cursorOffset;
 
+        private CancellationTokenSource _cts;
+
         public void PlayCursorAnim()
         {
+            _cts = new CancellationTokenSource();
+            
             var target = _animTarget.localPosition + _targetffset;
             _cursor.transform.localPosition = target + _cursorOffset;
 
             _cursor.transform.DOLocalMove(target, 0.5f)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(Ease.InOutSine)
-                .AwaitForComplete(TweenCancelBehaviour.KillAndCancelAwait, destroyCancellationToken);
+                .AwaitForComplete(TweenCancelBehaviour.KillAndCancelAwait, _cts.Token);
         }
 
         public override void Show()
@@ -34,6 +39,9 @@ namespace TapAndRun.MVP.Wallet.View
         public override void Hide()
         {
             base.Hide();
+
+            _cts?.Cancel();
+            _cts?.Dispose();
         }
     }
 }
