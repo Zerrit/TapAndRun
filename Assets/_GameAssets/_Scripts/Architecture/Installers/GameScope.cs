@@ -24,13 +24,12 @@ using TapAndRun.MVP.Settings.Views;
 using TapAndRun.MVP.Skins_Shop;
 using TapAndRun.MVP.Skins_Shop.Model;
 using TapAndRun.MVP.Skins_Shop.Views;
-using TapAndRun.MVP.TransitionScreen;
-using TapAndRun.MVP.TransitionScreen.Model;
 using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.MVP.Wallet.View;
 using TapAndRun.Services.Audio;
 using TapAndRun.Services.Localization;
+using TapAndRun.Services.Transition;
 using TapAndRun.Services.Update;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -88,7 +87,6 @@ namespace TapAndRun.Architecture.Installers
             RegisterSkinShop(builder);
             RegisterLoseScreen(builder);
             RegisterMainMenu(builder);
-            RegisterTransition(builder);
 
             RegisterGameStates(builder);
 
@@ -121,8 +119,11 @@ namespace TapAndRun.Architecture.Installers
             
             builder.RegisterInstance(_updateService).AsImplementedInterfaces();
             builder.RegisterInstance(_audioService).AsImplementedInterfaces();
-        }
 
+            builder.Register<TransitionService>(Lifetime.Singleton).As<ITransitionService>()
+                .WithParameter(_transitionView);
+        }
+        
         private void RegisterCamera(IContainerBuilder builder)
         {
             builder.Register<CameraModel>(Lifetime.Singleton).AsImplementedInterfaces()
@@ -189,15 +190,6 @@ namespace TapAndRun.Architecture.Installers
             builder.Register<GameplayState>(Lifetime.Singleton);
             builder.Register<LoseState>(Lifetime.Singleton);
             builder.Register<SkinShopState>(Lifetime.Singleton);
-        }
-        
-        private void RegisterTransition(IContainerBuilder builder)
-        {
-            builder.Register<TransitionModel>(Lifetime.Singleton)
-                .AsImplementedInterfaces();
-
-            builder.Register<TransitionPresenter>(Lifetime.Singleton)
-                .WithParameter(_transitionView);
         }
     }
 }

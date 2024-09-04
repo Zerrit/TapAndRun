@@ -3,9 +3,9 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-namespace TapAndRun.MVP.TransitionScreen
+namespace TapAndRun.Services.Transition
 {
-    public class TransitionView : MonoBehaviour
+    public class TransitionView : MonoBehaviour, ITransitionView
     {
         [SerializeField] private RectTransform _curtain;
 
@@ -35,18 +35,6 @@ namespace TapAndRun.MVP.TransitionScreen
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
             
             _curtain.gameObject.SetActive(false);
-        }
-        
-        //TEST
-        [ContextMenu("Show")]
-        public void ShowTest()
-        {
-            ShowAsync(CancellationToken.None).Forget();
-        }
-        [ContextMenu("Hide")]
-        public void HideTest()
-        {
-            HideAsync(CancellationToken.None).Forget();
         }
     }
 }

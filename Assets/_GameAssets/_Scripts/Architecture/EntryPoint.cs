@@ -16,12 +16,11 @@ using TapAndRun.MVP.Settings;
 using TapAndRun.MVP.Settings.Model;
 using TapAndRun.MVP.Skins_Shop;
 using TapAndRun.MVP.Skins_Shop.Model;
-using TapAndRun.MVP.TransitionScreen;
-using TapAndRun.MVP.TransitionScreen.Model;
 using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.Services.Audio;
 using TapAndRun.Services.Localization;
+using TapAndRun.Services.Transition;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -45,7 +44,7 @@ namespace TapAndRun.Architecture
             ILoseModel loseModel, LosePresenter losePresenter,
             IWalletModel walletModel, WalletPresenter walletPresenter,
             ISkinShopModel skinShopModel, SkinShopPresenter skinShopPresenter,
-            ITransitionModel transitionModel, TransitionPresenter transitionPresenter,
+            ITransitionService transitionService,
             GameStateMachine gameStateMachine)
         {
             _initializationQueue = new List<IInitializableAsync>
@@ -68,8 +67,7 @@ namespace TapAndRun.Architecture
                 walletPresenter,
                 skinShopModel,
                 skinShopPresenter,
-                transitionModel,
-                transitionPresenter
+                transitionService
             };
 
             _gameStateMachine = gameStateMachine;

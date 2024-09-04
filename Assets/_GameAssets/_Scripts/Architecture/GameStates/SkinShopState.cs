@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Skins_Shop.Model;
-using TapAndRun.MVP.TransitionScreen.Model;
+using TapAndRun.Services.Transition;
 
 namespace TapAndRun.Architecture.GameStates
 {
@@ -10,15 +10,15 @@ namespace TapAndRun.Architecture.GameStates
     {
         private readonly GameStateMachine _gameStateMachine;
         private readonly ISkinShopModel _skinShopModel;
-        private readonly ITransitionModel _transition;
+        private readonly ITransitionService _transitionService;
         private readonly ILevelsModel _levelsModel;
 
         public SkinShopState(GameStateMachine gameStateMachine, ISkinShopModel skinShopModel,
-            ITransitionModel transition, ILevelsModel levelsModel)
+            ITransitionService transitionService, ILevelsModel levelsModel)
         {
             _gameStateMachine = gameStateMachine;
             _skinShopModel = skinShopModel;
-            _transition = transition;
+            _transitionService = transitionService;
             _levelsModel = levelsModel;
         }
 
@@ -29,16 +29,18 @@ namespace TapAndRun.Architecture.GameStates
 
             await UniTask.WaitUntil(() => _skinShopModel.IsAssortmentPrepeared, cancellationToken: token);
 
-            _transition.CanFinish = true;
+            _transitionService.TryEndTransition();
 
             _skinShopModel.BackTrigger.OnTriggered += ToMainMenu;
         }
 
-        public async UniTask ExitAsync(CancellationToken token)
+        public UniTask ExitAsync(CancellationToken token)
         {
             _skinShopModel.BackTrigger.OnTriggered -= ToMainMenu;
 
             _skinShopModel.IsDisplaying.Value = false;
+
+            return UniTask.CompletedTask;
         }
 
         private void ToMainMenu()
@@ -47,10 +49,7 @@ namespace TapAndRun.Architecture.GameStates
 
             async UniTaskVoid ToMainMenuAsync(CancellationToken token)
             {
-                _transition.CanFinish = false;
-                _transition.StartTrigger.Trigger();
-
-                await UniTask.WaitUntil(() => _transition.IsScreenHidden, cancellationToken: token);
+                await _transitionService.PlayTransition(token);
 
                 _gameStateMachine.ChangeStateAsync<MainMenuState>().Forget();
             }

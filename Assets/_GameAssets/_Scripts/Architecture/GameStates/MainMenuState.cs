@@ -2,8 +2,7 @@
 using Cysharp.Threading.Tasks;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.MainMenu.Model;
-using TapAndRun.MVP.Settings.Model;
-using TapAndRun.MVP.TransitionScreen.Model;
+using TapAndRun.Services.Transition;
 using UnityEngine;
 
 namespace TapAndRun.Architecture.GameStates
@@ -13,15 +12,15 @@ namespace TapAndRun.Architecture.GameStates
         private readonly GameStateMachine _gameStateMachine;
         private readonly IMainMenuModel _mainMenuModel;
         private readonly ILevelsModel _levelsModel;
-        private readonly ITransitionModel _transition;
+        private readonly ITransitionService _transitionService;
 
         public MainMenuState(GameStateMachine gameStateMachine, IMainMenuModel mainMenuModel,
-            ILevelsModel levelsModel, ITransitionModel transition)
+            ILevelsModel levelsModel, ITransitionService transitionService)
         {
             _gameStateMachine = gameStateMachine;
             _mainMenuModel = mainMenuModel;
             _levelsModel = levelsModel;
-            _transition = transition;
+            _transitionService = transitionService;
         }
 
         public UniTask EnterAsync(CancellationToken token)
@@ -29,7 +28,7 @@ namespace TapAndRun.Architecture.GameStates
             _levelsModel.PrepeareCurrentLevel();
             _mainMenuModel.IsDisplaying.Value = true;
 
-            _transition.CanFinish = true;
+            _transitionService.TryEndTransition();
 
             _mainMenuModel.PlayTrigger.OnTriggered += ToGameplay;
             _mainMenuModel.SkinShopTrigger.OnTriggered += ToSkinShop;
@@ -58,11 +57,8 @@ namespace TapAndRun.Architecture.GameStates
             
             async UniTaskVoid ToSkinShopAsync(CancellationToken token)
             {
-                _transition.CanFinish = false;
-                _transition.StartTrigger.Trigger();
-            
-                await UniTask.WaitUntil(() => _transition.IsScreenHidden, cancellationToken: token);
-            
+                await _transitionService.PlayTransition(token);
+                Debug.Log("Экран закрыт");
                 _gameStateMachine.ChangeStateAsync<SkinShopState>().Forget();
             }
         }
