@@ -51,9 +51,10 @@ namespace TapAndRun.MVP.Levels.Presenter
             _commandHandler = new TapCommandHandler(_characterModel, _cameraModel);
             _model.LevelCount = _levelFactory.GetLevelCount();
 
+            _model.StartupTrigger.OnTriggered += StartGameplay;
+            _model.RemoveTrigger.OnTriggered += RemoveLevels; // TODO Подумать на версией
             _model.OnLevelChanged += BuildLevel;
             _model.OnLevelReseted += ResetLevel;
-            _model.OnLevelStarted += StartGameplay;
 
             _characterModel.IsFall.OnChangedToTrue += ProcessLevelLose;
             _gameplayScreen.TapButton.onClick.AddListener(ProcessClick);
@@ -267,6 +268,15 @@ namespace TapAndRun.MVP.Levels.Presenter
         }
         #endregion
 
+        //TODO Метод удаляет уровни и выключает героя.
+
+        private void RemoveLevels()
+        {
+            _model.CurrentLevelId = -1;
+            DeactivateLevel();
+            ClearLevels();
+        }
+        
         private void ClearOldLevel()
         {
             if (_oldLevel)
@@ -278,6 +288,8 @@ namespace TapAndRun.MVP.Levels.Presenter
 
         private void ClearLevels()
         {
+            _characterModel.IsActive.Value = false;
+            
             if (_oldLevel)
             {
                 _oldLevel.Destroy();
@@ -298,9 +310,9 @@ namespace TapAndRun.MVP.Levels.Presenter
 
         public void Dispose()
         {
+            _model.StartupTrigger.OnTriggered -= StartGameplay;
             _model.OnLevelChanged -= BuildLevel;
             _model.OnLevelReseted -= ResetLevel;
-            _model.OnLevelStarted -= StartGameplay;
 
             _characterModel.IsFall.OnChangedToTrue -= ProcessLevelLose;
             _gameplayScreen.TapButton.onClick.RemoveListener(ProcessClick);

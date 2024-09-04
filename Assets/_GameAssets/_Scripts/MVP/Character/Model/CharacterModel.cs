@@ -15,12 +15,15 @@ namespace TapAndRun.MVP.Character.Model
         public event Action OnBeganJumping;
         public event Action OnFinishedJumping;
 
+        public BoolReactiveProperty IsActive { get; private set; }
         public ReactiveProperty<Vector3> Position { get; private set; }
         public ReactiveProperty<float> Rotation { get; private set; }
         public ReactiveProperty<bool> IsMoving { get; private set; }
         public BoolReactiveProperty IsFall { get; private set; }
         public ReactiveProperty<float> AnimMultiplier { get; private set; }
 
+        public ReactiveProperty<string> SelectedSkin { get; private set; }
+        
         private Vector3 _roadCheckerPosition;
         private float _currentSpeed;
         private bool _isVulnerable;
@@ -44,11 +47,14 @@ namespace TapAndRun.MVP.Character.Model
         public UniTask InitializeAsync(CancellationToken token)
         {
             _cts = new CancellationTokenSource();
+            IsActive = new BoolReactiveProperty();
             Position = new ReactiveProperty<Vector3>();
             Rotation = new ReactiveProperty<float>();
             IsMoving = new ReactiveProperty<bool>();
             IsFall = new BoolReactiveProperty();
             AnimMultiplier = new ReactiveProperty<float>(BaseAnimSpeed);
+
+            SelectedSkin = new ReactiveProperty<string>("Chinchilla");
 
             _updateService.Subscribe(this);
             
@@ -65,6 +71,7 @@ namespace TapAndRun.MVP.Character.Model
             ResetState();
             Position.Value = position;
             Rotation.Value = rotation;
+            IsActive.Value = true;
         }
 
         public void StartMove()

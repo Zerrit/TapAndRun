@@ -4,6 +4,7 @@ using TapAndRun.Factories.GameStates;
 using TapAndRun.Factories.LangButtons;
 using TapAndRun.Factories.LevelButtons;
 using TapAndRun.Factories.Levels;
+using TapAndRun.Factories.Skins;
 using TapAndRun.MVP.Character;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Character.View;
@@ -20,6 +21,11 @@ using TapAndRun.MVP.MainMenu.Views;
 using TapAndRun.MVP.Settings;
 using TapAndRun.MVP.Settings.Model;
 using TapAndRun.MVP.Settings.Views;
+using TapAndRun.MVP.Skins_Shop;
+using TapAndRun.MVP.Skins_Shop.Model;
+using TapAndRun.MVP.Skins_Shop.Views;
+using TapAndRun.MVP.TransitionScreen;
+using TapAndRun.MVP.TransitionScreen.Model;
 using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.MVP.Wallet.View;
@@ -50,6 +56,7 @@ namespace TapAndRun.Architecture.Installers
         [SerializeField] private CameraConfig _cameraConfig;
         [SerializeField] private LevelsConfig _levelsConfig;
         [SerializeField] private CharacterConfig _characterConfig;
+        [SerializeField] private SkinsConfig _skinsConfig;
 
         [Header("Services")]
         [SerializeField] private UpdateService _updateService;
@@ -61,9 +68,12 @@ namespace TapAndRun.Architecture.Installers
         [SerializeField] private WalletView _walletView;
         [SerializeField] private MainMenuView _mainMenu;
         [SerializeField] private SettingView _settingsView;
+        [SerializeField] private SkinShopView _skinShopView;
+        [SerializeField] private SkinShopSliderView _skinShopSliderView;
         [SerializeField] private LevelSelectView _levelSelectView;
         [SerializeField] private GameplayScreenView _gameplayScreenView;
         [SerializeField] private LoseView _loseView;
+        [SerializeField] private TransitionView _transitionView;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -75,8 +85,10 @@ namespace TapAndRun.Architecture.Installers
             RegisterLevels(builder);
             RegisterWallet(builder);
             RegisterSettings(builder);
+            RegisterSkinShop(builder);
             RegisterLoseScreen(builder);
             RegisterMainMenu(builder);
+            RegisterTransition(builder);
 
             RegisterGameStates(builder);
 
@@ -87,6 +99,9 @@ namespace TapAndRun.Architecture.Installers
         private void RegisterFactories(IContainerBuilder builder)
         {
             builder.Register<GameStateFactory>(Lifetime.Singleton).As<IGameStateFactory>();
+
+            builder.Register<SkinFactory>(Lifetime.Singleton).As<ISkinFactory>()
+                .WithParameter(_skinsConfig);
             
             builder.Register<LevelFactory>(Lifetime.Singleton).As<ILevelFactory>()
                 .WithParameter(_levelsConfig)
@@ -145,6 +160,14 @@ namespace TapAndRun.Architecture.Installers
                 .WithParameter(_settingsView);
         }
 
+        private void RegisterSkinShop(IContainerBuilder builder)
+        {
+            builder.Register<SkinShopModel>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<SkinShopPresenter>(Lifetime.Singleton)
+                .WithParameter(_skinShopView)
+                .WithParameter(_skinShopSliderView);
+        }
+
         private void RegisterLoseScreen(IContainerBuilder builder)
         {
             builder.Register<LoseModel>(Lifetime.Singleton).AsImplementedInterfaces();
@@ -165,6 +188,16 @@ namespace TapAndRun.Architecture.Installers
             builder.Register<MainMenuState>(Lifetime.Singleton);
             builder.Register<GameplayState>(Lifetime.Singleton);
             builder.Register<LoseState>(Lifetime.Singleton);
+            builder.Register<SkinShopState>(Lifetime.Singleton);
+        }
+        
+        private void RegisterTransition(IContainerBuilder builder)
+        {
+            builder.Register<TransitionModel>(Lifetime.Singleton)
+                .AsImplementedInterfaces();
+
+            builder.Register<TransitionPresenter>(Lifetime.Singleton)
+                .WithParameter(_transitionView);
         }
     }
 }

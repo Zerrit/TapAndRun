@@ -17,6 +17,12 @@ namespace TapAndRun.MVP.Character.View
         public readonly int _jump = Animator.StringToHash("Jump");
         public readonly int _speed = Animator.StringToHash("Speed");
 
+        public void InitSkin(GameObject skin)
+        {
+            Animator = skin.GetComponent<Animator>();
+            Sfx = skin.GetComponent<CharacterSfx>();
+        }
+        
         public void UpdatePosition(Vector3 position)
         {
             Transform.position = position;

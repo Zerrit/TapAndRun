@@ -14,6 +14,10 @@ using TapAndRun.MVP.MainMenu;
 using TapAndRun.MVP.MainMenu.Model;
 using TapAndRun.MVP.Settings;
 using TapAndRun.MVP.Settings.Model;
+using TapAndRun.MVP.Skins_Shop;
+using TapAndRun.MVP.Skins_Shop.Model;
+using TapAndRun.MVP.TransitionScreen;
+using TapAndRun.MVP.TransitionScreen.Model;
 using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.Services.Audio;
@@ -40,6 +44,8 @@ namespace TapAndRun.Architecture
             IMainMenuModel mainMenuModel, MainMenuPresenter mainMenuPresenter,
             ILoseModel loseModel, LosePresenter losePresenter,
             IWalletModel walletModel, WalletPresenter walletPresenter,
+            ISkinShopModel skinShopModel, SkinShopPresenter skinShopPresenter,
+            ITransitionModel transitionModel, TransitionPresenter transitionPresenter,
             GameStateMachine gameStateMachine)
         {
             _initializationQueue = new List<IInitializableAsync>
@@ -59,7 +65,11 @@ namespace TapAndRun.Architecture
                 loseModel,
                 losePresenter,
                 walletModel,
-                walletPresenter
+                walletPresenter,
+                skinShopModel,
+                skinShopPresenter,
+                transitionModel,
+                transitionPresenter
             };
 
             _gameStateMachine = gameStateMachine;

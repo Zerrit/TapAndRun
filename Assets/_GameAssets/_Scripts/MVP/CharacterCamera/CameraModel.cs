@@ -89,7 +89,7 @@ namespace TapAndRun.MVP.CharacterCamera
             }
         }
 
-        public async UniTaskVoid TurnAsync(float angle)
+        /*public async UniTaskVoid TurnAsync(float angle)
         {
             var originRotation = Rotation.Value;
             float t = 0;
@@ -101,7 +101,7 @@ namespace TapAndRun.MVP.CharacterCamera
 
                 await UniTask.NextFrame(_cts.Token);
             }
-        }
+        }*/
 
         public async UniTask ChangeDistanceAsync(float target)
         {

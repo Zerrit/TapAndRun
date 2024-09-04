@@ -1,25 +1,37 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using TapAndRun.Factories.Skins;
 using TapAndRun.Interfaces;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Character.View;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TapAndRun.MVP.Character
 {
     public class CharacterPresenter : IInitializableAsync, IDisposable
     {
         private readonly ISelfCharacterModel _model;
+        private readonly ISkinFactory _skinFactory;
         private readonly CharacterView _view;
 
-        public CharacterPresenter(ISelfCharacterModel model, CharacterView view)
+        private CancellationTokenSource _cts;
+
+        public CharacterPresenter(ISelfCharacterModel model, ISkinFactory skinFactory, CharacterView view)
         {
             _model = model;
+            _skinFactory = skinFactory;
             _view = view;
         }
 
-        public UniTask InitializeAsync(CancellationToken token)
+        public async UniTask InitializeAsync(CancellationToken token)
         {
+            _cts = new CancellationTokenSource();
+            
+            await SetSkinAsync(_model.SelectedSkin.Value);
+            //_model.SelectedSkin.Subscribe(SetSkin, true);
+            _model.IsActive.OnChanged += _view.gameObject.SetActive;
             _model.Position.OnChanged += _view.UpdatePosition;
             _model.Rotation.OnChanged += _view.UpdateRotation;
             _model.IsMoving.OnChanged += _view.UpdateMoving;
@@ -29,12 +41,26 @@ namespace TapAndRun.MVP.Character
             _model.OnBeganTurning += _view.DisplayTurning;
             _model.OnBeganJumping += _view.DisplayJumping;
             _model.OnFinishedJumping += _view.Sfx.PlayRunSfx;
+        }
 
-            return UniTask.CompletedTask;
+        private async UniTask SetSkinAsync(string skinId)
+        {
+            /*if (_view.SkinHandler.childCount > 0)
+            {
+                Object.Destroy(_view.SkinHandler.GetChild(0));
+            }*/
+
+            var skin = await _skinFactory.ChangeSkinTo(skinId, _view.SkinHandler, _cts.Token);
+
+            _view.InitSkin(skin);
         }
 
         public void Dispose()
         {
+            _cts?.Cancel();
+            _cts?.Dispose();
+            
+            _model.IsActive.OnChanged -= _view.gameObject.SetActive;
             _model.Position.OnChanged -= _view.UpdatePosition;
             _model.Rotation.OnChanged -= _view.UpdateRotation;
             _model.IsMoving.OnChanged -= _view.UpdateMoving;
@@ -43,6 +69,7 @@ namespace TapAndRun.MVP.Character
 
             _model.OnBeganTurning -= _view.DisplayTurning;
             _model.OnBeganJumping -= _view.DisplayJumping;
+            _model.OnFinishedJumping -= _view.Sfx.PlayRunSfx;
         }
     }
 }

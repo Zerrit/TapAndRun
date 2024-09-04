@@ -10,5 +10,8 @@ namespace TapAndRun.MVP.Wallet.Model
         void IncreaseCrystalsByLevel();
         void GainCrystalsByLevel();
         void ResetCrystalsByLevel();
+
+        bool IsEnough(int value);
+        bool TrySpend(int value);
     }
 }

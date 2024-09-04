@@ -9,23 +9,22 @@ namespace TapAndRun.UI
     public class PopupView : MonoBehaviour
     {
         [field:SerializeField] public CanvasGroup Fade { get; private set; }
-        [field:SerializeField] public Transform Content { get; private set; }
-        
+        [field:SerializeField] public RectTransform Content { get; private set; }
+
         [Header("Fade")]
         [SerializeField] private float _fadeInDuration;
         [SerializeField] private float _fadeOutDuration;
-        
+
         [Header("Parent")]
         [SerializeField] private float _moveInDuration;
         [SerializeField] private float _moveOutDuration;
-        
+
         [Header("Parent Anim")]
         [SerializeField] private Ease _animType;
         [SerializeField, Range(-1, 1)] private int _xAnimDirection;
         [SerializeField, Range(-1, 1)] private int _yAnimDirection;
 
-
-        private Vector2 HideAnimPosition => new(Screen.width * 2 * _xAnimDirection, Screen.height * 2 * _yAnimDirection);
+        private Vector2 HideAnimPosition => new((Screen.width + Content.rect.width) * _xAnimDirection, (Screen.height + Content.rect.height) * _yAnimDirection);
 
         public void Show()
         {

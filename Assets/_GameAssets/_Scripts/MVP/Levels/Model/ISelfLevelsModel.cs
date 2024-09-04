@@ -1,4 +1,5 @@
 ﻿using System;
+using TapAndRun.Tools.Reactivity;
 
 namespace TapAndRun.MVP.Levels.Model
 {
@@ -6,9 +7,11 @@ namespace TapAndRun.MVP.Levels.Model
     { 
         event Action OnLevelReseted;
         event Action OnLevelChanged;
-        event Action OnLevelStarted;
 
-        int CurrentLevelId { get; }
+        TriggerReactiveProperty StartupTrigger { get; }
+        TriggerReactiveProperty RemoveTrigger { get; }
+        
+        int CurrentLevelId { get; set; }
         int LevelCount { get; set; }
 
         int CurrentDifficulty { get; }

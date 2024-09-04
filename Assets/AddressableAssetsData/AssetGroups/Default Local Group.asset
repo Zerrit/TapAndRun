@@ -52,6 +52,26 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 414d213bcb5d5884aa8de836528136c2
+    m_Address: Black Chinchilla Skin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 82641d57d01ba5b4696a0cb43375339c
+    m_Address: Chinchilla Skin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f152d91da7e9a84793291b3a7b77fe7
+    m_Address: Blue Chinchilla Skin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6fabca6fd2b76a4469ad903b832d32a0
+    m_Address: Red Chinchilla Skin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 9f3ceddb11e1afd4ab280579b8b82fcc, type: 2}
   m_SchemaSet:

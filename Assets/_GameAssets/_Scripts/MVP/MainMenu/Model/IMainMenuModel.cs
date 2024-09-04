@@ -6,8 +6,9 @@ namespace TapAndRun.MVP.MainMenu.Model
 {
     public interface IMainMenuModel : IInitializableAsync
     {
-        event Action OnGameStarted;
-        
         ReactiveProperty<bool> IsDisplaying { get; }
+
+        TriggerReactiveProperty PlayTrigger { get; }
+        TriggerReactiveProperty SkinShopTrigger { get; }
     }
 }

@@ -4,8 +4,9 @@ namespace TapAndRun.MVP.MainMenu.Model
 {
     public interface ISelfMainMenuModel
     {
-        public ReactiveProperty<bool> IsDisplaying { get; }
+        ReactiveProperty<bool> IsDisplaying { get; }
 
-        void StartGame();
+        TriggerReactiveProperty PlayTrigger { get; }
+        TriggerReactiveProperty SkinShopTrigger { get; }
     }
 }

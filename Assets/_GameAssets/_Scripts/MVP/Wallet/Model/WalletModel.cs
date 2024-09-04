@@ -7,7 +7,7 @@ namespace TapAndRun.MVP.Wallet.Model
     public class WalletModel : IWalletModel, ISelfWalletModel
     {
         public ReactiveProperty<bool> IsTutorialDisplayed { get; private set; }
-        
+
         public ReactiveProperty<int> AvailableCrystals { get; private set; }
         public ReactiveProperty<int> CrystalsByLevel { get; private set; }
 
@@ -18,7 +18,7 @@ namespace TapAndRun.MVP.Wallet.Model
             IsTutorialDisplayed = new ReactiveProperty<bool>();
             AvailableCrystals = new ReactiveProperty<int>(0);
             CrystalsByLevel = new ReactiveProperty<int>(0);
-            
+
             return UniTask.CompletedTask;
         }
 
@@ -36,6 +36,24 @@ namespace TapAndRun.MVP.Wallet.Model
         public void ResetCrystalsByLevel()
         {
             CrystalsByLevel.Value = 0;
+        }
+
+        public bool IsEnough(int value)
+        {
+            return AvailableCrystals.Value >= value;
+        }
+
+        public bool TrySpend(int value)
+        {
+            if (!IsEnough(value))
+            {
+                return false;
+            }
+            else
+            {
+                AvailableCrystals.Value -= value;
+                return true;
+            }
         }
     }
 }
