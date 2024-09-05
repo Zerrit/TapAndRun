@@ -1669,7 +1669,7 @@ MonoBehaviour:
   <SliderContent>k__BackingField: {fileID: 1203418384}
   _xPosOffsetStep: 1.3
   _scaleOffset: 0.5
-  _scrollDuration: 0.3
+  _scrollDuration: 0.2
 --- !u!224 &1849911698 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7544860985697885585, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
@@ -2120,6 +2120,34 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1087365693275147209, guid: 2ec2e7700c0265f4a8717ade4ee988b1, type: 3}
+      propertyPath: m_Color.a
+      value: 0.6039216
+      objectReference: {fileID: 0}
+    - target: {fileID: 1087365693275147209, guid: 2ec2e7700c0265f4a8717ade4ee988b1, type: 3}
+      propertyPath: m_Color.b
+      value: 0.46226418
+      objectReference: {fileID: 0}
+    - target: {fileID: 1087365693275147209, guid: 2ec2e7700c0265f4a8717ade4ee988b1, type: 3}
+      propertyPath: m_Color.g
+      value: 0.46226418
+      objectReference: {fileID: 0}
+    - target: {fileID: 1087365693275147209, guid: 2ec2e7700c0265f4a8717ade4ee988b1, type: 3}
+      propertyPath: m_Color.r
+      value: 0.46226418
+      objectReference: {fileID: 0}
+    - target: {fileID: 1087365693275147209, guid: 2ec2e7700c0265f4a8717ade4ee988b1, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 51b5dfbc29669a3458fd562aef767664, type: 3}
+    - target: {fileID: 1087365693275147209, guid: 2ec2e7700c0265f4a8717ade4ee988b1, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1087365693275147209, guid: 2ec2e7700c0265f4a8717ade4ee988b1, type: 3}
+      propertyPath: m_FontData.m_LineSpacing
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 2813764710064940458, guid: 2ec2e7700c0265f4a8717ade4ee988b1, type: 3}
       propertyPath: m_Name
       value: Transition Curtain
@@ -2316,6 +2344,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skin Shop View
       objectReference: {fileID: 0}
+    - target: {fileID: 8457647366083658450, guid: 8641e0e324376c541b08213d5d3fde0b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 51.500015
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2439,6 +2471,10 @@ PrefabInstance:
     - target: {fileID: 7544860985697885585, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825180913306768107, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 50.000015
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -703,27 +703,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 150805009780323087, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 500
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 159782737191878623, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 159782737191878623, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 159782737191878623, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 396.00003
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 159782737191878623, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 250
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 159782737191878623, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -67.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 946637506262203730, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_IsActive
@@ -732,6 +732,30 @@ PrefabInstance:
     - target: {fileID: 1161610675501615473, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2771745643910324841, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
+      propertyPath: _acceptAnimCurve
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2771745643910324841, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
+      propertyPath: _acceptAnimSize.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2771745643910324841, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
+      propertyPath: _acceptAnimSize.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2771745643910324841, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
+      propertyPath: _acceptAnimSize.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2771745643910324841, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
+      propertyPath: _acceptAnimDuration
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 2771745643910324841, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
+      propertyPath: _failAnimVelocity.x
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2884298175265940291, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_Pivot.x
@@ -852,6 +876,14 @@ PrefabInstance:
     - target: {fileID: 5540961460509405015, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8354780445764086627, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
+      propertyPath: m_Maskable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8354780445764086627, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8573228338266485539, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_Name

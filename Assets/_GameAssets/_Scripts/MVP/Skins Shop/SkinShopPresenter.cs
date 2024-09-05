@@ -9,31 +9,25 @@ using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Skins_Shop.Model;
 using TapAndRun.MVP.Skins_Shop.Views;
 using TapAndRun.MVP.Wallet.Model;
+using TapAndRun.UI;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TapAndRun.MVP.Skins_Shop
 {
     public class SkinShopPresenter : IInitializableAsync, IDisposable
     {
         private readonly ISelfSkinShopModel _selfModel;
-        private readonly IWalletModel _walletModel;
-        private readonly ICharacterModel _characterModel;
         private readonly ICameraModel _cameraModel;
         private readonly ISkinFactory _skinFactory;
         private readonly SkinShopView _shopScreenView;
         private readonly SkinShopSliderView _sliderView;
 
-        private SkinData _currentSkinsData;
-
         private CancellationTokenSource _cts;
 
-        public SkinShopPresenter(ISelfSkinShopModel selfModel, IWalletModel walletModel, ICharacterModel characterModel,
-            ICameraModel cameraModel, ISkinFactory skinFactory, SkinShopView shopScreenView, SkinShopSliderView sliderView)
+        public SkinShopPresenter(ISelfSkinShopModel selfModel, ICameraModel cameraModel, 
+            ISkinFactory skinFactory, SkinShopView shopScreenView, SkinShopSliderView sliderView)
         {
             _selfModel = selfModel;
-            _walletModel = walletModel;
-            _characterModel = characterModel;
             _cameraModel = cameraModel;
             _skinFactory = skinFactory;
             _shopScreenView = shopScreenView;
@@ -49,6 +43,7 @@ namespace TapAndRun.MVP.Skins_Shop
             _shopScreenView.BackButton.onClick.AddListener(_selfModel.BackTrigger.Trigger);
             _shopScreenView.LeftButton.onClick.AddListener(ScrollLeft);
             _shopScreenView.RightButton.onClick.AddListener(ScrollRight);
+            _shopScreenView.ShopButton.Button.onClick.AddListener(ProccesShopButtonClick);
             
             return UniTask.CompletedTask;
         }
@@ -101,33 +96,54 @@ namespace TapAndRun.MVP.Skins_Shop
         private async UniTask ChangeSelectedSkin(int skinIndex, CancellationToken token)
         {
             _sliderView.CurrentSkinIndex = Mathf.Clamp(skinIndex, 0, _sliderView.SkinsCount - 1);
-            _currentSkinsData = _skinFactory.SkinsConfig.SkinsData[_sliderView.CurrentSkinIndex];
+            _selfModel.CurrentSkinsData = _skinFactory.SkinsConfig.SkinsData[_sliderView.CurrentSkinIndex];
 
             await _sliderView.ScrollContentAsync(token);
 
-            _shopScreenView.SkinName.text = _currentSkinsData.Name;
+            _shopScreenView.SkinName.text = _selfModel.CurrentSkinsData.Name;
             UpdateShopButton();
         }
 
         private void UpdateShopButton()
         {
-            if (_characterModel.SelectedSkin.Value.Equals(_currentSkinsData.Name))
+            if (_selfModel.IsSkinSelected())
             {
-                _shopScreenView.ShopButton.SetSelectedMode();
+                _shopScreenView.ShopButton.SetState(ShopButtonState.Selected);
             }
-            else if (_selfModel.UnlockedSkins.Contains(_currentSkinsData.Name))
+            else if (_selfModel.IsUnlocked())
             {
-                _shopScreenView.ShopButton.SetSelectMode();
+                _shopScreenView.ShopButton.SetState(ShopButtonState.Purchased);
+            }
+            else if(_selfModel.IsCanPurchase())
+            {
+                _shopScreenView.ShopButton.SetState(ShopButtonState.CanPurchase, _selfModel.CurrentSkinsData.Price);
             }
             else
             {
-                _shopScreenView.ShopButton.SetBuyMode(_currentSkinsData.Price, _walletModel.IsEnough(_currentSkinsData.Price));
+                _shopScreenView.ShopButton.SetState(ShopButtonState.CantPurchase, _selfModel.CurrentSkinsData.Price);
             }
         }
 
         private void ProccesShopButtonClick()
         {
-            Debug.Log("Клик!");
+            if (_shopScreenView.ShopButton.State == ShopButtonState.CantPurchase)
+            {
+                _shopScreenView.ShopButton.PlayFailAnim();
+            }
+            else if(_shopScreenView.ShopButton.State == ShopButtonState.CanPurchase)
+            {
+                _shopScreenView.ShopButton.PlayAcceptAnim(CancellationToken.None).Forget();
+                if (_selfModel.TryBuyCurrentSkin())
+                {
+                    UpdateShopButton();
+                }
+            }
+            else if (_shopScreenView.ShopButton.State == ShopButtonState.Purchased)
+            {
+                _shopScreenView.ShopButton.PlayAcceptAnim(CancellationToken.None).Forget();
+                _selfModel.SelectCurrentSkin();
+                UpdateShopButton();
+            }
         }
 
         private void ClearAssortment()
@@ -142,6 +158,13 @@ namespace TapAndRun.MVP.Skins_Shop
         {
             _cts?.Cancel();
             _cts?.Dispose();
+            
+            _selfModel.IsDisplaying.OnChanged -= UpdateDisplaying;
+
+            _shopScreenView.BackButton.onClick.RemoveListener(_selfModel.BackTrigger.Trigger);
+            _shopScreenView.LeftButton.onClick.RemoveListener(ScrollLeft);
+            _shopScreenView.RightButton.onClick.RemoveListener(ScrollRight);
+            _shopScreenView.ShopButton.Button.onClick.RemoveListener(ProccesShopButtonClick);
         }
     }
 }
