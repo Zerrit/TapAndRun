@@ -8,9 +8,9 @@ namespace TapAndRun.MVP.Skins_Shop.Views
 {
     public class SkinShopSliderView : MonoBehaviour
     {
-        [field:SerializeField] public List<GameObject> SkinsList { get; set; }
-        [field:SerializeField] public int SkinsCount { get; set; }
-        [field:SerializeField] public int CurrentSkinIndex { get; set; }
+        public int CurrentSkinIndex { get; set; }
+        public int SkinsCount { get; set; }
+        public List<GameObject> SkinsList { get; set; }
 
         [field:SerializeField] public Transform SliderContent { get; private set; }
         
@@ -28,7 +28,6 @@ namespace TapAndRun.MVP.Skins_Shop.Views
             _cts = new CancellationTokenSource();
             
             _screenWidth = Screen.width;
-            SkinsCount = SkinsList.Count;
         }
 
         [ContextMenu("Align")]
@@ -39,18 +38,18 @@ namespace TapAndRun.MVP.Skins_Shop.Views
                 var skin = SkinsList[i].transform;
                 var alignedPosition = new Vector3(i * _xPosOffsetStep, 0f, 0f);
 
-                skin.transform.position = alignedPosition;
+                skin.transform.localPosition = alignedPosition;
                 RescaleSkin(i, 0 ,_cts.Token).Forget();
             }
         }
 
-        public async UniTask ScrollAsync(int selectedIndex, CancellationToken token)
+        public async UniTask ScrollContentAsync(CancellationToken token)
         {
-            var sliderOffset = selectedIndex * _xPosOffsetStep * -1;
+            var sliderOffset = CurrentSkinIndex * _xPosOffsetStep * -1;
 
-            for (int i = 0; i < SkinsCount; i++)
+            for (var i = 0; i < SkinsCount; i++)
             {
-                RescaleSkin(i, selectedIndex ,token).Forget();
+                RescaleSkin(i, CurrentSkinIndex ,token).Forget();
             }
 
             await SliderContent.DOMoveX(sliderOffset, _scrollDuration)

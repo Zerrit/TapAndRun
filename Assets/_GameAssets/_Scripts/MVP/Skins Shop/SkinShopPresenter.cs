@@ -77,35 +77,34 @@ namespace TapAndRun.MVP.Skins_Shop
                 _sliderView.SkinsList = await _skinFactory.CreateAllSkinsAsync(_sliderView.SliderContent, token);
                 _sliderView.SkinsCount = _sliderView.SkinsList.Count;
                 _sliderView.Align();
-                await ScrollToAsync(0, token);
+
+                await ChangeSelectedSkin(0, token); //TODO Прокручивать до выбранного скина
 
                 _selfModel.IsAssortmentPrepeared = true;
             }
         }
 
-        private void ClearAssortment()
-        {
-            _sliderView.SkinsList.Clear();
-            _skinFactory.DisposeUnusedSkins();
-        }
-
         private void ScrollRight()
         {
-            ScrollToAsync(++_sliderView.CurrentSkinIndex, _cts.Token).Forget();
+            var index = _sliderView.CurrentSkinIndex + 1;
+
+            ChangeSelectedSkin(index, _cts.Token).Forget();
         }
 
         private void ScrollLeft()
         {
-            ScrollToAsync(--_sliderView.CurrentSkinIndex, _cts.Token).Forget();
+            var index = _sliderView.CurrentSkinIndex - 1;
+
+            ChangeSelectedSkin(index, _cts.Token).Forget();
         }
-        
-        private async UniTask ScrollToAsync(int newIndex, CancellationToken token)
+
+        private async UniTask ChangeSelectedSkin(int skinIndex, CancellationToken token)
         {
-            await _sliderView.ScrollAsync(newIndex, token);
+            _sliderView.CurrentSkinIndex = Mathf.Clamp(skinIndex, 0, _sliderView.SkinsCount - 1);
+            _currentSkinsData = _skinFactory.SkinsConfig.SkinsData[_sliderView.CurrentSkinIndex];
 
-            _currentSkinsData = _skinFactory.SkinsConfig.SkinsData[newIndex];
+            await _sliderView.ScrollContentAsync(token);
 
-            _sliderView.CurrentSkinIndex = newIndex;
             _shopScreenView.SkinName.text = _currentSkinsData.Name;
             UpdateShopButton();
         }
@@ -126,6 +125,19 @@ namespace TapAndRun.MVP.Skins_Shop
             }
         }
 
+        private void ProccesShopButtonClick()
+        {
+            Debug.Log("Клик!");
+        }
+
+        private void ClearAssortment()
+        {
+            _selfModel.IsAssortmentPrepeared = false;
+            
+            _sliderView.SkinsList.Clear();
+            _skinFactory.DisposeUnusedSkins();
+        }
+        
         public void Dispose()
         {
             _cts?.Cancel();
