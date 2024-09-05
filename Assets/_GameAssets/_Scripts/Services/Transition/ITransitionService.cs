@@ -6,7 +6,7 @@ namespace TapAndRun.Services.Transition
 {
     public interface ITransitionService : IInitializableAsync
     {
-        UniTask PlayTransition(CancellationToken token, bool canFinish = false);
+        UniTask ShowTransition(CancellationToken token, bool canFinish = false);
         void TryEndTransition();
     }
 }

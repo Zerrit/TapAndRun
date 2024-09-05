@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
-using TapAndRun.MVP.Levels.Model;
+using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Skins_Shop.Model;
 using TapAndRun.Services.Transition;
 
@@ -11,24 +11,19 @@ namespace TapAndRun.Architecture.GameStates
         private readonly GameStateMachine _gameStateMachine;
         private readonly ISkinShopModel _skinShopModel;
         private readonly ITransitionService _transitionService;
-        private readonly ILevelsModel _levelsModel;
 
         public SkinShopState(GameStateMachine gameStateMachine, ISkinShopModel skinShopModel,
-            ITransitionService transitionService, ILevelsModel levelsModel)
+            ITransitionService transitionService)
         {
             _gameStateMachine = gameStateMachine;
             _skinShopModel = skinShopModel;
             _transitionService = transitionService;
-            _levelsModel = levelsModel;
         }
 
         public async UniTask EnterAsync(CancellationToken token)
         {
-            _levelsModel.RemoveTrigger.Trigger();
             _skinShopModel.IsDisplaying.Value = true;
-
             await UniTask.WaitUntil(() => _skinShopModel.IsAssortmentPrepeared, cancellationToken: token);
-
             _transitionService.TryEndTransition();
 
             _skinShopModel.BackTrigger.OnTriggered += ToMainMenu;
@@ -49,7 +44,7 @@ namespace TapAndRun.Architecture.GameStates
 
             async UniTaskVoid ToMainMenuAsync(CancellationToken token)
             {
-                await _transitionService.PlayTransition(token);
+                await _transitionService.ShowTransition(token);
 
                 _gameStateMachine.ChangeStateAsync<MainMenuState>().Forget();
             }

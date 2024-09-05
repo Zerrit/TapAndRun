@@ -45,11 +45,6 @@ namespace TapAndRun.MVP.Character
 
         private async UniTask SetSkinAsync(string skinId)
         {
-            /*if (_view.SkinHandler.childCount > 0)
-            {
-                Object.Destroy(_view.SkinHandler.GetChild(0));
-            }*/
-
             var skin = await _skinFactory.ChangeSkinTo(skinId, _view.SkinHandler, _cts.Token);
 
             _view.InitSkin(skin);

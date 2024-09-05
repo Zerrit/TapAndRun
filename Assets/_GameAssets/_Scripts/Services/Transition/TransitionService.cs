@@ -1,9 +1,10 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 
 namespace TapAndRun.Services.Transition
 {
-    public class TransitionService : ITransitionService
+    public class TransitionService : ITransitionService, IDisposable
     {
         public bool IsScreenHidden { get; private set; }
 
@@ -25,15 +26,13 @@ namespace TapAndRun.Services.Transition
             return UniTask.CompletedTask;
         }
 
-        public async UniTask PlayTransition(CancellationToken token, bool canFinish = false)
+        public async UniTask ShowTransition(CancellationToken token, bool canFinish = false)
         {
             _canFinish = canFinish;
 
             await _view.ShowAsync(token);
 
             IsScreenHidden = true;
-            
-            //await UniTask.WaitUntil(() => _canFinish, cancellationToken: token);
 
             if (canFinish)
             {
@@ -41,7 +40,7 @@ namespace TapAndRun.Services.Transition
             }
         }
 
-        public void TryEndTransition()
+        public void TryEndTransition() //TODO Продумать логику
         {
             IsScreenHidden = false;
             _view.HideAsync(_cts.Token).Forget();

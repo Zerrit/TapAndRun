@@ -9,6 +9,7 @@ using TapAndRun.MVP.Character;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Character.View;
 using TapAndRun.MVP.CharacterCamera;
+using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.Presenter;
 using TapAndRun.MVP.Levels.Views;

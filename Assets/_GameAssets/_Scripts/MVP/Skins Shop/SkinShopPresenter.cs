@@ -5,6 +5,7 @@ using TapAndRun.Configs;
 using TapAndRun.Factories.Skins;
 using TapAndRun.Interfaces;
 using TapAndRun.MVP.Character.Model;
+using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Skins_Shop.Model;
 using TapAndRun.MVP.Skins_Shop.Views;
 using TapAndRun.MVP.Wallet.Model;
@@ -15,25 +16,27 @@ namespace TapAndRun.MVP.Skins_Shop
 {
     public class SkinShopPresenter : IInitializableAsync, IDisposable
     {
-        private readonly ISelfSkinShopModel _model;
+        private readonly ISelfSkinShopModel _selfModel;
         private readonly IWalletModel _walletModel;
         private readonly ICharacterModel _characterModel;
+        private readonly ICameraModel _cameraModel;
         private readonly ISkinFactory _skinFactory;
-        private readonly SkinShopView _view;
+        private readonly SkinShopView _shopScreenView;
         private readonly SkinShopSliderView _sliderView;
 
         private SkinData _currentSkinsData;
 
         private CancellationTokenSource _cts;
 
-        public SkinShopPresenter(ISelfSkinShopModel model, IWalletModel walletModel, ICharacterModel characterModel, 
-            SkinShopView view, ISkinFactory skinFactory, SkinShopSliderView sliderView)
+        public SkinShopPresenter(ISelfSkinShopModel selfModel, IWalletModel walletModel, ICharacterModel characterModel,
+            ICameraModel cameraModel, ISkinFactory skinFactory, SkinShopView shopScreenView, SkinShopSliderView sliderView)
         {
-            _model = model;
+            _selfModel = selfModel;
             _walletModel = walletModel;
             _characterModel = characterModel;
-            _view = view;
+            _cameraModel = cameraModel;
             _skinFactory = skinFactory;
+            _shopScreenView = shopScreenView;
             _sliderView = sliderView;
         }
 
@@ -41,11 +44,11 @@ namespace TapAndRun.MVP.Skins_Shop
         {
             _cts = new CancellationTokenSource();
 
-            _model.IsDisplaying.OnChanged += UpdateDisplaying;
+            _selfModel.IsDisplaying.OnChanged += UpdateDisplaying;
 
-            _view.BackButton.onClick.AddListener(_model.BackTrigger.Trigger);
-            _view.LeftButton.onClick.AddListener(ScrollLeft);
-            _view.RightButton.onClick.AddListener(ScrollRight);
+            _shopScreenView.BackButton.onClick.AddListener(_selfModel.BackTrigger.Trigger);
+            _shopScreenView.LeftButton.onClick.AddListener(ScrollLeft);
+            _shopScreenView.RightButton.onClick.AddListener(ScrollRight);
             
             return UniTask.CompletedTask;
         }
@@ -54,12 +57,13 @@ namespace TapAndRun.MVP.Skins_Shop
         {
             if (isDisplaying)
             {
-                _view.Show();
+                _shopScreenView.Show();
+                _cameraModel.SetSpecialView(Vector2.zero, 3f);
                 FillAssortment();
             }
             else
             {
-                _view.Hide();
+                _shopScreenView.Hide();
                 ClearAssortment();
             }
         }
@@ -75,7 +79,7 @@ namespace TapAndRun.MVP.Skins_Shop
                 _sliderView.Align();
                 await ScrollToAsync(0, token);
 
-                _model.IsAssortmentPrepeared = true;
+                _selfModel.IsAssortmentPrepeared = true;
             }
         }
 
@@ -102,7 +106,7 @@ namespace TapAndRun.MVP.Skins_Shop
             _currentSkinsData = _skinFactory.SkinsConfig.SkinsData[newIndex];
 
             _sliderView.CurrentSkinIndex = newIndex;
-            _view.SkinName.text = _currentSkinsData.Name;
+            _shopScreenView.SkinName.text = _currentSkinsData.Name;
             UpdateShopButton();
         }
 
@@ -110,15 +114,15 @@ namespace TapAndRun.MVP.Skins_Shop
         {
             if (_characterModel.SelectedSkin.Value.Equals(_currentSkinsData.Name))
             {
-                _view.ShopButton.SetSelectedMode();
+                _shopScreenView.ShopButton.SetSelectedMode();
             }
-            else if (_model.UnlockedSkins.Contains(_currentSkinsData.Name))
+            else if (_selfModel.UnlockedSkins.Contains(_currentSkinsData.Name))
             {
-                _view.ShopButton.SetSelectMode();
+                _shopScreenView.ShopButton.SetSelectMode();
             }
             else
             {
-                _view.ShopButton.SetBuyMode(_currentSkinsData.Price, _walletModel.IsEnough(_currentSkinsData.Price));
+                _shopScreenView.ShopButton.SetBuyMode(_currentSkinsData.Price, _walletModel.IsEnough(_currentSkinsData.Price));
             }
         }
 

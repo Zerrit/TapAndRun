@@ -600,7 +600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6095904639272648420
 RectTransform:
   m_ObjectHideFlags: 0
@@ -686,9 +686,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Content>k__BackingField: {fileID: 4920503294047188547}
-  _fadeOutDuration: 1
-  _fadeInDuration: 1
+  _fadeOutDuration: 0
+  _fadeInDuration: 0
   <SkinName>k__BackingField: {fileID: 4258814378319542018}
+  <BackButton>k__BackingField: {fileID: 5360833956432446111}
   <LeftButton>k__BackingField: {fileID: 4703962973712581042}
   <RightButton>k__BackingField: {fileID: 4365208572860241024}
   <ShopButton>k__BackingField: {fileID: 4745993544049185563}
@@ -702,27 +703,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 150805009780323087, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 159782737191878623, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 159782737191878623, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 159782737191878623, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 396.00003
       objectReference: {fileID: 0}
     - target: {fileID: 159782737191878623, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 159782737191878623, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -67.5
       objectReference: {fileID: 0}
     - target: {fileID: 946637506262203730, guid: 7cc613fd71814f9448c034ee2749c53e, type: 3}
       propertyPath: m_IsActive

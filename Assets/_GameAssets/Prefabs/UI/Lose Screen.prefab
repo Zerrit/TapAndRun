@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 3261193975810069448}
   - component: {fileID: 7342823020652285934}
   m_Layer: 5
-  m_Name: Parent
+  m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3261193975810069448
 RectTransform:
   m_ObjectHideFlags: 0
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a2389f9f2b4275a89017ff83c32a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Parent>k__BackingField: {fileID: 7342823020652285934}
+  <Content>k__BackingField: {fileID: 7342823020652285934}
   _fadeOutDuration: 0.2
   _fadeInDuration: 0.2
   <HomeButton>k__BackingField: {fileID: 4099301690096363057}
@@ -248,7 +248,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: f4c99a340a6e6504aa6e992b7a253612, type: 3}
+    m_Font: {fileID: 12800000, guid: 51b5dfbc29669a3458fd562aef767664, type: 3}
     m_FontSize: 124
     m_FontStyle: 0
     m_BestFit: 0

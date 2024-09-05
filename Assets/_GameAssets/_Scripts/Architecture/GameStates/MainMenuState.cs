@@ -57,8 +57,9 @@ namespace TapAndRun.Architecture.GameStates
             
             async UniTaskVoid ToSkinShopAsync(CancellationToken token)
             {
-                await _transitionService.PlayTransition(token);
-                Debug.Log("Экран закрыт");
+                await _transitionService.ShowTransition(token);
+                _levelsModel.RemoveTrigger.Trigger();
+
                 _gameStateMachine.ChangeStateAsync<SkinShopState>().Forget();
             }
         }

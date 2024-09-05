@@ -395,7 +395,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: TAP AND RUN
+  m_Text: TAP & RUN
 --- !u!1 &3887338288490872511
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,7 +457,6 @@ MonoBehaviour:
   <Content>k__BackingField: {fileID: 7762292775942431555}
   _fadeOutDuration: 0.1
   _fadeInDuration: 0.1
-  <Title>k__BackingField: {fileID: 0}
   <SettingsButton>k__BackingField: {fileID: 8218682330995663818}
   <PlayButton>k__BackingField: {fileID: 8612320506013575038}
   <SkinsShopButton>k__BackingField: {fileID: 2399776018027844779}
