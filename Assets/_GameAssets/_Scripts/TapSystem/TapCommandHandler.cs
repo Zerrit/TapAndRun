@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.CharacterCamera;
+using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.Views;
 using TapAndRun.TapSystem.Commands;

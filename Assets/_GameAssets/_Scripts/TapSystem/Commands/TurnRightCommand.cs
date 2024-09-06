@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.CharacterCamera;
+using TapAndRun.MVP.CharacterCamera.Model;
 
 namespace TapAndRun.TapSystem.Commands
 {

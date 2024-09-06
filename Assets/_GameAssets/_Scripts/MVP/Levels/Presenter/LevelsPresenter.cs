@@ -5,6 +5,7 @@ using TapAndRun.Factories.Levels;
 using TapAndRun.Interfaces;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.CharacterCamera;
+using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.Views;
 using TapAndRun.MVP.Wallet.Model;
@@ -51,9 +52,10 @@ namespace TapAndRun.MVP.Levels.Presenter
             _commandHandler = new TapCommandHandler(_characterModel, _cameraModel);
             _model.LevelCount = _levelFactory.GetLevelCount();
 
+            _model.StartupTrigger.OnTriggered += StartGameplay;
+            _model.RemoveTrigger.OnTriggered += RemoveLevels; // TODO Подумать на версией
             _model.OnLevelChanged += BuildLevel;
             _model.OnLevelReseted += ResetLevel;
-            _model.OnLevelStarted += StartGameplay;
 
             _characterModel.IsFall.OnChangedToTrue += ProcessLevelLose;
             _gameplayScreen.TapButton.onClick.AddListener(ProcessClick);
@@ -78,12 +80,11 @@ namespace TapAndRun.MVP.Levels.Presenter
                 _nextLevel = await _levelFactory.CreateLevelViewAsync(_model.CurrentLevelId, Vector2.zero, Quaternion.identity, token);
 
                 _nextLevel.Configure(_model.CurrentLevelId);
-
+                _characterModel.MoveTo(_nextLevel.StartSegment.SegmentCenter.position);
+                _cameraModel.SetRotation();
+                
                 ActivateNextLevel();
                 BuildNextLevel();
-
-                _characterModel.MoveTo(_currentLevel.StartSegment.SegmentCenter.position);
-                _cameraModel.SetRotation();
             }
         }
 
@@ -120,15 +121,6 @@ namespace TapAndRun.MVP.Levels.Presenter
 
             UpdateDifficulty();
         }
-        
-        /// <summary>
-        /// Передает уровень сложности в персонажа и камеру.
-        /// </summary>
-        private void UpdateDifficulty()
-        {
-            _characterModel.ChangeSpeed(_model.CurrentDifficulty);
-            _cameraModel.ChangeDifficulty(_model.CurrentDifficulty);
-        }
 
         private void DeactivateLevel()
         {
@@ -164,6 +156,15 @@ namespace TapAndRun.MVP.Levels.Presenter
             _currentLevel.FinishSegment.OnPlayerEntered += ProcessLevelComplete;
 
             CheckForTutorials();
+        }
+        
+        /// <summary>
+        /// Передает уровень сложности в персонажа и камеру.
+        /// </summary>
+        private void UpdateDifficulty()
+        {
+            _characterModel.ChangeSpeed(_model.CurrentDifficulty);
+            _cameraModel.ChangeDifficulty(_model.CurrentDifficulty);
         }
 
         /// <summary>
@@ -267,6 +268,15 @@ namespace TapAndRun.MVP.Levels.Presenter
         }
         #endregion
 
+        //TODO Метод удаляет уровни и выключает героя.
+
+        private void RemoveLevels()
+        {
+            _model.CurrentLevelId = -1;
+            DeactivateLevel();
+            ClearLevels();
+        }
+        
         private void ClearOldLevel()
         {
             if (_oldLevel)
@@ -278,6 +288,8 @@ namespace TapAndRun.MVP.Levels.Presenter
 
         private void ClearLevels()
         {
+            _characterModel.IsActive.Value = false;
+            
             if (_oldLevel)
             {
                 _oldLevel.Destroy();
@@ -298,9 +310,9 @@ namespace TapAndRun.MVP.Levels.Presenter
 
         public void Dispose()
         {
+            _model.StartupTrigger.OnTriggered -= StartGameplay;
             _model.OnLevelChanged -= BuildLevel;
             _model.OnLevelReseted -= ResetLevel;
-            _model.OnLevelStarted -= StartGameplay;
 
             _characterModel.IsFall.OnChangedToTrue -= ProcessLevelLose;
             _gameplayScreen.TapButton.onClick.RemoveListener(ProcessClick);

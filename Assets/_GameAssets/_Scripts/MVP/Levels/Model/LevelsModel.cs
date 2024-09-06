@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Levels.Model
@@ -9,10 +10,12 @@ namespace TapAndRun.MVP.Levels.Model
     {
         public event Action OnLevelReseted;
         public event Action OnLevelChanged;
-        public event Action OnLevelStarted;
         public event Action OnLevelFailed;
 
-        public int CurrentLevelId { get; private set; }
+        public TriggerReactiveProperty StartupTrigger { get; private set; }
+        public TriggerReactiveProperty RemoveTrigger { get; private set; }
+        
+        public int CurrentLevelId { get; set; }
         public int LastUnlockedLevelId { get; private set; }
         public int LevelCount { get; set; }
 
@@ -27,6 +30,8 @@ namespace TapAndRun.MVP.Levels.Model
         public UniTask InitializeAsync(CancellationToken token)
         {
             _cts = new CancellationTokenSource();
+            StartupTrigger = new TriggerReactiveProperty();
+            RemoveTrigger = new TriggerReactiveProperty();
 
             //TODO Load data
             LastUnlockedLevelId = 0;
@@ -61,11 +66,6 @@ namespace TapAndRun.MVP.Levels.Model
                 CurrentLevelId = levelId;
                 OnLevelChanged?.Invoke();
             }
-        }
-
-        public void StartGameplay()
-        {
-            OnLevelStarted?.Invoke();
         }
 
         public void LoseLevel()

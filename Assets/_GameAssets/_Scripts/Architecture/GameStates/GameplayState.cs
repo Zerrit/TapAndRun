@@ -19,7 +19,7 @@ namespace TapAndRun.Architecture.GameStates
 
         public UniTask EnterAsync(CancellationToken token)
         {
-            _levelsModel.StartGameplay();
+            _levelsModel.StartupTrigger.Trigger();
 
             _levelsModel.OnLevelFailed += ToLose;
             

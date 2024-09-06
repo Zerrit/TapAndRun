@@ -10,10 +10,13 @@ namespace TapAndRun.MVP.Character.Model
         event Action OnBeganJumping;
         event Action OnFinishedJumping;
 
+        BoolReactiveProperty IsActive { get; }
         ReactiveProperty<Vector3> Position { get; }
         ReactiveProperty<float> Rotation { get; }
         ReactiveProperty<bool> IsMoving { get; }
         BoolReactiveProperty IsFall { get; }
         ReactiveProperty<float> AnimMultiplier { get; }
+        
+        ReactiveProperty<string> SelectedSkin { get; }
     }
 }

@@ -8,7 +8,7 @@ using TapAndRun.Services.Update;
 using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
-namespace TapAndRun.MVP.CharacterCamera
+namespace TapAndRun.MVP.CharacterCamera.Model
 {
     public class CameraModel : ISelfCameraModel, ICameraModel, ILateUpdatable, IDisposable
     {
@@ -16,14 +16,15 @@ namespace TapAndRun.MVP.CharacterCamera
         public ReactiveProperty<float> Rotation { get; private set; }
         public ReactiveProperty<float> Height { get; private set; }
 
-        public int Difficulty { get; private set; } //??
+        public int Difficulty { get; private set; }
 
         private int _maxDifficultyLevel;
-        private int _minDifficultyLevel = 1;
         private bool _isFollowActive;
 
         private CancellationTokenSource _cts;
 
+        private const int MinDifficultyLevel = 1;
+        
         private readonly CameraConfig _config;
         private readonly ILateUpdateService _updateService;
         private readonly ICharacterModel _characterModel;
@@ -43,7 +44,6 @@ namespace TapAndRun.MVP.CharacterCamera
             Height = new ReactiveProperty<float>(_config.Height + _config.HeightStep);
 
             _maxDifficultyLevel = _config.RotationDifficulties.Length;
-            _isFollowActive = true;
 
             _updateService.Subscribe(this);
 
@@ -57,10 +57,19 @@ namespace TapAndRun.MVP.CharacterCamera
 
         public void ChangeDifficulty(int newDifficulty)
         {
-            Difficulty = Mathf.Clamp(newDifficulty, _minDifficultyLevel, _maxDifficultyLevel);
-            var targetHeight = Difficulty * _config.HeightStep;
+            _isFollowActive = true;
+
+            Difficulty = Mathf.Clamp(newDifficulty, MinDifficultyLevel, _maxDifficultyLevel);
+            var targetHeight = Difficulty * _config.HeightStep + _config.Height;
 
             ChangeDistanceAsync(targetHeight).Forget();
+        }
+
+        public void SetSpecialView(Vector3 position, float height)
+        {
+            _isFollowActive = false;
+            Position.Value = position + _config.Offset;
+            ChangeDistanceAsync(height).Forget();
         }
 
         public void SetRotation(float rotation = 0)
@@ -89,7 +98,7 @@ namespace TapAndRun.MVP.CharacterCamera
             }
         }
 
-        public async UniTaskVoid TurnAsync(float angle)
+        /*public async UniTaskVoid TurnAsync(float angle)
         {
             var originRotation = Rotation.Value;
             float t = 0;
@@ -101,9 +110,9 @@ namespace TapAndRun.MVP.CharacterCamera
 
                 await UniTask.NextFrame(_cts.Token);
             }
-        }
+        }*/
 
-        public async UniTask ChangeDistanceAsync(float target)
+        public async UniTask ChangeDistanceAsync(float targetHaight)
         {
             var originDistance = Height.Value;
             float t = 0;
@@ -111,7 +120,7 @@ namespace TapAndRun.MVP.CharacterCamera
             while (t < 1)
             {
                 t += 3 * Time.deltaTime;
-                Height.Value = Mathf.Lerp(originDistance, _config.Height + target, t);
+                Height.Value = Mathf.Lerp(originDistance, targetHaight, t);
 
                 await UniTask.NextFrame(_cts.Token);
             }

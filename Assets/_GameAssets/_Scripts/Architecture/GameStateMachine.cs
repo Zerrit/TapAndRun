@@ -13,7 +13,7 @@ namespace TapAndRun.Architecture
     /// </summary>
     public class GameStateMachine : IDisposable
     {
-        private CancellationTokenSource _cts;
+        public CancellationTokenSource Cts { get; private set; }
 
         private IGameState _currentState;
         private Dictionary<Type, IGameState> _states;
@@ -27,13 +27,14 @@ namespace TapAndRun.Architecture
 
         public void Initialize()
         {
-            _cts = new CancellationTokenSource();
+            Cts = new CancellationTokenSource();
 
             _states = new Dictionary<Type, IGameState>()
             {
                 [typeof(MainMenuState)] = _stateFactory.CreateState<MainMenuState>(),
                 [typeof(GameplayState)] = _stateFactory.CreateState<GameplayState>(),
-                [typeof(LoseState)] = _stateFactory.CreateState<LoseState>()
+                [typeof(LoseState)] = _stateFactory.CreateState<LoseState>(),
+                [typeof(SkinShopState)] = _stateFactory.CreateState<SkinShopState>()
             };
 
             Debug.Log("GameStateMachine was initialized!");
@@ -63,17 +64,17 @@ namespace TapAndRun.Architecture
         {
             if (_states.ContainsKey(typeof(T)))
             {
-                await _currentState.ExitAsync(_cts.Token);
+                await _currentState.ExitAsync(Cts.Token);
                 _currentState = _states[typeof(T)];
-                await _states[typeof(T)].EnterAsync(_cts.Token);
+                await _states[typeof(T)].EnterAsync(Cts.Token);
             }
             else throw new Exception($"Не найдено указанное состояние игры: {typeof(T)}");
         }
 
         public void Dispose()
         {
-            _cts?.Cancel();
-            _cts?.Dispose();
+            Cts?.Cancel();
+            Cts?.Dispose();
         }
     }
 }
