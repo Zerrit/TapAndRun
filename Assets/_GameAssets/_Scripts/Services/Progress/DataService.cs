@@ -17,9 +17,11 @@ namespace TapAndRun.Services.Progress
 
         public DataService(IEnumerable<ISaveLoadable> saveLoaders, IDataSerializer serializer, ISaveLoader saveLoader)
         {
+            _saveloadersByKey = saveLoaders.ToDictionary(x => x.SaveKey, x => x);
             _serializer = serializer;
             _saveLoader = saveLoader;
-            _saveloadersByKey = saveLoaders.ToDictionary(x => x.SaveKey, x => x);
+
+            Debug.Log($"Система сохранений обнаружила Сохраняемых сущностей: {_saveloadersByKey.Count}");
         }
 
         public async UniTask SaveGame()
@@ -41,7 +43,7 @@ namespace TapAndRun.Services.Progress
         {
             if (!_saveLoader.IsFileExist())
             {
-                Debug.LogError("Не удалось обнаружить файл сохранений");
+                Debug.LogWarning("Не удалось обнаружить файл сохранений");
                 return;
             }
 

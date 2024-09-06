@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 using TapAndRun.Factories.Levels;
 using TapAndRun.Interfaces;
 using TapAndRun.MVP.Character.Model;
-using TapAndRun.MVP.CharacterCamera;
 using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.Views;
@@ -13,7 +12,7 @@ using TapAndRun.Services.Audio;
 using TapAndRun.TapSystem;
 using UnityEngine;
 
-namespace TapAndRun.MVP.Levels.Presenter
+namespace TapAndRun.MVP.Levels
 {
     public class LevelsPresenter : IInitializableAsync, IDisposable
     {

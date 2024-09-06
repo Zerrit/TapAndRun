@@ -1,8 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.PlayerProgress;
-using TapAndRun.PlayerProgress.SaveData;
-using TapAndRun.Services.Progress;
 using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
@@ -11,7 +9,7 @@ namespace TapAndRun.MVP.Wallet.Model
     public class WalletModel : IWalletModel, ISelfWalletModel, ISaveLoadable
     {
         public string SaveKey => "Wallet";
-        
+
         public ReactiveProperty<bool> IsTutorialDisplayed { get; private set; }
 
         public ReactiveProperty<int> AvailableCrystals { get; private set; }
@@ -60,21 +58,18 @@ namespace TapAndRun.MVP.Wallet.Model
             }
         }
 
-//----------------------------------------------
-        public SaveLoadData GetSaveLoadData()
+        SaveLoadData ISaveLoadable.GetSaveLoadData()
         {
-            return new WalletData(SaveKey, AvailableCrystals.Value);
+            return new SaveLoadData(SaveKey, new object[] {AvailableCrystals.Value});
         }
 
-        public void RestoreValue(SaveLoadData loadData)
+        void ISaveLoadable.RestoreValue(SaveLoadData loadData)
         {
             if (loadData?.Data == null || loadData.Data.Length < 1)
             {
                 Debug.LogError($"Can't restore Wallet data");
                 return;
             }
-
-            //if (int.TryParse(loadData.Data[0].ToString(), out var crystalsCount));
 
             AvailableCrystals.Value = (int)loadData.Data[0];
         }

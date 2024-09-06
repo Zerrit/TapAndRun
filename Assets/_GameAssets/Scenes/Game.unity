@@ -2099,6 +2099,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5956892458761845273, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6735458897908834768, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6752597955598107738, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8392157
+      objectReference: {fileID: 0}
+    - target: {fileID: 6752597955598107738, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_Color.g
+      value: 0.74509805
+      objectReference: {fileID: 0}
+    - target: {fileID: 6752597955598107738, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_Color.r
+      value: 0.54901963
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644689586972703204, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644689586972703204, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_Color.g
+      value: 0.40784314
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644689586972703204, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7897801870525534596, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
       propertyPath: m_Name
       value: Level Select View
@@ -2346,7 +2378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8457647366083658450, guid: 8641e0e324376c541b08213d5d3fde0b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 51.500015
+      value: 51.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2474,7 +2506,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8825180913306768107, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 50.000015
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -10,8 +10,8 @@ using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Character.View;
 using TapAndRun.MVP.CharacterCamera;
 using TapAndRun.MVP.CharacterCamera.Model;
+using TapAndRun.MVP.Levels;
 using TapAndRun.MVP.Levels.Model;
-using TapAndRun.MVP.Levels.Presenter;
 using TapAndRun.MVP.Levels.Views;
 using TapAndRun.MVP.Lose;
 using TapAndRun.MVP.Lose.Model;
@@ -28,8 +28,12 @@ using TapAndRun.MVP.Skins_Shop.Views;
 using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.MVP.Wallet.View;
+using TapAndRun.PlayerProgress;
+using TapAndRun.PlayerProgress.SaveLoad;
+using TapAndRun.PlayerProgress.Serialization;
 using TapAndRun.Services.Audio;
 using TapAndRun.Services.Localization;
+using TapAndRun.Services.Progress;
 using TapAndRun.Services.Transition;
 using TapAndRun.Services.Update;
 using UnityEngine;
@@ -88,6 +92,8 @@ namespace TapAndRun.Architecture.Installers
             RegisterSkinShop(builder);
             RegisterLoseScreen(builder);
             RegisterMainMenu(builder);
+            
+            RegisterSaveLoadSystem(builder);
 
             RegisterGameStates(builder);
 
@@ -191,6 +197,16 @@ namespace TapAndRun.Architecture.Installers
             builder.Register<GameplayState>(Lifetime.Singleton);
             builder.Register<LoseState>(Lifetime.Singleton);
             builder.Register<SkinShopState>(Lifetime.Singleton);
+        }
+
+        private void RegisterSaveLoadSystem(IContainerBuilder builder)
+        {
+            IDataSerializer serializer = new JsonSerializer();
+            ISaveLoader saveLoader = new FileSaveLoader();
+            
+            builder.Register<DataService>(Lifetime.Singleton).As<IDataService>()
+                .WithParameter(serializer)
+                .WithParameter(saveLoader);
         }
     }
 }

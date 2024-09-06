@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using TapAndRun.PlayerProgress;
 using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Levels.Model
 {
-    public class LevelsModel : ISelfLevelsModel, ILevelsModel, IDisposable
+    public class LevelsModel : ISelfLevelsModel, ILevelsModel, ISaveLoadable
     {
+        public string SaveKey => "Levels";
+
         public event Action OnLevelReseted;
         public event Action OnLevelChanged;
         public event Action OnLevelFailed;
 
         public TriggerReactiveProperty StartupTrigger { get; private set; }
         public TriggerReactiveProperty RemoveTrigger { get; private set; }
-        
+
         public int CurrentLevelId { get; set; }
         public int LastUnlockedLevelId { get; private set; }
         public int LevelCount { get; set; }
@@ -22,14 +25,11 @@ namespace TapAndRun.MVP.Levels.Model
         public int CurrentDifficulty { get; private set; }
         public int MaxDifficulty { get; } = 3; //TODO Вынести в конфиг
 
-        private CancellationTokenSource _cts;
-
         private const int NonSelectedLevelId = -1;
         private const int MinDifficulty = 1;
 
         public UniTask InitializeAsync(CancellationToken token)
         {
-            _cts = new CancellationTokenSource();
             StartupTrigger = new TriggerReactiveProperty();
             RemoveTrigger = new TriggerReactiveProperty();
 
@@ -74,7 +74,7 @@ namespace TapAndRun.MVP.Levels.Model
 
             OnLevelFailed?.Invoke();
         }
-        
+
         public void CompleteLevel()
         {
             if (LevelCount - 1 <= CurrentLevelId)
@@ -96,9 +96,20 @@ namespace TapAndRun.MVP.Levels.Model
             return (levelId < LevelCount);
         }
 
-        public void Dispose()
+        SaveLoadData ISaveLoadable.GetSaveLoadData()
         {
-            _cts?.Dispose();
+            return new SaveLoadData(SaveKey, new object[] {LastUnlockedLevelId});
+        }
+
+        void ISaveLoadable.RestoreValue(SaveLoadData loadData)
+        {
+            if (loadData?.Data == null || loadData.Data.Length < 1)
+            {
+                Debug.LogError($"Can't restore Wallet data");
+                return;
+            }
+
+            LastUnlockedLevelId = (int)loadData.Data[0];
         }
     }
 }

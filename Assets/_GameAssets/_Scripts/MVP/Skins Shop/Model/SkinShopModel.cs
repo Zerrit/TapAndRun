@@ -4,18 +4,23 @@ using Cysharp.Threading.Tasks;
 using TapAndRun.Configs;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Wallet.Model;
+using TapAndRun.PlayerProgress;
 using TapAndRun.Tools.Reactivity;
+using UnityEngine;
 
 namespace TapAndRun.MVP.Skins_Shop.Model
 {
-    public class SkinShopModel : ISelfSkinShopModel, ISkinShopModel
+    public class SkinShopModel : ISelfSkinShopModel, ISkinShopModel, ISaveLoadable
     {
+        public string SaveKey => "Skins";
+
         public ReactiveProperty<bool> IsDisplaying { get; set; }
 
         public TriggerReactiveProperty BackTrigger { get; private set; }
 
         public bool IsAssortmentPrepeared { get; set; }
         public SkinData CurrentSkinsData { get; set; }
+
         public List<string> UnlockedSkins { get; private set; }
 
         private readonly ICharacterModel _characterModel;
@@ -68,6 +73,22 @@ namespace TapAndRun.MVP.Skins_Shop.Model
         public bool IsCanPurchase()
         {
             return _walletModel.IsEnough(CurrentSkinsData.Price);
+        }
+
+        SaveLoadData ISaveLoadable.GetSaveLoadData()
+        {
+            return new SaveLoadData(SaveKey, new object[] {UnlockedSkins});
+        }
+
+        void ISaveLoadable.RestoreValue(SaveLoadData loadData)
+        {
+            if (loadData?.Data == null || loadData.Data.Length < 1)
+            {
+                Debug.LogError($"Can't restore Skins data");
+                return;
+            }
+
+            UnlockedSkins = (List<string>)loadData.Data[0];
         }
     }
 }

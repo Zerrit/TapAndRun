@@ -7,8 +7,8 @@ using TapAndRun.MVP.Character;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.CharacterCamera;
 using TapAndRun.MVP.CharacterCamera.Model;
+using TapAndRun.MVP.Levels;
 using TapAndRun.MVP.Levels.Model;
-using TapAndRun.MVP.Levels.Presenter;
 using TapAndRun.MVP.Lose;
 using TapAndRun.MVP.Lose.Model;
 using TapAndRun.MVP.MainMenu;
@@ -21,6 +21,7 @@ using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.Services.Audio;
 using TapAndRun.Services.Localization;
+using TapAndRun.Services.Progress;
 using TapAndRun.Services.Transition;
 using UnityEngine;
 using VContainer;
@@ -32,6 +33,7 @@ namespace TapAndRun.Architecture
     {
         private List<IInitializableAsync> _initializationQueue;
 
+        private IDataService _dataService;
         private GameStateMachine _gameStateMachine;
 
         [Inject]
@@ -45,7 +47,7 @@ namespace TapAndRun.Architecture
             ILoseModel loseModel, LosePresenter losePresenter,
             IWalletModel walletModel, WalletPresenter walletPresenter,
             ISkinShopModel skinShopModel, SkinShopPresenter skinShopPresenter,
-            ITransitionService transitionService,
+            ITransitionService transitionService, IDataService dataService,
             GameStateMachine gameStateMachine)
         {
             _initializationQueue = new List<IInitializableAsync>
@@ -71,6 +73,7 @@ namespace TapAndRun.Architecture
                 transitionService
             };
 
+            _dataService = dataService;
             _gameStateMachine = gameStateMachine;
         }
 
@@ -81,8 +84,9 @@ namespace TapAndRun.Architecture
             {
                 await entity.InitializeAsync(cancellation);
             }
-            
-            // Initialization and start Game State Machine //
+
+            await _dataService.LoadGame();
+
             _gameStateMachine.Initialize();
             _gameStateMachine.StartMachineAsync<MainMenuState>(cancellation).Forget();
         }
