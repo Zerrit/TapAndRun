@@ -4,7 +4,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Audio;
 using TapAndRun.Configs;
-using TapAndRun.Interfaces;
 using TapAndRun.MVP.Settings.Model;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -12,12 +11,6 @@ using VContainer;
 
 namespace TapAndRun.Services.Audio
 {
-    public interface IAudioService: IInitializableAsync
-    {
-        void PlaySound(string id);
-        void CallVibration();
-    }
-
     public class AudioService : MonoBehaviour, IAudioService, IDisposable
     {
         [SerializeField] private SoundConfig _soundConfig;
