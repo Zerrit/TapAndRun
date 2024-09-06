@@ -16,7 +16,7 @@ namespace TapAndRun.MVP.Wallet.Model
             //TODO Try Load DATA
 
             IsTutorialDisplayed = new ReactiveProperty<bool>();
-            AvailableCrystals = new ReactiveProperty<int>(0);
+            AvailableCrystals = new ReactiveProperty<int>(50);
             CrystalsByLevel = new ReactiveProperty<int>(0);
 
             return UniTask.CompletedTask;

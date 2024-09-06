@@ -30,7 +30,8 @@ namespace TapAndRun.MVP.Character
             _cts = new CancellationTokenSource();
             
             await SetSkinAsync(_model.SelectedSkin.Value);
-            //_model.SelectedSkin.Subscribe(SetSkin, true);
+            
+            _model.SelectedSkin.Subscribe(SetSkin);
             _model.IsActive.OnChanged += _view.gameObject.SetActive;
             _model.Position.OnChanged += _view.UpdatePosition;
             _model.Rotation.OnChanged += _view.UpdateRotation;
@@ -40,14 +41,21 @@ namespace TapAndRun.MVP.Character
 
             _model.OnBeganTurning += _view.DisplayTurning;
             _model.OnBeganJumping += _view.DisplayJumping;
-            _model.OnFinishedJumping += _view.Sfx.PlayRunSfx;
+            _model.OnFinishedJumping += _view.DisplayEndJumping;
         }
 
+        private void SetSkin(string skinId)
+        {
+            SetSkinAsync(skinId).Forget();
+        }
+        
         private async UniTask SetSkinAsync(string skinId)
         {
             var skin = await _skinFactory.ChangeSkinTo(skinId, _view.SkinHandler, _cts.Token);
 
             _view.InitSkin(skin);
+            
+            _view.UpdateAnimMultiplier(_model.AnimMultiplier.Value);
         }
 
         public void Dispose()

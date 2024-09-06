@@ -80,12 +80,11 @@ namespace TapAndRun.MVP.Levels.Presenter
                 _nextLevel = await _levelFactory.CreateLevelViewAsync(_model.CurrentLevelId, Vector2.zero, Quaternion.identity, token);
 
                 _nextLevel.Configure(_model.CurrentLevelId);
-
+                _characterModel.MoveTo(_nextLevel.StartSegment.SegmentCenter.position);
+                _cameraModel.SetRotation();
+                
                 ActivateNextLevel();
                 BuildNextLevel();
-
-                _characterModel.MoveTo(_currentLevel.StartSegment.SegmentCenter.position);
-                _cameraModel.SetRotation();
             }
         }
 
@@ -122,15 +121,6 @@ namespace TapAndRun.MVP.Levels.Presenter
 
             UpdateDifficulty();
         }
-        
-        /// <summary>
-        /// Передает уровень сложности в персонажа и камеру.
-        /// </summary>
-        private void UpdateDifficulty()
-        {
-            _characterModel.ChangeSpeed(_model.CurrentDifficulty);
-            _cameraModel.ChangeDifficulty(_model.CurrentDifficulty);
-        }
 
         private void DeactivateLevel()
         {
@@ -166,6 +156,15 @@ namespace TapAndRun.MVP.Levels.Presenter
             _currentLevel.FinishSegment.OnPlayerEntered += ProcessLevelComplete;
 
             CheckForTutorials();
+        }
+        
+        /// <summary>
+        /// Передает уровень сложности в персонажа и камеру.
+        /// </summary>
+        private void UpdateDifficulty()
+        {
+            _characterModel.ChangeSpeed(_model.CurrentDifficulty);
+            _cameraModel.ChangeDifficulty(_model.CurrentDifficulty);
         }
 
         /// <summary>

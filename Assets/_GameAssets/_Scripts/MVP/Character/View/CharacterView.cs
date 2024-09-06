@@ -63,6 +63,11 @@ namespace TapAndRun.MVP.Character.View
             Sfx.PlayJumpSfx();
         }
 
+        public void DisplayEndJumping()
+        {
+            Sfx.PlayRunSfx();
+        }
+
         public void DisplayTurning()
         {
             Sfx.PlayTurnSfx();

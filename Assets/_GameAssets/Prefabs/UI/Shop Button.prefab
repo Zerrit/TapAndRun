@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2046532975567720323, guid: 0db99f6c1b4a3c24bb70fb7a5889c52b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b6641e8af16e52b4ca888b00e3552e00, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -409,6 +409,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e175f4a390074e05835287f05a4acef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <State>k__BackingField: 0
   <Button>k__BackingField: {fileID: 4828723040984589861}
   _buttonImage: {fileID: 8354780445764086627}
   _buttonText: {fileID: 4728766099138970056}
@@ -419,3 +420,8 @@ MonoBehaviour:
   _unavailableColor: {r: 0.972549, g: 0.32941177, b: 0.21568628, a: 1}
   _selectedLangKey: SkinShop.Selected
   _selectLangKey: SkinShop.Select
+  _failAnimVelocity: {x: 1, y: 0}
+  _failAnimDuration: 0.5
+  _acceptAnimSize: {x: 0, y: 0, z: 0}
+  _acceptAnimDuration: 0.5
+  _acceptAnimCurve: 0

@@ -93,11 +93,11 @@ namespace TapAndRun.MVP.Character.Model
             IsFall.Value = false;
         }
 
-        public void ChangeSpeed(int difficultyLevel)
+        public void ChangeSpeed(int difficultyLevel) //TODO Проверить работает ли всё
         {
             _currentSpeed = _config.BaseMoveSpeed + difficultyLevel;
             AnimMultiplier.Value = BaseAnimSpeed + (difficultyLevel / _config.BaseMoveSpeed);
-            //CharacterSfx.ChangeSpeed(difficultyLevel);
+            //CharacterSfx.ChangeSpeed(difficultyLevel); 
         }
         
         public async UniTask CenteringAsync(Vector3 centre)
