@@ -6,10 +6,10 @@ namespace TapAndRun.PlayerProgress
     [Serializable]
     public struct SaveFile
     {
-        public DateTime SaveTime { get; }
-        public List<SaveLoadData> Data { get; }
+        public DateTime SaveTime; 
+        public List<ProgressData> Data; 
 
-        public SaveFile(List<SaveLoadData> data)
+        public SaveFile(List<ProgressData> data)
         {
             SaveTime = DateTime.Now;
             Data = data;

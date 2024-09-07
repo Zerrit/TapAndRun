@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Triggers;
 using TapAndRun.PlayerProgress;
 using TapAndRun.PlayerProgress.SaveLoad;
 using TapAndRun.PlayerProgress.Serialization;
@@ -10,14 +9,14 @@ using UnityEngine;
 
 namespace TapAndRun.Services.Progress
 {
-    public class DataService : IDataService, IAsyncOnApplicationQuitHandler //TODO
+    public class DataService : IDataService //TODO
     {
         private readonly Dictionary<string, ISaveLoadable> _saveloadersByKey;
 
-        private readonly IDataSerializer _serializer;
+        private readonly ISerializer _serializer;
         private readonly ISaveLoader _saveLoader;
 
-        public DataService(IEnumerable<ISaveLoadable> saveLoaders, IDataSerializer serializer, ISaveLoader saveLoader)
+        public DataService(IEnumerable<ISaveLoadable> saveLoaders, ISerializer serializer, ISaveLoader saveLoader)
         {
             _saveloadersByKey = saveLoaders.ToDictionary(x => x.SaveKey, x => x);
             _serializer = serializer;
@@ -31,23 +30,34 @@ namespace TapAndRun.Services.Progress
             await LoadGameAsync(token);
         }
 
-        public async UniTask OnApplicationQuitAsync()
+        public void SaveInstant()
         {
-            await SaveGameAsync();
-            Debug.Log("Вызвано сохранение в связи с закрытием приложения!");
-        }
-
-        public async UniTask SaveGameAsync()
-        {
-            var saveFile = new SaveFile();
+            var progressList = new List<ProgressData>();
 
             foreach (var component in _saveloadersByKey)
             {
-                saveFile.Data.Add(component.Value.GetSaveLoadData());
+                progressList.Add(component.Value.GetProgressData());
             }
 
+            var saveFile = new SaveFile(progressList);
+            var serializedSaveFile = _serializer.Serialize(saveFile);
+            _saveLoader.Save(serializedSaveFile);
+
+            Debug.Log("Завершено сохранение игры!");
+        }
+
+        public async UniTask SaveGameAsync(CancellationToken token)
+        {
+            var progressList = new List<ProgressData>();
+
+            foreach (var component in _saveloadersByKey)
+            {
+                progressList.Add(component.Value.GetProgressData());
+            }
+
+            var saveFile = new SaveFile(progressList);
             var serializedSaveFile = await _serializer.SerializeAsync(saveFile);
-            await _saveLoader.SaveAsync(serializedSaveFile);
+            await _saveLoader.SaveAsync(serializedSaveFile, token);
 
             Debug.Log("Завершено сохранение игры!");
         }
@@ -60,16 +70,14 @@ namespace TapAndRun.Services.Progress
                 return;
             }
 
-            string serializedSaveFile = await _saveLoader.LoadAsync();
-            var deserializedSaveFile = await _serializer.DeserializeAsync(serializedSaveFile);
-
-            var saveFile = (SaveFile)deserializedSaveFile; 
+            string serializedSaveFile = await _saveLoader.LoadAsync(token);
+            var saveFile = await _serializer.DeserializeAsync<SaveFile>(serializedSaveFile);
 
             foreach (var data in saveFile.Data)
             {
                 if (_saveloadersByKey.ContainsKey(data.Key))
                 {
-                    _saveloadersByKey[data.Key].RestoreValue(data);
+                    _saveloadersByKey[data.Key].RestoreProgress(data);
                 }
             }
 

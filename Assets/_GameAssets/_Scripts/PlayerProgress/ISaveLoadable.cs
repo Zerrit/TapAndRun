@@ -1,6 +1,6 @@
 ﻿namespace TapAndRun.PlayerProgress
 {
-    public interface ISaveLoadable
+    public interface ISaveLoadable //TODO возможно сменить название на IProgressable
     {
         /// <summary>
         /// Индивидуальный ключ сохранения сущности.
@@ -10,11 +10,11 @@
         /// <summary>
         /// Возвращает объект сохранений заполненный массивом данных общего типа и индивидуальным ключом.
         /// </summary>
-        SaveLoadData GetSaveLoadData();
+        ProgressData GetProgressData();
 
         /// <summary>
         /// Инициализирует себя извлечёнными данными.
         /// </summary>
-        void RestoreValue(SaveLoadData loadData);
+        void RestoreProgress(ProgressData loadData);
     }
 }

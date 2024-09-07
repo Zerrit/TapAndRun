@@ -96,12 +96,12 @@ namespace TapAndRun.MVP.Levels.Model
             return (levelId < LevelCount);
         }
 
-        SaveLoadData ISaveLoadable.GetSaveLoadData()
+        ProgressData ISaveLoadable.GetProgressData()
         {
-            return new SaveLoadData(SaveKey, new object[] {LastUnlockedLevelId});
+            return new ProgressData(SaveKey, new object[] {LastUnlockedLevelId});
         }
 
-        void ISaveLoadable.RestoreValue(SaveLoadData loadData)
+        void ISaveLoadable.RestoreProgress(ProgressData loadData)
         {
             if (loadData?.Data == null || loadData.Data.Length < 1)
             {
@@ -109,7 +109,7 @@ namespace TapAndRun.MVP.Levels.Model
                 return;
             }
 
-            LastUnlockedLevelId = (int)loadData.Data[0];
+            LastUnlockedLevelId = Convert.ToInt32(loadData.Data[0]);
         }
     }
 }

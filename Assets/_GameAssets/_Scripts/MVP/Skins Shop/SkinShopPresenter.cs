@@ -94,6 +94,9 @@ namespace TapAndRun.MVP.Skins_Shop
             _sliderView.CurrentSkinIndex = Mathf.Clamp(skinIndex, 0, _sliderView.SkinsCount - 1);
             _selfModel.CurrentSkinsData = _skinFactory.SkinsConfig.SkinsData[_sliderView.CurrentSkinIndex];
 
+            _shopScreenView.LeftButton.interactable = skinIndex != 0;
+            _shopScreenView.RightButton.interactable = skinIndex != _sliderView.SkinsCount - 1;
+            
             await _sliderView.ScrollContentAsync(token);
 
             _shopScreenView.SkinName.text = _selfModel.CurrentSkinsData.Name;

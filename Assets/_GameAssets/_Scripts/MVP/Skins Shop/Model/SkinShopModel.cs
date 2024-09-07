@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using TapAndRun.Configs;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Wallet.Model;
@@ -75,12 +77,12 @@ namespace TapAndRun.MVP.Skins_Shop.Model
             return _walletModel.IsEnough(CurrentSkinsData.Price);
         }
 
-        SaveLoadData ISaveLoadable.GetSaveLoadData()
+        ProgressData ISaveLoadable.GetProgressData()
         {
-            return new SaveLoadData(SaveKey, new object[] {UnlockedSkins});
+            return new ProgressData(SaveKey, new object[] {UnlockedSkins});
         }
 
-        void ISaveLoadable.RestoreValue(SaveLoadData loadData)
+        void ISaveLoadable.RestoreProgress(ProgressData loadData)
         {
             if (loadData?.Data == null || loadData.Data.Length < 1)
             {
@@ -88,7 +90,8 @@ namespace TapAndRun.MVP.Skins_Shop.Model
                 return;
             }
 
-            UnlockedSkins = (List<string>)loadData.Data[0];
+            var skins = ((JArray)loadData.Data[0]).ToObject<List<string>>();
+            UnlockedSkins = skins;
         }
     }
 }

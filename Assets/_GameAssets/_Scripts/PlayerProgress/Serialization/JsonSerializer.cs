@@ -3,18 +3,26 @@ using Newtonsoft.Json;
 
 namespace TapAndRun.PlayerProgress.Serialization
 {
-    public class JsonSerializer : IDataSerializer
+    public class JsonSerializer : ISerializer
     {
-        public async UniTask<string> SerializeAsync(object data)
+        public string Serialize(object data)
         {
-            var text = JsonConvert.SerializeObject(data);
+            return JsonConvert.SerializeObject(data);
+        }
+
+        public async UniTask<string> SerializeAsync<T>(T data)
+        {
+            var text = JsonConvert.SerializeObject(data, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
 
             return await UniTask.FromResult(text);
         }
 
-        public async UniTask<object> DeserializeAsync(string text)
+        public async UniTask<T> DeserializeAsync<T>(string text)
         {
-            var data = JsonConvert.DeserializeObject<object>(text);
+            var data = JsonConvert.DeserializeObject<T>(text);
 
             return await UniTask.FromResult(data);
         }

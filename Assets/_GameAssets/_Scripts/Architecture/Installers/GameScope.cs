@@ -1,5 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
-using TapAndRun.Architecture.GameStates;
+﻿using TapAndRun.Architecture.GameStates;
 using TapAndRun.Configs;
 using TapAndRun.Factories.GameStates;
 using TapAndRun.Factories.LangButtons;
@@ -201,7 +200,7 @@ namespace TapAndRun.Architecture.Installers
 
         private void RegisterSaveLoadSystem(IContainerBuilder builder)
         {
-            IDataSerializer serializer = new JsonSerializer();
+            ISerializer serializer = new JsonSerializer();
             ISaveLoader saveLoader = new FileSaveLoader();
             
             builder.Register<DataService>(Lifetime.Singleton).As<IDataService>()

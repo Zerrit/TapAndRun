@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.PlayerProgress;
 using TapAndRun.Tools.Reactivity;
@@ -58,12 +59,12 @@ namespace TapAndRun.MVP.Wallet.Model
             }
         }
 
-        SaveLoadData ISaveLoadable.GetSaveLoadData()
+        ProgressData ISaveLoadable.GetProgressData()
         {
-            return new SaveLoadData(SaveKey, new object[] {AvailableCrystals.Value});
+            return new ProgressData(SaveKey, new object[] {AvailableCrystals.Value});
         }
 
-        void ISaveLoadable.RestoreValue(SaveLoadData loadData)
+        void ISaveLoadable.RestoreProgress(ProgressData loadData)
         {
             if (loadData?.Data == null || loadData.Data.Length < 1)
             {
@@ -71,7 +72,7 @@ namespace TapAndRun.MVP.Wallet.Model
                 return;
             }
 
-            AvailableCrystals.Value = (int)loadData.Data[0];
+            AvailableCrystals.Value = Convert.ToInt32(loadData.Data[0]);
         }
     }
 }

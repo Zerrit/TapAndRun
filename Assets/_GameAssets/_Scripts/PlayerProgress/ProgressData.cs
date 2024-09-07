@@ -3,12 +3,12 @@
 namespace TapAndRun.PlayerProgress
 {
     [Serializable]
-    public class SaveLoadData
+    public class ProgressData
     {
         public string Key { get; private set; }
         public object[] Data { get; private set; }
         
-        public SaveLoadData(string key, object[] data)
+        public ProgressData(string key, object[] data)
         {
             Key = key;
             Data = data;

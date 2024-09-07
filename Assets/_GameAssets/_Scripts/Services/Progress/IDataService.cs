@@ -6,7 +6,8 @@ namespace TapAndRun.Services.Progress
 {
     public interface IDataService : IInitializableAsync
     {
-        UniTask SaveGameAsync();
+        void SaveInstant();
+        UniTask SaveGameAsync(CancellationToken token);
         UniTask LoadGameAsync(CancellationToken token);
     }
 }
