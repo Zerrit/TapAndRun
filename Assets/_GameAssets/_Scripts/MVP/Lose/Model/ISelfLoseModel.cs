@@ -6,7 +6,7 @@ namespace TapAndRun.MVP.Lose.Model
     {
         ReactiveProperty<bool> IsDisplaying { get; }
 
-        public void Restart();
-        public void BackToHome();
+        TriggerReactiveProperty HomeTrigger { get; }
+        TriggerReactiveProperty RestartTrigger { get; }
     }
 }

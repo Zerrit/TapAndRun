@@ -1,16 +1,13 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Factories.Skins;
 using TapAndRun.Interfaces;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Character.View;
-using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace TapAndRun.MVP.Character
 {
-    public class CharacterPresenter : IInitializableAsync, IDisposable
+    public class CharacterPresenter : IInitializableAsync, IDecomposable
     {
         private readonly ISelfCharacterModel _model;
         private readonly ISkinFactory _skinFactory;
@@ -28,9 +25,9 @@ namespace TapAndRun.MVP.Character
         public async UniTask InitializeAsync(CancellationToken token)
         {
             _cts = new CancellationTokenSource();
-            
+
             await SetSkinAsync(_model.SelectedSkin.Value);
-            
+
             _model.SelectedSkin.Subscribe(SetSkin);
             _model.IsActive.OnChanged += _view.gameObject.SetActive;
             _model.Position.OnChanged += _view.UpdatePosition;
@@ -54,15 +51,16 @@ namespace TapAndRun.MVP.Character
             var skin = await _skinFactory.ChangeSkinTo(skinId, _view.SkinHandler, _cts.Token);
 
             _view.InitSkin(skin);
-            
+
             _view.UpdateAnimMultiplier(_model.AnimMultiplier.Value);
         }
 
-        public void Dispose()
+        public void Decompose()
         {
             _cts?.Cancel();
             _cts?.Dispose();
-            
+
+            _model.SelectedSkin.Unsubscribe(SetSkin);
             _model.IsActive.OnChanged -= _view.gameObject.SetActive;
             _model.Position.OnChanged -= _view.UpdatePosition;
             _model.Rotation.OnChanged -= _view.UpdateRotation;
@@ -72,7 +70,7 @@ namespace TapAndRun.MVP.Character
 
             _model.OnBeganTurning -= _view.DisplayTurning;
             _model.OnBeganJumping -= _view.DisplayJumping;
-            _model.OnFinishedJumping -= _view.Sfx.PlayRunSfx;
+            _model.OnFinishedJumping -= _view.DisplayEndJumping;
         }
     }
 }

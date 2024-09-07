@@ -2,7 +2,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Configs;
-using TapAndRun.MVP.MainMenu.Views;
+using TapAndRun.Interfaces;
 using TapAndRun.MVP.Settings.Views;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -10,16 +10,16 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace TapAndRun.Factories.LangButtons
 {
-    public class LangButtonFactory: ILangButtonFactory, IDisposable
+    public class LangButtonFactory: ILangButtonFactory, IDecomposable
     {
-        private readonly AssetReference _langButtonPrefab;
+        private AsyncOperationHandle<GameObject> _langButtonPrefabOperationHandle;
+
+        private readonly AssetReference _langButtonRef;
         private readonly LanguagePoolConfig _langPoolConfig;
 
-        private AsyncOperationHandle<GameObject> _langButtonOperationHandle = new();
-
-        public LangButtonFactory(AssetReference langButtonPrefab, LanguagePoolConfig langPoolConfig)
+        public LangButtonFactory(AssetReference langButtonRef, LanguagePoolConfig langPoolConfig)
         {
-            _langButtonPrefab = langButtonPrefab;
+            _langButtonRef = langButtonRef;
             _langPoolConfig = langPoolConfig;
         }
 
@@ -37,18 +37,27 @@ namespace TapAndRun.Factories.LangButtons
 
         public async UniTask<LangButton> CreateAsynс(int index, Transform parent, CancellationToken token)
         {
-            _langButtonOperationHandle = Addressables.InstantiateAsync(_langButtonPrefab, parent);
-            var levelInstance = await _langButtonOperationHandle.WithCancellation(token);
+            if (!_langButtonPrefabOperationHandle.IsValid())
+            {
+                _langButtonPrefabOperationHandle = Addressables.LoadAssetAsync<GameObject>(_langButtonRef);
 
-            var langButton =  levelInstance.GetComponent<LangButton>();
+                await _langButtonPrefabOperationHandle.WithCancellation(token);
+            }
+
+            var instance = await Addressables.InstantiateAsync(_langButtonRef, parent).WithCancellation(token);
+
+            var langButton =  instance.GetComponent<LangButton>();
             langButton.Initialize(_langPoolConfig._langPool[index]);
 
             return langButton;
         }
 
-        public void Dispose()
+        public void Decompose()
         {
-            Addressables.Release(_langButtonOperationHandle);
+            if (_langButtonPrefabOperationHandle.IsValid())
+            {
+                Addressables.Release(_langButtonPrefabOperationHandle);
+            }
         }
     }
 }

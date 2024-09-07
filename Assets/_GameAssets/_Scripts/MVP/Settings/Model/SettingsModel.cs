@@ -12,11 +12,6 @@ namespace TapAndRun.MVP.Settings.Model
         public ReactiveProperty<bool> VibroStatus { get; private set; }
         public ReactiveProperty<string> Language { get; private set; }
 
-        public SettingsModel()
-        {
-
-        }
-
         public UniTask InitializeAsync(CancellationToken token)
         {
             IsDisplaying = new ReactiveProperty<bool>(false);

@@ -1,4 +1,4 @@
-﻿namespace TapAndRun.MVP.Levels.Model
+﻿namespace TapAndRun.TapSystem
 {
     public enum InteractType
     {

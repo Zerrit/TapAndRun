@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Interfaces;
 
 namespace TapAndRun.MVP.CharacterCamera
 {
-    public class CameraPresenter : IInitializableAsync, IDisposable
+    public class CameraPresenter : IInitializableAsync, IDecomposable
     {
         private readonly ISelfCameraModel _model;
         private readonly CameraView _view;
@@ -25,7 +24,7 @@ namespace TapAndRun.MVP.CharacterCamera
             return UniTask.CompletedTask;
         }
 
-        public void Dispose()
+        public void Decompose()
         {
             _model.Position.OnChanged -= _view.UpdatePosition;
             _model.Rotation.OnChanged -= _view.UpdateRotation;

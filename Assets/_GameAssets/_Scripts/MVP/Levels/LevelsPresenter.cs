@@ -4,18 +4,18 @@ using Cysharp.Threading.Tasks;
 using TapAndRun.Factories.Levels;
 using TapAndRun.Interfaces;
 using TapAndRun.MVP.Character.Model;
-using TapAndRun.MVP.CharacterCamera;
 using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.Views;
+using TapAndRun.MVP.Levels.Views.Tutorial;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.Services.Audio;
 using TapAndRun.TapSystem;
 using UnityEngine;
 
-namespace TapAndRun.MVP.Levels.Presenter
+namespace TapAndRun.MVP.Levels
 {
-    public class LevelsPresenter : IInitializableAsync, IDisposable
+    public class LevelsPresenter : IInitializableAsync, IDecomposable
     {
         private LevelView _oldLevel;
         private LevelView _currentLevel;
@@ -305,20 +305,21 @@ namespace TapAndRun.MVP.Levels.Presenter
                 _nextLevel.Destroy();
             }
 
-            _levelFactory.Dispose();
+            _levelFactory.Decompose();
         }
 
-        public void Dispose()
+        public void Decompose()
         {
+            _cts?.Cancel();
+            _cts?.Dispose();
+
             _model.StartupTrigger.OnTriggered -= StartGameplay;
+            _model.RemoveTrigger.OnTriggered -= RemoveLevels;
             _model.OnLevelChanged -= BuildLevel;
             _model.OnLevelReseted -= ResetLevel;
 
             _characterModel.IsFall.OnChangedToTrue -= ProcessLevelLose;
             _gameplayScreen.TapButton.onClick.RemoveListener(ProcessClick);
-
-            _cts.Cancel();
-            _cts?.Dispose();
         }
     }
 }

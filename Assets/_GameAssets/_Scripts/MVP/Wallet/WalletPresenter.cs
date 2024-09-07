@@ -6,7 +6,7 @@ using TapAndRun.MVP.Wallet.View;
 
 namespace TapAndRun.MVP.Wallet
 {
-    public class WalletPresenter : IInitializableAsync
+    public class WalletPresenter : IInitializableAsync, IDecomposable
     {
         private readonly ISelfWalletModel _walletModel;
         private readonly WalletView _walletView;
@@ -36,6 +36,13 @@ namespace TapAndRun.MVP.Wallet
             {
                 _walletView.WalletTutorialView.Hide();
             }
+        }
+
+        public void Decompose()
+        {
+            _walletModel.AvailableCrystals.Unsubscribe(_walletView.UpdateAvailableCrystals);
+            _walletModel.CrystalsByLevel.Unsubscribe(_walletView.UpdateCrystalsByLevel);
+            _walletModel.IsTutorialDisplayed.OnChanged -= UpdateTutorialDisplaying;
         }
     }
 }

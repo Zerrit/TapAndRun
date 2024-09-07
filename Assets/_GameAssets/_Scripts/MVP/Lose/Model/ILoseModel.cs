@@ -6,9 +6,9 @@ namespace TapAndRun.MVP.Lose.Model
 {
     public interface ILoseModel : IInitializableAsync
     {
-        event Action OnHomeSelected;
-        event Action OnRestartSelected;
-        
-        public ReactiveProperty<bool> IsDisplaying { get; }
+        ReactiveProperty<bool> IsDisplaying { get; }
+
+        TriggerReactiveProperty HomeTrigger { get; }
+        TriggerReactiveProperty RestartTrigger { get; }
     }
 }

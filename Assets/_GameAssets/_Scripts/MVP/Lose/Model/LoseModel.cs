@@ -7,30 +7,18 @@ namespace TapAndRun.MVP.Lose.Model
 {
     public class LoseModel : ISelfLoseModel, ILoseModel
     {
-        public event Action OnHomeSelected;
-        public event Action OnRestartSelected;
-        
+        public TriggerReactiveProperty HomeTrigger { get; private set; }
+        public TriggerReactiveProperty RestartTrigger { get; private set; }
+
         public ReactiveProperty<bool> IsDisplaying { get; private set; }
 
-        public LoseModel()
-        {
-        }
-        
         public UniTask InitializeAsync(CancellationToken token)
         {
             IsDisplaying = new ReactiveProperty<bool>();
+            HomeTrigger = new TriggerReactiveProperty();
+            RestartTrigger = new TriggerReactiveProperty();
 
             return UniTask.CompletedTask;
-        }
-
-        public void Restart()
-        {
-            OnRestartSelected?.Invoke();
-        }
-        
-        public void BackToHome()
-        {
-            OnHomeSelected?.Invoke();
         }
     }
 }

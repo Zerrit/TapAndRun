@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TapAndRun.MVP.Levels.Model;
+using TapAndRun.TapSystem;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Levels.Views

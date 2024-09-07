@@ -10,6 +10,6 @@ namespace TapAndRun.Factories.Levels
         int GetLevelCount();
         UniTask<LevelView> CreateLevelViewAsync(int levelId, Vector2 position, Quaternion rotation, CancellationToken token);
         void DisposeOldLevel();
-        void Dispose();
+        void Decompose();
     }
 }

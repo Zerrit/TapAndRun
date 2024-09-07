@@ -1,20 +1,16 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
-using TapAndRun.Configs;
 using TapAndRun.Factories.Skins;
 using TapAndRun.Interfaces;
-using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Skins_Shop.Model;
 using TapAndRun.MVP.Skins_Shop.Views;
-using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.UI;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Skins_Shop
 {
-    public class SkinShopPresenter : IInitializableAsync, IDisposable
+    public class SkinShopPresenter : IInitializableAsync, IDecomposable
     {
         private readonly ISelfSkinShopModel _selfModel;
         private readonly ICameraModel _cameraModel;
@@ -53,7 +49,7 @@ namespace TapAndRun.MVP.Skins_Shop
             if (isDisplaying)
             {
                 _shopScreenView.Show();
-                _cameraModel.SetSpecialView(Vector2.zero, 3f);
+                _cameraModel.SetSpecialView(Vector2.zero, 0f, 3f);
                 FillAssortment();
             }
             else
@@ -98,6 +94,9 @@ namespace TapAndRun.MVP.Skins_Shop
             _sliderView.CurrentSkinIndex = Mathf.Clamp(skinIndex, 0, _sliderView.SkinsCount - 1);
             _selfModel.CurrentSkinsData = _skinFactory.SkinsConfig.SkinsData[_sliderView.CurrentSkinIndex];
 
+            _shopScreenView.LeftButton.interactable = skinIndex != 0;
+            _shopScreenView.RightButton.interactable = skinIndex != _sliderView.SkinsCount - 1;
+            
             await _sliderView.ScrollContentAsync(token);
 
             _shopScreenView.SkinName.text = _selfModel.CurrentSkinsData.Name;
@@ -151,14 +150,14 @@ namespace TapAndRun.MVP.Skins_Shop
             _selfModel.IsAssortmentPrepeared = false;
             
             _sliderView.SkinsList.Clear();
-            _skinFactory.DisposeUnusedSkins();
+            _skinFactory.ReleaseUnusedSkins();
         }
-        
-        public void Dispose()
+
+        public void Decompose()
         {
             _cts?.Cancel();
             _cts?.Dispose();
-            
+
             _selfModel.IsDisplaying.OnChanged -= UpdateDisplaying;
 
             _shopScreenView.BackButton.onClick.RemoveListener(_selfModel.BackTrigger.Trigger);

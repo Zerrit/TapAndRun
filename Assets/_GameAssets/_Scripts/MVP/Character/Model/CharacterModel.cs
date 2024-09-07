@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TapAndRun.MVP.Character.Model
 {
-    public class CharacterModel : ISelfCharacterModel, ICharacterModel, IUpdatable, IDisposable
+    public class CharacterModel : ISelfCharacterModel, ICharacterModel, IUpdatable, IDecomposable
     {
         public event Action OnBeganTurning;
         public event Action OnBeganJumping;
@@ -189,7 +189,7 @@ namespace TapAndRun.MVP.Character.Model
                     (Mathf.Abs(Rotation.Value) > 175f && Mathf.Abs(Rotation.Value) < 185f));
         }
 
-        public void Dispose()
+        public void Decompose()
         {
             _cts?.Cancel();
             _cts?.Dispose();

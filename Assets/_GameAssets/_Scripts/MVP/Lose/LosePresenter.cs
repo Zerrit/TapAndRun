@@ -6,7 +6,7 @@ using TapAndRun.MVP.Lose.View;
 
 namespace TapAndRun.MVP.Lose
 {
-    public class LosePresenter : IInitializableAsync
+    public class LosePresenter : IInitializableAsync, IDecomposable
     {
         private readonly ISelfLoseModel _model;
         private readonly LoseView _view;
@@ -20,12 +20,12 @@ namespace TapAndRun.MVP.Lose
         public UniTask InitializeAsync(CancellationToken token)
         {
             _model.IsDisplaying.OnChanged += UpdateDisplaying;
-            _view.RestartButton.onClick.AddListener(_model.Restart);
-            _view.HomeButton.onClick.AddListener(_model.BackToHome);
-            
+            _view.RestartButton.onClick.AddListener(_model.RestartTrigger.Trigger);
+            _view.HomeButton.onClick.AddListener(_model.HomeTrigger.Trigger);
+
             return UniTask.CompletedTask;
         }
-        
+
         private void UpdateDisplaying(bool status)
         {
             if (status)
@@ -36,6 +36,13 @@ namespace TapAndRun.MVP.Lose
             {
                 _view.Hide();
             }
+        }
+
+        public void Decompose()
+        {
+            _model.IsDisplaying.OnChanged -= UpdateDisplaying;
+            _view.RestartButton.onClick.RemoveListener(_model.RestartTrigger.Trigger);
+            _view.HomeButton.onClick.RemoveListener(_model.HomeTrigger.Trigger);
         }
     }
 }

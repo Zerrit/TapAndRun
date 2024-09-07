@@ -11,7 +11,7 @@ namespace TapAndRun.MVP.MainMenu.Model
 
         public TriggerReactiveProperty PlayTrigger { get; private set; }
         public TriggerReactiveProperty SkinShopTrigger { get; private set; }
-        
+
         public UniTask InitializeAsync(CancellationToken token)
         {
             IsDisplaying = new ReactiveProperty<bool>();

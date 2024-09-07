@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Factories.LevelButtons;
 using TapAndRun.Interfaces;
@@ -11,7 +10,7 @@ using TapAndRun.MVP.Skins_Shop.Model;
 
 namespace TapAndRun.MVP.MainMenu
 {
-    public class MainMenuPresenter : IInitializableAsync, IDisposable
+    public class MainMenuPresenter : IInitializableAsync, IDecomposable
     {
         private CancellationTokenSource _cts;
 
@@ -46,7 +45,7 @@ namespace TapAndRun.MVP.MainMenu
             _view.LevelSelectButton.onClick.AddListener(OpenLevelSelect);
             _view.SkinsShopButton.onClick.AddListener(_model.SkinShopTrigger.Trigger);
             
-            _levelSelectView.BackButton.onClick.AddListener(()=> _levelSelectView.Hide());
+            _levelSelectView.BackButton.onClick.AddListener(_levelSelectView.Hide);
 
             await UniTask.CompletedTask;
         }
@@ -104,19 +103,22 @@ namespace TapAndRun.MVP.MainMenu
 
                 button.OnClicked += HandleLevelSelection;
             }
+            
+            _levelButtonFactory.Decompose();
         }
 
-        public void Dispose()
+        public void Decompose()
         {
             _cts?.Cancel();
             _cts?.Dispose();
-            
+
             _model.IsDisplaying.OnChanged -= UpdateDisplaying;
 
             _view.PlayButton.onClick.RemoveListener(_model.PlayTrigger.Trigger);
             _view.SettingsButton.onClick.RemoveListener(OpenSettings);
             _view.LevelSelectButton.onClick.RemoveListener(OpenLevelSelect);
             _view.SkinsShopButton.onClick.RemoveListener(_model.SkinShopTrigger.Trigger);
+            _levelSelectView.BackButton.onClick.RemoveListener(_levelSelectView.Hide);
         }
     }
 }

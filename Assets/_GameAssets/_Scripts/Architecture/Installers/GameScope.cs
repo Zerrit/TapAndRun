@@ -10,8 +10,8 @@ using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Character.View;
 using TapAndRun.MVP.CharacterCamera;
 using TapAndRun.MVP.CharacterCamera.Model;
+using TapAndRun.MVP.Levels;
 using TapAndRun.MVP.Levels.Model;
-using TapAndRun.MVP.Levels.Presenter;
 using TapAndRun.MVP.Levels.Views;
 using TapAndRun.MVP.Lose;
 using TapAndRun.MVP.Lose.Model;
@@ -28,8 +28,11 @@ using TapAndRun.MVP.Skins_Shop.Views;
 using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.MVP.Wallet.View;
+using TapAndRun.PlayerProgress.SaveLoad;
+using TapAndRun.PlayerProgress.Serialization;
 using TapAndRun.Services.Audio;
 using TapAndRun.Services.Localization;
+using TapAndRun.Services.Progress;
 using TapAndRun.Services.Transition;
 using TapAndRun.Services.Update;
 using UnityEngine;
@@ -89,6 +92,8 @@ namespace TapAndRun.Architecture.Installers
             RegisterLoseScreen(builder);
             RegisterMainMenu(builder);
 
+            RegisterSaveLoadSystem(builder);
+
             RegisterGameStates(builder);
 
             builder.Register<GameStateMachine>(Lifetime.Singleton);
@@ -124,7 +129,7 @@ namespace TapAndRun.Architecture.Installers
             builder.Register<TransitionService>(Lifetime.Singleton).As<ITransitionService>()
                 .WithParameter(_transitionView);
         }
-        
+
         private void RegisterCamera(IContainerBuilder builder)
         {
             builder.Register<CameraModel>(Lifetime.Singleton).AsImplementedInterfaces()
@@ -132,7 +137,7 @@ namespace TapAndRun.Architecture.Installers
             builder.Register<CameraPresenter>(Lifetime.Singleton)
                 .WithParameter(_cameraView);
         }
-        
+
         private void RegisterCharacter(IContainerBuilder builder)
         {
             builder.Register<CharacterModel>(Lifetime.Singleton).AsImplementedInterfaces()
@@ -176,7 +181,7 @@ namespace TapAndRun.Architecture.Installers
             builder.Register<LosePresenter>(Lifetime.Singleton)
                 .WithParameter(_loseView);
         }
-        
+
         private void RegisterMainMenu(IContainerBuilder builder)
         {
             builder.Register<SelfMainMenuModel>(Lifetime.Singleton).AsImplementedInterfaces();
@@ -184,13 +189,23 @@ namespace TapAndRun.Architecture.Installers
                 .WithParameter(_mainMenu)
                 .WithParameter(_levelSelectView);
         }
-        
+
         private void RegisterGameStates(IContainerBuilder builder)
         {
             builder.Register<MainMenuState>(Lifetime.Singleton);
             builder.Register<GameplayState>(Lifetime.Singleton);
             builder.Register<LoseState>(Lifetime.Singleton);
             builder.Register<SkinShopState>(Lifetime.Singleton);
+        }
+
+        private void RegisterSaveLoadSystem(IContainerBuilder builder)
+        {
+            ISerializer serializer = new JsonSerializer();
+            ISaveLoader saveLoader = new FileSaveLoader();
+            
+            builder.Register<DataService>(Lifetime.Singleton).As<IDataService>()
+                .WithParameter(serializer)
+                .WithParameter(saveLoader);
         }
     }
 }

@@ -7,8 +7,8 @@ using TapAndRun.MVP.Character;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.CharacterCamera;
 using TapAndRun.MVP.CharacterCamera.Model;
+using TapAndRun.MVP.Levels;
 using TapAndRun.MVP.Levels.Model;
-using TapAndRun.MVP.Levels.Presenter;
 using TapAndRun.MVP.Lose;
 using TapAndRun.MVP.Lose.Model;
 using TapAndRun.MVP.MainMenu;
@@ -21,6 +21,7 @@ using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.Services.Audio;
 using TapAndRun.Services.Localization;
+using TapAndRun.Services.Progress;
 using TapAndRun.Services.Transition;
 using UnityEngine;
 using VContainer;
@@ -45,10 +46,11 @@ namespace TapAndRun.Architecture
             ILoseModel loseModel, LosePresenter losePresenter,
             IWalletModel walletModel, WalletPresenter walletPresenter,
             ISkinShopModel skinShopModel, SkinShopPresenter skinShopPresenter,
-            ITransitionService transitionService,
+            ITransitionService transitionService, IDataService dataService,
             GameStateMachine gameStateMachine)
         {
-            _initializationQueue = new List<IInitializableAsync>
+            _initializationQueue = new List<IInitializableAsync> //TODO Рассмотреть вариант с добавлением в интерфейс свойства : "Приоритет"...
+                                                                 //TODO и обрабатывать их согласно приоритету. Это позволить упростить EntryPoint до перечисления с типом IInitializableAsync
             {
                 settingsModel,
                 settingsPresenter,
@@ -68,21 +70,21 @@ namespace TapAndRun.Architecture
                 walletPresenter,
                 skinShopModel,
                 skinShopPresenter,
-                transitionService
+                transitionService,
+                dataService
             };
 
             _gameStateMachine = gameStateMachine;
         }
 
+        // Initialization of all game entities in the specified order 
         public async UniTask StartAsync(CancellationToken cancellation)
         {
-            // Initialization of all game entities in the specified order //
             foreach (var entity in _initializationQueue)
             {
                 await entity.InitializeAsync(cancellation);
             }
-            
-            // Initialization and start Game State Machine //
+
             _gameStateMachine.Initialize();
             _gameStateMachine.StartMachineAsync<MainMenuState>(cancellation).Forget();
         }
