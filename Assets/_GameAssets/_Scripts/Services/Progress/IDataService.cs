@@ -1,10 +1,12 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
+using TapAndRun.Interfaces;
 
 namespace TapAndRun.Services.Progress
 {
-    public interface IDataService
+    public interface IDataService : IInitializableAsync
     {
-        UniTask SaveGame();
-        UniTask LoadGame();
+        UniTask SaveGameAsync();
+        UniTask LoadGameAsync(CancellationToken token);
     }
 }

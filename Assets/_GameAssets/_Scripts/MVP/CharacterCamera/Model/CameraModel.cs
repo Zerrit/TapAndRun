@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Configs;
 using TapAndRun.Interfaces;
@@ -10,7 +9,7 @@ using UnityEngine;
 
 namespace TapAndRun.MVP.CharacterCamera.Model
 {
-    public class CameraModel : ISelfCameraModel, ICameraModel, ILateUpdatable, IDisposable
+    public class CameraModel : ISelfCameraModel, ICameraModel, ILateUpdatable, IDecomposable
     {
         public ReactiveProperty<Vector3> Position { get; private set; }
         public ReactiveProperty<float> Rotation { get; private set; }
@@ -24,7 +23,7 @@ namespace TapAndRun.MVP.CharacterCamera.Model
         private CancellationTokenSource _cts;
 
         private const int MinDifficultyLevel = 1;
-        
+
         private readonly CameraConfig _config;
         private readonly ILateUpdateService _updateService;
         private readonly ICharacterModel _characterModel;
@@ -65,10 +64,11 @@ namespace TapAndRun.MVP.CharacterCamera.Model
             ChangeDistanceAsync(targetHeight).Forget();
         }
 
-        public void SetSpecialView(Vector3 position, float height)
+        public void SetSpecialView(Vector3 position, float rotation, float height)
         {
             _isFollowActive = false;
             Position.Value = position + _config.Offset;
+            Rotation.Value = rotation;
             ChangeDistanceAsync(height).Forget();
         }
 
@@ -133,16 +133,16 @@ namespace TapAndRun.MVP.CharacterCamera.Model
                 return;
             }
 
-            Vector3 targetPosition = _characterModel.Position.Value + _config.Offset;
+            var targetPosition = _characterModel.Position.Value + _config.Offset;
             Position.Value = targetPosition;
         }
 
-        public void Dispose()
+        public void Decompose()
         {
-            _updateService.Unsubscribe(this);
+            _cts?.Cancel();
+            _cts?.Dispose();
 
-            _cts.Cancel();
-            _cts.Dispose();
+            _updateService.Unsubscribe(this);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using TapAndRun.Architecture.GameStates;
+﻿using Cysharp.Threading.Tasks;
+using TapAndRun.Architecture.GameStates;
 using TapAndRun.Configs;
 using TapAndRun.Factories.GameStates;
 using TapAndRun.Factories.LangButtons;
@@ -28,7 +29,6 @@ using TapAndRun.MVP.Skins_Shop.Views;
 using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.MVP.Wallet.View;
-using TapAndRun.PlayerProgress;
 using TapAndRun.PlayerProgress.SaveLoad;
 using TapAndRun.PlayerProgress.Serialization;
 using TapAndRun.Services.Audio;
@@ -92,7 +92,7 @@ namespace TapAndRun.Architecture.Installers
             RegisterSkinShop(builder);
             RegisterLoseScreen(builder);
             RegisterMainMenu(builder);
-            
+
             RegisterSaveLoadSystem(builder);
 
             RegisterGameStates(builder);
@@ -130,7 +130,7 @@ namespace TapAndRun.Architecture.Installers
             builder.Register<TransitionService>(Lifetime.Singleton).As<ITransitionService>()
                 .WithParameter(_transitionView);
         }
-        
+
         private void RegisterCamera(IContainerBuilder builder)
         {
             builder.Register<CameraModel>(Lifetime.Singleton).AsImplementedInterfaces()
@@ -138,7 +138,7 @@ namespace TapAndRun.Architecture.Installers
             builder.Register<CameraPresenter>(Lifetime.Singleton)
                 .WithParameter(_cameraView);
         }
-        
+
         private void RegisterCharacter(IContainerBuilder builder)
         {
             builder.Register<CharacterModel>(Lifetime.Singleton).AsImplementedInterfaces()
@@ -182,7 +182,7 @@ namespace TapAndRun.Architecture.Installers
             builder.Register<LosePresenter>(Lifetime.Singleton)
                 .WithParameter(_loseView);
         }
-        
+
         private void RegisterMainMenu(IContainerBuilder builder)
         {
             builder.Register<SelfMainMenuModel>(Lifetime.Singleton).AsImplementedInterfaces();
@@ -190,7 +190,7 @@ namespace TapAndRun.Architecture.Installers
                 .WithParameter(_mainMenu)
                 .WithParameter(_levelSelectView);
         }
-        
+
         private void RegisterGameStates(IContainerBuilder builder)
         {
             builder.Register<MainMenuState>(Lifetime.Singleton);

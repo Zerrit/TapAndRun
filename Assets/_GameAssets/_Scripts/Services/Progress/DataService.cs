@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
 using TapAndRun.PlayerProgress;
 using TapAndRun.PlayerProgress.SaveLoad;
 using TapAndRun.PlayerProgress.Serialization;
@@ -8,7 +10,7 @@ using UnityEngine;
 
 namespace TapAndRun.Services.Progress
 {
-    public class DataService : IDataService
+    public class DataService : IDataService, IAsyncOnApplicationQuitHandler //TODO
     {
         private readonly Dictionary<string, ISaveLoadable> _saveloadersByKey;
 
@@ -24,7 +26,18 @@ namespace TapAndRun.Services.Progress
             Debug.Log($"Система сохранений обнаружила Сохраняемых сущностей: {_saveloadersByKey.Count}");
         }
 
-        public async UniTask SaveGame()
+        public async UniTask InitializeAsync(CancellationToken token)
+        {
+            await LoadGameAsync(token);
+        }
+
+        public async UniTask OnApplicationQuitAsync()
+        {
+            await SaveGameAsync();
+            Debug.Log("Вызвано сохранение в связи с закрытием приложения!");
+        }
+
+        public async UniTask SaveGameAsync()
         {
             var saveFile = new SaveFile();
 
@@ -39,7 +52,7 @@ namespace TapAndRun.Services.Progress
             Debug.Log("Завершено сохранение игры!");
         }
 
-        public async UniTask LoadGame()
+        public async UniTask LoadGameAsync(CancellationToken token)
         {
             if (!_saveLoader.IsFileExist())
             {

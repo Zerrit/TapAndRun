@@ -13,18 +13,18 @@ namespace TapAndRun.Services.Audio
 {
     public class AudioService : MonoBehaviour, IAudioService, IDisposable
     {
+        [SerializeField] private float _defaultVolume;
+
         [SerializeField] private SoundConfig _soundConfig;
         [SerializeField] private AudioSource _source;
         [SerializeField] private AudioMixer _mixer;
 
-        [SerializeField] private float _defaultVolume;
-
         private bool _isVibroActive;
         private Dictionary<string, Sound> _sounds;
+        
+        private const float MuteVolume = 0.0001f;
 
         private ISettingsModel _settingsModel;
-
-        private const float MuteVolume = 0.0001f;
 
         [Inject]
         public void Construct(ISettingsModel settingsModel)

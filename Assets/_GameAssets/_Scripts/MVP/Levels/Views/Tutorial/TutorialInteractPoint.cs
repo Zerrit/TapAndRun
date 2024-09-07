@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace TapAndRun.MVP.Levels.Views
+namespace TapAndRun.MVP.Levels.Views.Tutorial
 {
     public class TutorialInteractPoint : MonoBehaviour
     {

@@ -8,7 +8,7 @@ namespace TapAndRun.MVP.CharacterCamera.Model
     {
         int Difficulty { get; }
 
-        void SetSpecialView(Vector3 position, float height);
+        void SetSpecialView(Vector3 position, float rotation, float height);
         void SetRotation(float rotation = 0);
         void ChangeDifficulty(int newDifficulty);
 

@@ -8,6 +8,6 @@ namespace TapAndRun.Factories.LevelButtons
     public interface ILevelButtonFactory
     {
         UniTask<LevelButtonView> CreateAsynс(Transform parent, CancellationToken token);
-        void Dispose();
+        void Decompose();
     }
 }

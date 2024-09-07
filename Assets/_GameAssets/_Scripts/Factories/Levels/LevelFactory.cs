@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Configs;
+using TapAndRun.Interfaces;
 using TapAndRun.MVP.Levels.Views;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -10,7 +11,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace TapAndRun.Factories.Levels
 {
-    public class LevelFactory : ILevelFactory, IDisposable
+    public class LevelFactory : ILevelFactory, IDecomposable
     {
         private readonly LevelsConfig _levelsConfig;
         private readonly Transform _parentContainer;
@@ -45,8 +46,8 @@ namespace TapAndRun.Factories.Levels
             var oldLevel = _levelOperationHandles.Dequeue();
             Addressables.Release(oldLevel);
         }
-        
-        public void Dispose()
+
+        public void Decompose()
         {
             foreach (var handle in _levelOperationHandles)
             {

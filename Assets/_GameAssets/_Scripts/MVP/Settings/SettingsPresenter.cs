@@ -9,7 +9,7 @@ using TapAndRun.MVP.Settings.Views;
 
 namespace TapAndRun.MVP.Settings
 {
-    public class SettingsPresenter : IInitializableAsync, IDisposable
+    public class SettingsPresenter : IInitializableAsync, IDecomposable
     {
         private readonly ILangButtonFactory _langButtonFactory;
         private readonly ISelfSettingsModel _model;
@@ -48,6 +48,8 @@ namespace TapAndRun.MVP.Settings
 
                 button.OnClicked += ChangeLanguage;
             }
+            
+            _langButtonFactory.Decompose();
         }
 
         private void UpdateDisplaying(bool status)
@@ -84,9 +86,9 @@ namespace TapAndRun.MVP.Settings
             _view.LanguagePopup.Hide();
         }
 
-        public void Dispose()
+        public void Decompose()
         {
-            _model.IsDisplaying.OnChanged += UpdateDisplaying;
+            _model.IsDisplaying.OnChanged -= UpdateDisplaying;
 
             _view.CloseButton.onClick.RemoveAllListeners();
             _view.LanguagueButton.onClick.RemoveListener(_view.LanguagePopup.Show);

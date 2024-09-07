@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Configs;
+using TapAndRun.Interfaces;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace TapAndRun.Factories.Skins
 {
-    public class SkinFactory : ISkinFactory, IDisposable
+    public class SkinFactory : ISkinFactory, IDecomposable
     {
         public SkinsConfig SkinsConfig { get; }
 
@@ -41,7 +42,7 @@ namespace TapAndRun.Factories.Skins
 
             return skins;
         }
-        
+
         public async UniTask<GameObject> ChangeSkinTo(string name, Transform parent, CancellationToken token)
         {
             foreach (var skinData in SkinsConfig.SkinsData)
@@ -70,7 +71,7 @@ namespace TapAndRun.Factories.Skins
             throw new Exception("No skins found in the config ");
         }
 
-        public void DisposeUnusedSkins()
+        public void ReleaseUnusedSkins()
         {
             foreach (var skin in _assortmentOperationHandles)
             {
@@ -79,11 +80,11 @@ namespace TapAndRun.Factories.Skins
 
             _assortmentOperationHandles.Clear();
         }
-        
-        public void Dispose()
+
+        public void Decompose()
         {
             Addressables.Release(_usingSkinOperationHandle);
-            DisposeUnusedSkins();
+            ReleaseUnusedSkins();
         }
     }
 }

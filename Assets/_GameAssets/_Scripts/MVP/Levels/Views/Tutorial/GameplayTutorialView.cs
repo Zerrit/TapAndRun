@@ -5,7 +5,7 @@ using TapAndRun.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TapAndRun.MVP.Levels.Views
+namespace TapAndRun.MVP.Levels.Views.Tutorial
 {
     public class GameplayTutorialView : ScreenView
     {

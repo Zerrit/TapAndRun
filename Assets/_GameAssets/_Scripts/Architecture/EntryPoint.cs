@@ -33,7 +33,6 @@ namespace TapAndRun.Architecture
     {
         private List<IInitializableAsync> _initializationQueue;
 
-        private IDataService _dataService;
         private GameStateMachine _gameStateMachine;
 
         [Inject]
@@ -50,7 +49,8 @@ namespace TapAndRun.Architecture
             ITransitionService transitionService, IDataService dataService,
             GameStateMachine gameStateMachine)
         {
-            _initializationQueue = new List<IInitializableAsync>
+            _initializationQueue = new List<IInitializableAsync> //TODO Рассмотреть вариант с добавлением в интерфейс свойства : "Приоритет"...
+                                                                 //TODO и обрабатывать их согласно приоритету. Это позволить упростить EntryPoint до перечисления с типом IInitializableAsync
             {
                 settingsModel,
                 settingsPresenter,
@@ -70,22 +70,20 @@ namespace TapAndRun.Architecture
                 walletPresenter,
                 skinShopModel,
                 skinShopPresenter,
-                transitionService
+                transitionService,
+                dataService
             };
 
-            _dataService = dataService;
             _gameStateMachine = gameStateMachine;
         }
 
+        // Initialization of all game entities in the specified order 
         public async UniTask StartAsync(CancellationToken cancellation)
         {
-            // Initialization of all game entities in the specified order //
             foreach (var entity in _initializationQueue)
             {
                 await entity.InitializeAsync(cancellation);
             }
-
-            await _dataService.LoadGame();
 
             _gameStateMachine.Initialize();
             _gameStateMachine.StartMachineAsync<MainMenuState>(cancellation).Forget();

@@ -22,8 +22,8 @@ namespace TapAndRun.Architecture.GameStates
         {
             _loseModel.IsDisplaying.Value = true;
 
-            _loseModel.OnRestartSelected += ToGameplay;
-            _loseModel.OnHomeSelected += ToMainMenu;
+            _loseModel.RestartTrigger.Subscribe(ToGameplay);
+            _loseModel.HomeTrigger.Subscribe(ToMainMenu);
             
             return UniTask.CompletedTask;
         }
@@ -32,8 +32,8 @@ namespace TapAndRun.Architecture.GameStates
         {
             _loseModel.IsDisplaying.Value = false;
             
-            _loseModel.OnRestartSelected -= ToGameplay;
-            _loseModel.OnHomeSelected -= ToMainMenu;
+            _loseModel.RestartTrigger.Unsubscribe(ToGameplay);
+            _loseModel.HomeTrigger.Unsubscribe(ToMainMenu);
             
             return UniTask.CompletedTask;
         }
