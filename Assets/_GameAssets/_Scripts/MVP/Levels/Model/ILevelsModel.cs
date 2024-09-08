@@ -7,14 +7,15 @@ namespace TapAndRun.MVP.Levels.Model
     public interface ILevelsModel : IInitializableAsync
     {
         event Action OnLevelFailed;
-        
-        TriggerReactiveProperty StartupTrigger { get; }
-        TriggerReactiveProperty RemoveTrigger { get; }
-        
-        int LastUnlockedLevelId { get; }
-        int LevelCount { get; set; }
 
-        void PrepeareCurrentLevel();
-        void PrepareLevel(int levelId);
+        BoolReactiveProperty IsDisplaying { get; }
+
+        TriggerReactiveProperty StartupTrigger { get; }
+        TriggerReactiveProperty ResetLevelTrigger { get; } 
+
+        int LastUnlockedLevelId { get; }
+        int LevelCount { get; }
+
+        void SelectLevel(int levelId);
     }
 }

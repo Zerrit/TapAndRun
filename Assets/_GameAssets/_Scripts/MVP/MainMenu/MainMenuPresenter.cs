@@ -86,7 +86,7 @@ namespace TapAndRun.MVP.MainMenu
                 }
                 else
                 {
-                    _levelsModel.PrepareLevel(levelButton.LevelId);
+                    _levelsModel.SelectLevel(levelButton.LevelId);
                     await _levelSelectView.HideAsync(token); //TODO Возможно стоит добавить ожидание окончания создания уровня
                 }
             }

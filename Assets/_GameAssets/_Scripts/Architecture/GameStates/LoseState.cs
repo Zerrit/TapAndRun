@@ -40,13 +40,15 @@ namespace TapAndRun.Architecture.GameStates
 
         private void ToGameplay()
         {
-            _levelsModel.PrepeareCurrentLevel();
+            _levelsModel.ResetLevelTrigger.Trigger();
 
             _stateMachine.ChangeStateAsync<GameplayState>().Forget();
         }
 
         private void ToMainMenu()
         {
+            _levelsModel.ResetLevelTrigger.Trigger();
+
             _stateMachine.ChangeStateAsync<MainMenuState>().Forget();
         }
     }

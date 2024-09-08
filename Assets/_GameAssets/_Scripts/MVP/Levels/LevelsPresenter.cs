@@ -52,10 +52,13 @@ namespace TapAndRun.MVP.Levels
             _commandHandler = new TapCommandHandler(_characterModel, _cameraModel);
             _model.LevelCount = _levelFactory.GetLevelCount();
 
-            _model.StartupTrigger.OnTriggered += StartGameplay;
-            _model.RemoveTrigger.OnTriggered += RemoveLevels; // TODO Подумать на версией
+            _model.IsDisplaying.Subscribe(BuildLevel, true);
+            _model.IsDisplaying.Subscribe(HideLevels, false);
+            
+            _model.StartupTrigger.Subscribe(StartGameplay);
+            _model.ResetLevelTrigger.Subscribe(ResetLevel);
+
             _model.OnLevelChanged += BuildLevel;
-            _model.OnLevelReseted += ResetLevel;
 
             _characterModel.IsFall.OnChangedToTrue += ProcessLevelLose;
             _gameplayScreen.TapButton.onClick.AddListener(ProcessClick);
@@ -65,6 +68,8 @@ namespace TapAndRun.MVP.Levels
 
         private void StartGameplay()
         {
+            CheckForTutorials();
+            
             _gameplayScreen.Show();
             _characterModel.StartMove();
         }
@@ -154,8 +159,6 @@ namespace TapAndRun.MVP.Levels
             }
 
             _currentLevel.FinishSegment.OnPlayerEntered += ProcessLevelComplete;
-
-            CheckForTutorials();
         }
         
         /// <summary>
@@ -217,7 +220,7 @@ namespace TapAndRun.MVP.Levels
         #region TUTORIALS
         private void CheckForTutorials()
         {
-            if (_model.CurrentLevelId == 0 & _currentLevel is TutorialLevelView) //TODO Проверка на прохождение обучяения
+            if (_model.CurrentLevelId == 0 & _currentLevel is TutorialLevelView) //TODO Проверка на прохождение обучения
             {
                 var tutorLevel = _currentLevel as TutorialLevelView;
                 if (tutorLevel)
@@ -268,11 +271,9 @@ namespace TapAndRun.MVP.Levels
         }
         #endregion
 
-        //TODO Метод удаляет уровни и выключает героя.
-
-        private void RemoveLevels()
+        private void HideLevels() //TODO нейминг
         {
-            _model.CurrentLevelId = -1;
+            _characterModel.IsActive.Value = false;
             DeactivateLevel();
             ClearLevels();
         }
@@ -286,10 +287,8 @@ namespace TapAndRun.MVP.Levels
             }
         }
 
-        private void ClearLevels()
+        private void ClearLevels() //TODO Возможно достаточно вызвать декомпоуз у фабрики
         {
-            _characterModel.IsActive.Value = false;
-            
             if (_oldLevel)
             {
                 _oldLevel.Destroy();
@@ -313,10 +312,13 @@ namespace TapAndRun.MVP.Levels
             _cts?.Cancel();
             _cts?.Dispose();
 
-            _model.StartupTrigger.OnTriggered -= StartGameplay;
-            _model.RemoveTrigger.OnTriggered -= RemoveLevels;
+            _model.IsDisplaying.Unsubscribe(BuildLevel, true);
+            _model.IsDisplaying.Unsubscribe(HideLevels, false);
+
+            _model.StartupTrigger.Unsubscribe(StartGameplay);
+            _model.ResetLevelTrigger.Unsubscribe(ResetLevel);
+
             _model.OnLevelChanged -= BuildLevel;
-            _model.OnLevelReseted -= ResetLevel;
 
             _characterModel.IsFall.OnChangedToTrue -= ProcessLevelLose;
             _gameplayScreen.TapButton.onClick.RemoveListener(ProcessClick);
