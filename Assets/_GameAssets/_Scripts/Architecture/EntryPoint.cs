@@ -53,28 +53,33 @@ namespace TapAndRun.Architecture
                                                                  //TODO и обрабатывать их согласно приоритету. Это позволить упростить EntryPoint до перечисления с типом IInitializableAsync
             {
                 settingsModel,
+                characterModel,
+                cameraModel,
+                levelsModel,
+                mainMenuModel,
+                loseModel,
+                walletModel,
+                skinShopModel,
+                
+                dataService,
+                
                 settingsPresenter,
+                characterPresenter,
+                cameraPresenter,
+                levelsPresenter,
+                mainMenuPresenter,
+                losePresenter,
+                walletPresenter,
+                skinShopPresenter,
+                
                 audioService,
                 localizationService,
-                characterModel,
-                characterPresenter,
-                cameraModel,
-                cameraPresenter,
-                levelsModel,
-                levelsPresenter,
-                mainMenuModel,
-                mainMenuPresenter,
-                loseModel,
-                losePresenter,
-                walletModel,
-                walletPresenter,
-                skinShopModel,
-                skinShopPresenter,
                 transitionService,
-                dataService
             };
 
             _gameStateMachine = gameStateMachine;
+            
+            //_initializationQueue.Sort((x, y) => x.PriorityIndex.CompareTo(y.PriorityIndex));
         }
 
         // Initialization of all game entities in the specified order 

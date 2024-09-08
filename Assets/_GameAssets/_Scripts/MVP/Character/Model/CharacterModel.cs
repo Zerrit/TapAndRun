@@ -3,14 +3,17 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Configs;
 using TapAndRun.Interfaces;
+using TapAndRun.PlayerProgress;
 using TapAndRun.Services.Update;
 using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Character.Model
 {
-    public class CharacterModel : ISelfCharacterModel, ICharacterModel, IUpdatable, IDecomposable
+    public class CharacterModel : ISelfCharacterModel, ICharacterModel, IUpdatable, ISaveLoadable, IDecomposable
     {
+        public string SaveKey => "Character";
+
         public event Action OnBeganTurning;
         public event Action OnBeganJumping;
         public event Action OnFinishedJumping;
@@ -21,17 +24,19 @@ namespace TapAndRun.MVP.Character.Model
         public ReactiveProperty<bool> IsMoving { get; private set; }
         public BoolReactiveProperty IsFall { get; private set; }
         public ReactiveProperty<float> AnimMultiplier { get; private set; }
+        public ReactiveProperty<float> SfxAcceleration { get; private set; }
 
         public ReactiveProperty<string> SelectedSkin { get; private set; }
-        
+
         private Vector3 _roadCheckerPosition;
         private float _currentSpeed;
         private bool _isVulnerable;
 
         private CancellationTokenSource _cts;
 
-        private const float BaseAnimSpeed = 1f;
         private const float JumpDuration = 1f;
+        private const float BaseAnimSpeed = 1f;
+        private const float SfxAccelerationStep = .1f;
 
         private static readonly Vector2 MoveDirection = Vector2.up;
 
@@ -53,12 +58,29 @@ namespace TapAndRun.MVP.Character.Model
             IsMoving = new ReactiveProperty<bool>();
             IsFall = new BoolReactiveProperty();
             AnimMultiplier = new ReactiveProperty<float>(BaseAnimSpeed);
-
+            SfxAcceleration = new ReactiveProperty<float>();
+            
             SelectedSkin = new ReactiveProperty<string>("Chinchilla");
 
             _updateService.Subscribe(this);
             
             return UniTask.CompletedTask;
+        }
+
+        ProgressData ISaveLoadable.GetProgressData()
+        {
+            return new (SaveKey, new object[] {SelectedSkin.Value});
+        }
+
+        void ISaveLoadable.RestoreProgress(ProgressData loadData)
+        {
+            if (loadData?.Data == null || loadData.Data.Length < 1)
+            {
+                Debug.LogError($"Can't restore Wallet data");
+                return;
+            }
+
+            SelectedSkin.Value = Convert.ToString(loadData.Data[0]);
         }
 
         public void Update()
@@ -93,13 +115,13 @@ namespace TapAndRun.MVP.Character.Model
             IsFall.Value = false;
         }
 
-        public void ChangeSpeed(int difficultyLevel) //TODO Проверить работает ли всё
+        public void ChangeSpeed(int difficultyLevel)
         {
             _currentSpeed = _config.BaseMoveSpeed + difficultyLevel;
             AnimMultiplier.Value = BaseAnimSpeed + (difficultyLevel / _config.BaseMoveSpeed);
-            //CharacterSfx.ChangeSpeed(difficultyLevel); 
+            SfxAcceleration.Value = difficultyLevel * SfxAccelerationStep; //TODO Подумать на формулой вычисления
         }
-        
+
         public async UniTask CenteringAsync(Vector3 centre)
         {
             var origin = Position.Value;

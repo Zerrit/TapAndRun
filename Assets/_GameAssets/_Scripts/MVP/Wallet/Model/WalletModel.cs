@@ -25,6 +25,22 @@ namespace TapAndRun.MVP.Wallet.Model
             return UniTask.CompletedTask;
         }
 
+        ProgressData ISaveLoadable.GetProgressData()
+        {
+            return new ProgressData(SaveKey, new object[] {AvailableCrystals.Value});
+        }
+
+        void ISaveLoadable.RestoreProgress(ProgressData loadData)
+        {
+            if (loadData?.Data == null || loadData.Data.Length < 1)
+            {
+                Debug.LogError($"Can't restore Wallet data");
+                return;
+            }
+
+            AvailableCrystals.Value = Convert.ToInt32(loadData.Data[0]);
+        }
+
         public void IncreaseCrystalsByLevel()
         {
             CrystalsByLevel.Value++;
@@ -57,22 +73,6 @@ namespace TapAndRun.MVP.Wallet.Model
                 AvailableCrystals.Value -= value;
                 return true;
             }
-        }
-
-        ProgressData ISaveLoadable.GetProgressData()
-        {
-            return new ProgressData(SaveKey, new object[] {AvailableCrystals.Value});
-        }
-
-        void ISaveLoadable.RestoreProgress(ProgressData loadData)
-        {
-            if (loadData?.Data == null || loadData.Data.Length < 1)
-            {
-                Debug.LogError($"Can't restore Wallet data");
-                return;
-            }
-
-            AvailableCrystals.Value = Convert.ToInt32(loadData.Data[0]);
         }
     }
 }

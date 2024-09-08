@@ -45,6 +45,23 @@ namespace TapAndRun.MVP.Skins_Shop.Model
             return UniTask.CompletedTask;
         }
 
+        ProgressData ISaveLoadable.GetProgressData()
+        {
+            return new ProgressData(SaveKey, new object[] {UnlockedSkins});
+        }
+
+        void ISaveLoadable.RestoreProgress(ProgressData loadData)
+        {
+            if (loadData?.Data == null || loadData.Data.Length < 1)
+            {
+                Debug.LogError($"Can't restore Skins data");
+                return;
+            }
+
+            var skins = ((JArray)loadData.Data[0]).ToObject<List<string>>();
+            UnlockedSkins = skins;
+        }
+
         public void SelectCurrentSkin()
         {
             _characterModel.SelectedSkin.Value = CurrentSkinsData.Name;
@@ -75,23 +92,6 @@ namespace TapAndRun.MVP.Skins_Shop.Model
         public bool IsCanPurchase()
         {
             return _walletModel.IsEnough(CurrentSkinsData.Price);
-        }
-
-        ProgressData ISaveLoadable.GetProgressData()
-        {
-            return new ProgressData(SaveKey, new object[] {UnlockedSkins});
-        }
-
-        void ISaveLoadable.RestoreProgress(ProgressData loadData)
-        {
-            if (loadData?.Data == null || loadData.Data.Length < 1)
-            {
-                Debug.LogError($"Can't restore Skins data");
-                return;
-            }
-
-            var skins = ((JArray)loadData.Data[0]).ToObject<List<string>>();
-            UnlockedSkins = skins;
         }
     }
 }
