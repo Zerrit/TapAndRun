@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using TapAndRun.Services.Audio;
 
 namespace TapAndRun.Services.Transition
 {
@@ -12,10 +13,12 @@ namespace TapAndRun.Services.Transition
 
         private CancellationTokenSource _cts;
 
+        private readonly IAudioService _audioService;
         private readonly TransitionView _view;
 
-        public TransitionService(TransitionView view)
+        public TransitionService(IAudioService audioService, TransitionView view)
         {
+            _audioService = audioService;
             _view = view;
         }
 
@@ -30,6 +33,7 @@ namespace TapAndRun.Services.Transition
         {
             _canFinish = canFinish;
 
+            _audioService.PlaySound("InTransition");
             await _view.ShowAsync(token);
 
             IsScreenHidden = true;
@@ -42,6 +46,7 @@ namespace TapAndRun.Services.Transition
 
         public void TryEndTransition() //TODO Продумать логику
         {
+            _audioService.PlaySound("OutTransition");
             IsScreenHidden = false;
             _view.HideAsync(_cts.Token).Forget();
         }
