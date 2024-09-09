@@ -6,6 +6,8 @@ namespace TapAndRun.Services.Ads
 {
     public interface IAdsService : IInitializableAsync
     {
-        UniTask ShowInterstitialAsync(CancellationToken token);
+        void LoadInterstitialAd();
+        bool IsInterstitialReady();
+        void ShowInterstitial();
     }
 }

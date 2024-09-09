@@ -124,7 +124,7 @@ namespace TapAndRun.Architecture.GameScene
 
             builder.Register<TransitionService>(Lifetime.Singleton).As<ITransitionService>()
                 .WithParameter(_transitionView);
-            
+
             builder.Register<DataService>(Lifetime.Singleton).As<IDataService>();
         }
 

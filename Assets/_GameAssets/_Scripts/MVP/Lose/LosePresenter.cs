@@ -34,6 +34,7 @@ namespace TapAndRun.MVP.Lose
         {
             if (status)
             {
+                _model.IncreaseLoseCount();
                 _view.Show();
             }
             else

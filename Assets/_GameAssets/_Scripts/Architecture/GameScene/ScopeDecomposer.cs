@@ -9,6 +9,11 @@ namespace TapAndRun.Architecture.GameScene
 {
     public class ScopeDecomposer : MonoBehaviour
     {
+        [Header("Время между сохранениями (сек.)")]
+        [SerializeField] private float _quickSaveTimeout;
+
+        private float _lastQuickSaveTime;
+        
         private IDataService _dataService;
         private List<IDecomposable> _decomposables;
 
@@ -21,12 +26,18 @@ namespace TapAndRun.Architecture.GameScene
 
         private void OnApplicationFocus(bool hasFocus)
         {
-            Debug.Log("OnApplicationFocus");
+            if (!hasFocus)
+            {
+                SaveAndDecomposeAll();
+            }
         }
 
         private void OnApplicationPause(bool pauseStatus)
         {
-            Debug.Log("OnApplicationPause");
+            if (pauseStatus)
+            {
+                SaveAndDecomposeAll();
+            }
         }
 
         private void OnApplicationQuit()
@@ -36,12 +47,19 @@ namespace TapAndRun.Architecture.GameScene
 
         private void SaveAndDecomposeAll()
         {
+            if (Time.time - _lastQuickSaveTime < _quickSaveTimeout)
+            {
+                return;
+            }
+            
             _dataService.Save();
 
             foreach (var decomposable in _decomposables)
             {
                 decomposable.Decompose();
             }
+
+            _lastQuickSaveTime = Time.time;
 
             Debug.Log("Scope decomposition was completed");
         }

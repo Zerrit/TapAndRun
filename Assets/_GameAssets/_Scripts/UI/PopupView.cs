@@ -35,7 +35,7 @@ namespace TapAndRun.UI
         {
             Fade.gameObject.SetActive(true);
             Fade.DOFade(1f, _fadeInDuration)
-                .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
+                .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token).Forget();
 
             Content.gameObject.SetActive(true);
             await Content.DOLocalMove(Vector3.zero, _moveInDuration)
@@ -52,7 +52,7 @@ namespace TapAndRun.UI
         public async UniTask HideAsync(CancellationToken token)
         {
             Fade.DOFade(0f, _fadeOutDuration)
-                .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
+                .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token).Forget();
 
             await Content.DOLocalMove(HideAnimPosition, _moveOutDuration)
                 .SetEase(_animType)

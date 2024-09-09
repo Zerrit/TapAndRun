@@ -8,5 +8,7 @@ namespace TapAndRun.MVP.Lose.Model
 
         TriggerReactiveProperty HomeTrigger { get; }
         TriggerReactiveProperty RestartTrigger { get; }
+
+        public void IncreaseLoseCount();
     }
 }

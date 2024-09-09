@@ -5,7 +5,7 @@ using VContainer.Unity;
 
 namespace TapAndRun.Architecture.BootScene
 {
-    public class MainScope : LifetimeScope
+    public class ProjectScope : LifetimeScope
     {
         [Header("Services")]
         [SerializeField] private AdsService _adsService;

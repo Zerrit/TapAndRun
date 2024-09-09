@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TapAndRun.Services.Ads
 {
-    public class AdsService : MonoBehaviour ,IAdsService, IDecomposable
+    public class AdsService : MonoBehaviour, IAdsService, IDecomposable
     {
 #if UNITY_ANDROID
         private string _appKey = "1f56a1b65";
@@ -17,6 +17,8 @@ namespace TapAndRun.Services.Ads
 
         public UniTask InitializeAsync(CancellationToken token)
         {
+            
+            Debug.Log("ЗАПУЩЕНА ИНИЦИАЛИЗАЦИЯ АДС");
             IronSource.Agent.validateIntegration();
             IronSource.Agent.init(_appKey);
 
@@ -48,15 +50,6 @@ namespace TapAndRun.Services.Ads
             IronSourceRewardedVideoEvents.onAdRewardedEvent += RewardedVideoOnAdRewardedEvent;
 
             return UniTask.CompletedTask;
-        }
-
-        public async UniTask ShowInterstitialAsync(CancellationToken token)
-        {
-            LoadInterstitial();
-
-            await UniTask.WaitUntil(IsInterstitialReady, cancellationToken: token);
-
-            ShowInterstitial();
         }
 
         private void OnApplicationPause(bool pauseStatus)
@@ -111,7 +104,7 @@ namespace TapAndRun.Services.Ads
 
         #region Interstitial
 
-        public void LoadInterstitial()
+        public void LoadInterstitialAd()
         {
             IronSource.Agent.loadInterstitial();
         }
@@ -120,7 +113,7 @@ namespace TapAndRun.Services.Ads
         {
             return IronSource.Agent.isInterstitialReady();
         }
-        
+
         public void ShowInterstitial()
         {
             IronSource.Agent.showInterstitial();

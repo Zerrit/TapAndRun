@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e02fd9c73b14472990db6df3a132801a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _quickSaveTimeout: 60
 --- !u!4 &56126967
 Transform:
   m_ObjectHideFlags: 0
@@ -1834,7 +1835,7 @@ GameObject:
   - component: {fileID: 1914418223}
   - component: {fileID: 1914418222}
   m_Layer: 0
-  m_Name: Scene Context
+  m_Name: Game Scope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1853,7 +1854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: TapAndRun.Architecture.Installers.ProjectScope
+    TypeName: TapAndRun.Architecture.BootScene.ProjectScope
   autoRun: 1
   autoInjectGameObjects:
   - {fileID: 1253423113}

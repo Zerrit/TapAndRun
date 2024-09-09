@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 1433316656}
   - component: {fileID: 1433316658}
   m_Layer: 0
-  m_Name: Main Scope
+  m_Name: Project Scope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
