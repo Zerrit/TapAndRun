@@ -57,6 +57,11 @@ namespace TapAndRun.MVP.Settings
             {
                 var button = await _langButtonFactory.CreateAsynс(i, _view.LanguagePopup.Content.transform, token);
 
+                if (button.LanguageConfig.Id.Equals(_model.Language.Value))
+                {
+                    _view.LanguagueButton.image.sprite = button.LanguageConfig.Icon;
+                }
+                
                 button.OnClicked += ChangeLanguage;
             }
             
