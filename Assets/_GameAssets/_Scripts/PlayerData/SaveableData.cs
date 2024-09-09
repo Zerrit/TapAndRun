@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace TapAndRun.PlayerProgress
+namespace TapAndRun.PlayerData
 {
     [Serializable]
-    public class ProgressData
+    public class SaveableData
     {
         public string Key { get; private set; }
         public object[] Data { get; private set; }
         
-        public ProgressData(string key, object[] data)
+        public SaveableData(string key, object[] data)
         {
             Key = key;
             Data = data;

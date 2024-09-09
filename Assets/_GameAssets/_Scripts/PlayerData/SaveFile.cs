@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TapAndRun.PlayerProgress
+namespace TapAndRun.PlayerData
 {
     [Serializable]
     public struct SaveFile
     {
         public DateTime SaveTime; 
-        public List<ProgressData> Data; 
+        public List<SaveableData> Data; 
 
-        public SaveFile(List<ProgressData> data)
+        public SaveFile(List<SaveableData> data)
         {
             SaveTime = DateTime.Now;
             Data = data;

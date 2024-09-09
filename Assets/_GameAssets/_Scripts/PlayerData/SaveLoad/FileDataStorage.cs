@@ -1,12 +1,11 @@
 ﻿using System.IO;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Newtonsoft.Json;
 using UnityEngine;
 
-namespace TapAndRun.PlayerProgress.SaveLoad
+namespace TapAndRun.PlayerData.SaveLoad
 {
-    public class FileSaveLoader : ISaveLoader
+    public class FileDataStorage : IDataStorage
     {
 #if UNITY_EDITOR
         private string SavePath => Application.dataPath;
@@ -18,21 +17,21 @@ namespace TapAndRun.PlayerProgress.SaveLoad
         private const string FileName = "Tap&RunPlayerData";
         private const string SaveFileExtension = ".json";
 
-        public void Save(string data)
+        public void Write(string data)
         {
             File.WriteAllText(FullPath, data);
 
             Debug.Log("Save data has been written instantly");
         }
 
-        public async UniTask SaveAsync(string data, CancellationToken token)
+        public async UniTask WriteAsync(string data, CancellationToken token)
         {
             await File.WriteAllTextAsync(FullPath, data, token);
 
             Debug.Log("Save data has been written");
         }
 
-        public async UniTask<string> LoadAsync(CancellationToken token)
+        public async UniTask<string> Readsync(CancellationToken token)
         {
             if (!IsFileExist())
             {

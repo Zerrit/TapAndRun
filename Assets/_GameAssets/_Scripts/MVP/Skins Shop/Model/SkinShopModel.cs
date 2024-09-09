@@ -6,13 +6,13 @@ using Newtonsoft.Json.Linq;
 using TapAndRun.Configs;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Wallet.Model;
-using TapAndRun.PlayerProgress;
+using TapAndRun.PlayerData;
 using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Skins_Shop.Model
 {
-    public class SkinShopModel : ISelfSkinShopModel, ISkinShopModel, ISaveLoadable
+    public class SkinShopModel : ISelfSkinShopModel, ISkinShopModel, IProgressable
     {
         public string SaveKey => "Skins";
 
@@ -45,12 +45,12 @@ namespace TapAndRun.MVP.Skins_Shop.Model
             return UniTask.CompletedTask;
         }
 
-        ProgressData ISaveLoadable.GetProgressData()
+        SaveableData IProgressable.GetProgressData()
         {
-            return new ProgressData(SaveKey, new object[] {UnlockedSkins});
+            return new SaveableData(SaveKey, new object[] {UnlockedSkins});
         }
 
-        void ISaveLoadable.RestoreProgress(ProgressData loadData)
+        void IProgressable.RestoreProgress(SaveableData loadData)
         {
             if (loadData?.Data == null || loadData.Data.Length < 1)
             {

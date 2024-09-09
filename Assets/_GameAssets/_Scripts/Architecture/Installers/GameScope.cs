@@ -28,11 +28,11 @@ using TapAndRun.MVP.Skins_Shop.Views;
 using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.MVP.Wallet.View;
-using TapAndRun.PlayerProgress.SaveLoad;
-using TapAndRun.PlayerProgress.Serialization;
+using TapAndRun.PlayerData.SaveLoad;
+using TapAndRun.PlayerData.Serialization;
 using TapAndRun.Services.Audio;
+using TapAndRun.Services.Data;
 using TapAndRun.Services.Localization;
-using TapAndRun.Services.Progress;
 using TapAndRun.Services.Transition;
 using TapAndRun.Services.Update;
 using UnityEngine;
@@ -92,7 +92,7 @@ namespace TapAndRun.Architecture.Installers
             RegisterLoseScreen(builder);
             RegisterMainMenu(builder);
 
-            RegisterSaveLoadSystem(builder);
+            RegisterDataService(builder); // TODO перенести в общий для сервисов метод
 
             RegisterGameStates(builder);
 
@@ -198,14 +198,16 @@ namespace TapAndRun.Architecture.Installers
             builder.Register<SkinShopState>(Lifetime.Singleton);
         }
 
-        private void RegisterSaveLoadSystem(IContainerBuilder builder)
+        private void RegisterDataService(IContainerBuilder builder)
         {
             ISerializer serializer = new JsonSerializer();
-            ISaveLoader saveLoader = new FileSaveLoader();
+            IDataStorage dataStorage = new FileDataStorage();
+            IDataStorage prefsStorage = new PrefsDataStorage();
             
             builder.Register<DataService>(Lifetime.Singleton).As<IDataService>()
                 .WithParameter(serializer)
-                .WithParameter(saveLoader);
+                .WithParameter(dataStorage)
+                .WithParameter(prefsStorage);
         }
     }
 }

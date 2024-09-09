@@ -1,7 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace TapAndRun.PlayerProgress.Serialization
+namespace TapAndRun.PlayerData.Serialization
 {
     public class JsonSerializer : ISerializer
     {

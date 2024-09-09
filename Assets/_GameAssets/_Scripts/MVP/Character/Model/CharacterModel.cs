@@ -3,14 +3,14 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Configs;
 using TapAndRun.Interfaces;
-using TapAndRun.PlayerProgress;
+using TapAndRun.PlayerData;
 using TapAndRun.Services.Update;
 using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Character.Model
 {
-    public class CharacterModel : ISelfCharacterModel, ICharacterModel, IUpdatable, ISaveLoadable, IDecomposable
+    public class CharacterModel : ISelfCharacterModel, ICharacterModel, IUpdatable, IProgressable, IDecomposable
     {
         public string SaveKey => "Character";
 
@@ -67,12 +67,12 @@ namespace TapAndRun.MVP.Character.Model
             return UniTask.CompletedTask;
         }
 
-        ProgressData ISaveLoadable.GetProgressData()
+        SaveableData IProgressable.GetProgressData()
         {
             return new (SaveKey, new object[] {SelectedSkin.Value});
         }
 
-        void ISaveLoadable.RestoreProgress(ProgressData loadData)
+        void IProgressable.RestoreProgress(SaveableData loadData)
         {
             if (loadData?.Data == null || loadData.Data.Length < 1)
             {

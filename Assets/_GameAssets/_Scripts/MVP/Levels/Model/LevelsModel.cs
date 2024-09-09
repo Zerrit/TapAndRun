@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using TapAndRun.PlayerProgress;
+using TapAndRun.PlayerData;
 using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Levels.Model
 {
-    public class LevelsModel : ISelfLevelsModel, ILevelsModel, ISaveLoadable
+    public class LevelsModel : ISelfLevelsModel, ILevelsModel, IProgressable
     {
         public string SaveKey => "Levels";
 
@@ -57,12 +57,12 @@ namespace TapAndRun.MVP.Levels.Model
             return UniTask.CompletedTask;
         }
 
-        ProgressData ISaveLoadable.GetProgressData()
+        SaveableData IProgressable.GetProgressData()
         {
             return new (SaveKey, new object[] {LastUnlockedLevelId});
         }
 
-        void ISaveLoadable.RestoreProgress(ProgressData loadData)
+        void IProgressable.RestoreProgress(SaveableData loadData)
         {
             if (loadData?.Data == null || loadData.Data.Length < 1)
             {

@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace TapAndRun.PlayerProgress.Serialization
+namespace TapAndRun.PlayerData.Serialization
 {
     public interface ISerializer
     {

@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TapAndRun.Interfaces;
-using TapAndRun.Services.Progress;
+using TapAndRun.Services.Data;
 using UnityEngine;
 using VContainer;
 
 namespace TapAndRun.Architecture
 {
     public class ScopeDecomposer : MonoBehaviour
-    {        
+    {
         private IDataService _dataService;
         private List<IDecomposable> _decomposables;
 
@@ -37,7 +36,7 @@ namespace TapAndRun.Architecture
 
         private void SaveAndDecomposeAll()
         {
-            _dataService.SaveInstant();
+            _dataService.Save();
 
             foreach (var decomposable in _decomposables)
             {
