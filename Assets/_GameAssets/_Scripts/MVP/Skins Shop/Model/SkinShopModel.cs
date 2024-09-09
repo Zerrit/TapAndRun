@@ -40,7 +40,7 @@ namespace TapAndRun.MVP.Skins_Shop.Model
             BackTrigger = new TriggerReactiveProperty();
 
             UnlockedSkins = new List<string> 
-                {"Chinchilla"};
+                {_characterModel.SelectedSkin.Value};
             
             return UniTask.CompletedTask;
         }

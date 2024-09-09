@@ -5,7 +5,7 @@ using TapAndRun.Services.Data;
 using UnityEngine;
 using VContainer;
 
-namespace TapAndRun.Architecture
+namespace TapAndRun.Architecture.GameScene
 {
     public class ScopeDecomposer : MonoBehaviour
     {

@@ -26,7 +26,7 @@ MonoBehaviour:
     <Volume>k__BackingField: 0.5
     <Clip>k__BackingField: {fileID: 8300000, guid: 7bfb72f05e29f084789a94b08be8ce87, type: 3}
   - <SoundId>k__BackingField: SwooshIn
-    <Volume>k__BackingField: 0.15
+    <Volume>k__BackingField: 0.1
     <Clip>k__BackingField: {fileID: 8300000, guid: 8789c7b5150349d4bb2a811786ee4cd1, type: 3}
   - <SoundId>k__BackingField: SwooshOut
     <Volume>k__BackingField: 0.2

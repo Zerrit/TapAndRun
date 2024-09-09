@@ -60,7 +60,7 @@ namespace TapAndRun.MVP.Character.Model
             AnimMultiplier = new ReactiveProperty<float>(BaseAnimSpeed);
             SfxAcceleration = new ReactiveProperty<float>();
             
-            SelectedSkin = new ReactiveProperty<string>("Chinchilla");
+            SelectedSkin = new ReactiveProperty<string>(_config.DefaultSkinId);
 
             _updateService.Subscribe(this);
             

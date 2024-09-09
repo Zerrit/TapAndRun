@@ -27,7 +27,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace TapAndRun.Architecture
+namespace TapAndRun.Architecture.GameScene
 {
     public class EntryPoint : MonoBehaviour, IAsyncStartable
     {
@@ -78,8 +78,6 @@ namespace TapAndRun.Architecture
             };
 
             _gameStateMachine = gameStateMachine;
-            
-            //_initializationQueue.Sort((x, y) => x.PriorityIndex.CompareTo(y.PriorityIndex));
         }
 
         // Initialization of all game entities in the specified order 

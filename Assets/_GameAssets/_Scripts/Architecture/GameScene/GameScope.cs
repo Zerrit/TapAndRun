@@ -28,8 +28,6 @@ using TapAndRun.MVP.Skins_Shop.Views;
 using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.MVP.Wallet.View;
-using TapAndRun.PlayerData.SaveLoad;
-using TapAndRun.PlayerData.Serialization;
 using TapAndRun.Services.Audio;
 using TapAndRun.Services.Data;
 using TapAndRun.Services.Localization;
@@ -40,7 +38,7 @@ using UnityEngine.AddressableAssets;
 using VContainer;
 using VContainer.Unity;
 
-namespace TapAndRun.Architecture.Installers
+namespace TapAndRun.Architecture.GameScene
 {
     public class GameScope : LifetimeScope
     {
@@ -92,8 +90,6 @@ namespace TapAndRun.Architecture.Installers
             RegisterLoseScreen(builder);
             RegisterMainMenu(builder);
 
-            RegisterDataService(builder); // TODO перенести в общий для сервисов метод
-
             RegisterGameStates(builder);
 
             builder.Register<GameStateMachine>(Lifetime.Singleton);
@@ -128,6 +124,8 @@ namespace TapAndRun.Architecture.Installers
 
             builder.Register<TransitionService>(Lifetime.Singleton).As<ITransitionService>()
                 .WithParameter(_transitionView);
+            
+            builder.Register<DataService>(Lifetime.Singleton).As<IDataService>();
         }
 
         private void RegisterCamera(IContainerBuilder builder)
@@ -196,18 +194,6 @@ namespace TapAndRun.Architecture.Installers
             builder.Register<GameplayState>(Lifetime.Singleton);
             builder.Register<LoseState>(Lifetime.Singleton);
             builder.Register<SkinShopState>(Lifetime.Singleton);
-        }
-
-        private void RegisterDataService(IContainerBuilder builder)
-        {
-            //ISerializer serializer = new JsonSerializer();
-            //IDataStorage dataStorage = new FileDataStorage();
-            //IDataStorage prefsStorage = new PrefsDataStorage();
-
-            builder.Register<DataService>(Lifetime.Singleton).As<IDataService>();
-            //.WithParameter(serializer)
-            //.WithParameter(dataStorage)
-            //.WithParameter(prefsStorage);
         }
     }
 }

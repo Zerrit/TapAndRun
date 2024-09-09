@@ -1,7 +1,11 @@
-﻿namespace TapAndRun.Services.Ads
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
+using TapAndRun.Interfaces;
+
+namespace TapAndRun.Services.Ads
 {
-    public interface IAdsService
+    public interface IAdsService : IInitializableAsync
     {
-        
+        UniTask ShowInterstitialAsync(CancellationToken token);
     }
 }

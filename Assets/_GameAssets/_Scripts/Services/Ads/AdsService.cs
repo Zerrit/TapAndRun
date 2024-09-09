@@ -1,9 +1,11 @@
-﻿using System;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
+using TapAndRun.Interfaces;
 using UnityEngine;
 
 namespace TapAndRun.Services.Ads
 {
-    public class AdsService : MonoBehaviour ,IAdsService, IDisposable
+    public class AdsService : MonoBehaviour ,IAdsService, IDecomposable
     {
 #if UNITY_ANDROID
         private string _appKey = "1f56a1b65";
@@ -12,14 +14,14 @@ namespace TapAndRun.Services.Ads
 #else
         private string _appKey = "unexpected_platform";
 #endif
-        
-        public void Initialize()
+
+        public UniTask InitializeAsync(CancellationToken token)
         {
             IronSource.Agent.validateIntegration();
             IronSource.Agent.init(_appKey);
 
             IronSourceEvents.onSdkInitializationCompletedEvent += ConfirmSdkInitilization;
-            
+
             //Add AdInfo Banner Events
             IronSourceBannerEvents.onAdLoadedEvent += BannerOnAdLoadedEvent;
             IronSourceBannerEvents.onAdLoadFailedEvent += BannerOnAdLoadFailedEvent;
@@ -27,7 +29,7 @@ namespace TapAndRun.Services.Ads
             IronSourceBannerEvents.onAdScreenPresentedEvent += BannerOnAdScreenPresentedEvent;
             IronSourceBannerEvents.onAdScreenDismissedEvent += BannerOnAdScreenDismissedEvent;
             IronSourceBannerEvents.onAdLeftApplicationEvent += BannerOnAdLeftApplicationEvent;
-            
+
             //Add AdInfo Interstitial Events
             IronSourceInterstitialEvents.onAdReadyEvent += InterstitialOnAdReadyEvent;
             IronSourceInterstitialEvents.onAdLoadFailedEvent += InterstitialOnAdLoadFailed;
@@ -36,7 +38,7 @@ namespace TapAndRun.Services.Ads
             IronSourceInterstitialEvents.onAdShowSucceededEvent += InterstitialOnAdShowSucceededEvent;
             IronSourceInterstitialEvents.onAdShowFailedEvent += InterstitialOnAdShowFailedEvent;
             IronSourceInterstitialEvents.onAdClosedEvent += InterstitialOnAdClosedEvent;
-            
+
             //Add AdInfo Rewarded Video Events
             IronSourceRewardedVideoEvents.onAdOpenedEvent += RewardedVideoOnAdOpenedEvent;
             IronSourceRewardedVideoEvents.onAdClosedEvent += RewardedVideoOnAdClosedEvent;
@@ -44,7 +46,17 @@ namespace TapAndRun.Services.Ads
             IronSourceRewardedVideoEvents.onAdUnavailableEvent += RewardedVideoOnAdUnavailable;
             IronSourceRewardedVideoEvents.onAdShowFailedEvent += RewardedVideoOnAdShowFailedEvent;
             IronSourceRewardedVideoEvents.onAdRewardedEvent += RewardedVideoOnAdRewardedEvent;
-            IronSourceRewardedVideoEvents.onAdClickedEvent += RewardedVideoOnAdClickedEvent;
+
+            return UniTask.CompletedTask;
+        }
+
+        public async UniTask ShowInterstitialAsync(CancellationToken token)
+        {
+            LoadInterstitial();
+
+            await UniTask.WaitUntil(IsInterstitialReady, cancellationToken: token);
+
+            ShowInterstitial();
         }
 
         private void OnApplicationPause(bool pauseStatus)
@@ -104,16 +116,14 @@ namespace TapAndRun.Services.Ads
             IronSource.Agent.loadInterstitial();
         }
 
+        public bool IsInterstitialReady()
+        {
+            return IronSource.Agent.isInterstitialReady();
+        }
+        
         public void ShowInterstitial()
         {
-            if(IronSource.Agent.isInterstitialReady())
-            {
-                IronSource.Agent.showInterstitial(); 
-            }
-            else
-            {
-                Debug.Log("Interstitial is not ready");
-            }
+            IronSource.Agent.showInterstitial();
         }
 
         /************* Interstitial AdInfo Delegates *************/
@@ -193,10 +203,10 @@ namespace TapAndRun.Services.Ads
         // it’s supported by all networks you included in your build.
         void RewardedVideoOnAdClickedEvent(IronSourcePlacement placement, IronSourceAdInfo adInfo){
         }
-        
+
         #endregion
-        
-        public void Dispose()
+
+        public void Decompose()
         {
             IronSourceEvents.onSdkInitializationCompletedEvent -= ConfirmSdkInitilization;
             

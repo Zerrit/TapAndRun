@@ -4,6 +4,7 @@ using TapAndRun.Factories.Skins;
 using TapAndRun.Interfaces;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Character.View;
+using UnityEngine;
 
 namespace TapAndRun.MVP.Character
 {
@@ -49,6 +50,7 @@ namespace TapAndRun.MVP.Character
         
         private async UniTask SetSkinAsync(string skinId)
         {
+            Debug.Log(skinId);
             var skin = await _skinFactory.ChangeSkinTo(skinId, _view.SkinHandler, _cts.Token);
 
             _view.InitSkin(skin);

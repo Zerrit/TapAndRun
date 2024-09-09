@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 56126967}
   - component: {fileID: 56126966}
   m_Layer: 0
-  m_Name: <- Decomposer ->
+  m_Name: Decomposer ->
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1568,7 +1568,7 @@ GameObject:
   - component: {fileID: 1482358648}
   - component: {fileID: 1482358647}
   m_Layer: 0
-  m_Name: -> Entry Point <-
+  m_Name: -> Entry Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1853,7 +1853,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: 
+    TypeName: TapAndRun.Architecture.Installers.ProjectScope
   autoRun: 1
   autoInjectGameObjects:
   - {fileID: 1253423113}

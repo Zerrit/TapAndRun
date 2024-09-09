@@ -15,3 +15,5 @@ MonoBehaviour:
   <BaseMoveSpeed>k__BackingField: 2
   <TurnSpeed>k__BackingField: 10
   <CenteringSpeed>k__BackingField: 6
+  <RoadCheckerOffset>k__BackingField: {x: 0, y: 0.1, z: 0}
+  <DefaultSkinId>k__BackingField: Chinchilla
