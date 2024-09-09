@@ -20,7 +20,7 @@ namespace TapAndRun.PlayerData.SaveLoad
             return UniTask.CompletedTask;
         }
 
-        public async UniTask<string> Readsync(CancellationToken token)
+        public async UniTask<string> ReadAsync(CancellationToken token)
         {
             var file = PlayerPrefs.GetString(SettingsFileKey);
 

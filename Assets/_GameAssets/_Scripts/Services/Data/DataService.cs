@@ -19,18 +19,17 @@ namespace TapAndRun.Services.Data
         private readonly IDataStorage _dataStorage;
         private readonly IDataStorage _settingsStorage;
 
-        public DataService(IEnumerable<IProgressable> progressables, IEnumerable<ISettingsUser> settingsUsers, ISerializer serializer, 
-            IDataStorage dataStorage, IDataStorage settingsStorage)
+        public DataService(IEnumerable<IProgressable> progressables, IEnumerable<ISettingsUser> settingsUsers)
         {
             _progressablesByKey = progressables.ToDictionary(x => x.SaveKey, x => x);
             _settingsUsersByKey = settingsUsers.ToDictionary(x => x.SaveKey, x => x);
             
-            _serializer = serializer;
-            _dataStorage = dataStorage;
-            _settingsStorage = settingsStorage;
+            _serializer = new JsonSerializer();
+            _dataStorage = new FileDataStorage();
+            _settingsStorage = new PrefsDataStorage();
 
-            Debug.Log($"Система сохранений обнаружила Сохраняемых сущностей: {_progressablesByKey.Count}");
-            Debug.Log($"Система сохранений обнаружила Настраиваемых сущностей: {_settingsUsersByKey.Count}");
+            Debug.Log($"<color=yellow> Система сохранений обнаружила {_progressablesByKey.Count} сущностей хранящих прогресс </color>");
+            Debug.Log($"<color=yellow> Система сохранений обнаружила {_settingsUsersByKey.Count} сущностей использующих настройки </color>");
         }
 
         public async UniTask InitializeAsync(CancellationToken token)
@@ -56,37 +55,15 @@ namespace TapAndRun.Services.Data
             SaveSettings();
         }
 
-        private async UniTask LoadSettingsAsync(CancellationToken token)
-        {
-            if (!_settingsStorage.IsFileExist())
-            {
-                Debug.LogWarning("Не удалось обнаружить файл настроек");
-                return;
-            }
-
-            string serializedSettingsFile = await _settingsStorage.Readsync(token);
-            var settingsFile = await _serializer.DeserializeAsync<SaveFile>(serializedSettingsFile);
-
-            foreach (var data in settingsFile.Data)
-            {
-                if (_settingsUsersByKey.ContainsKey(data.Key))
-                {
-                    _settingsUsersByKey[data.Key].RestoreSettings(data);
-                }
-            }
-
-            Debug.Log("Настройки были успешно загружены!");
-        }
-
         private async UniTask LoadProgressAsync(CancellationToken token)
         {
             if (!_dataStorage.IsFileExist())
             {
-                Debug.LogWarning("Не удалось обнаружить файл сохранений");
+                Debug.Log("<color=cyan> Не удалось обнаружить файл сохранений </color>");
                 return;
             }
 
-            string serializedSaveFile = await _dataStorage.Readsync(token);
+            string serializedSaveFile = await _dataStorage.ReadAsync(token);
             var saveFile = await _serializer.DeserializeAsync<SaveFile>(serializedSaveFile);
 
             foreach (var data in saveFile.Data)
@@ -97,9 +74,31 @@ namespace TapAndRun.Services.Data
                 }
             }
 
-            Debug.Log("Сохранения были успешно загружены!");
+            Debug.Log("<color=green> Сохранения были успешно загружены! </color>");
         }
-        
+
+        private async UniTask LoadSettingsAsync(CancellationToken token)
+        {
+            if (!_settingsStorage.IsFileExist())
+            {
+                Debug.Log("<color=cyan> Не удалось обнаружить файл настроек </color>");
+                return;
+            }
+
+            string serializedSettingsFile = await _settingsStorage.ReadAsync(token);
+            var settingsFile = await _serializer.DeserializeAsync<SaveFile>(serializedSettingsFile);
+
+            foreach (var data in settingsFile.Data)
+            {
+                if (_settingsUsersByKey.ContainsKey(data.Key))
+                {
+                    _settingsUsersByKey[data.Key].RestoreSettings(data);
+                }
+            }
+
+            Debug.Log("<color=green> Настройки были успешно загружены! </color>");
+        }
+
         private async UniTask SaveProgressAsync(CancellationToken token)
         {
             var progressList = new List<SaveableData>();

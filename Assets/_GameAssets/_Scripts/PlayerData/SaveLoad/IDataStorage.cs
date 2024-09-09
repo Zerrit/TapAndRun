@@ -7,7 +7,7 @@ namespace TapAndRun.PlayerData.SaveLoad
     {
         void Write(string data);
         UniTask WriteAsync(string data, CancellationToken token);
-        UniTask<string> Readsync(CancellationToken token);
+        UniTask<string> ReadAsync(CancellationToken token);
         bool IsFileExist();
     }
 }

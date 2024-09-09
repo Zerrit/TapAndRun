@@ -78,7 +78,7 @@ namespace TapAndRun.MVP.MainMenu
 
         private void OpenLevelSelect()
         {
-            _audioService.PlaySound("Swoosh");
+            _audioService.PlaySound("SwooshIn");
             _levelSelectView.UpdateButtons(_levelsModel.LastUnlockedLevelId);
 
             _levelSelectView.Show();
@@ -86,7 +86,7 @@ namespace TapAndRun.MVP.MainMenu
 
         private void CloseLevelSelect()
         {
-            _audioService.PlaySound("Swoosh");
+            _audioService.PlaySound("SwooshOut");
             _levelSelectView.Hide();
         }
         

@@ -200,14 +200,14 @@ namespace TapAndRun.Architecture.Installers
 
         private void RegisterDataService(IContainerBuilder builder)
         {
-            ISerializer serializer = new JsonSerializer();
-            IDataStorage dataStorage = new FileDataStorage();
-            IDataStorage prefsStorage = new PrefsDataStorage();
-            
-            builder.Register<DataService>(Lifetime.Singleton).As<IDataService>()
-                .WithParameter(serializer)
-                .WithParameter(dataStorage)
-                .WithParameter(prefsStorage);
+            //ISerializer serializer = new JsonSerializer();
+            //IDataStorage dataStorage = new FileDataStorage();
+            //IDataStorage prefsStorage = new PrefsDataStorage();
+
+            builder.Register<DataService>(Lifetime.Singleton).As<IDataService>();
+            //.WithParameter(serializer)
+            //.WithParameter(dataStorage)
+            //.WithParameter(prefsStorage);
         }
     }
 }

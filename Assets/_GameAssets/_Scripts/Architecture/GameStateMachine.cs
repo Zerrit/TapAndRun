@@ -4,6 +4,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Architecture.GameStates;
 using TapAndRun.Factories.GameStates;
+using TapAndRun.Interfaces;
 using UnityEngine;
 
 namespace TapAndRun.Architecture
@@ -11,7 +12,7 @@ namespace TapAndRun.Architecture
     /// <summary>
     /// Машина состояний игры.
     /// </summary>
-    public class GameStateMachine : IDisposable
+    public class GameStateMachine : IDecomposable
     {
         public CancellationTokenSource Cts { get; private set; }
 
@@ -37,7 +38,7 @@ namespace TapAndRun.Architecture
                 [typeof(SkinShopState)] = _stateFactory.CreateState<SkinShopState>()
             };
 
-            Debug.Log("GameStateMachine was initialized!");
+            Debug.Log("<color=green> GameStateMachine was initialized! </color>");
         }
 
         /// <summary>
@@ -45,8 +46,8 @@ namespace TapAndRun.Architecture
         /// </summary>
         /// <typeparam name="T"> Тип стейта. </typeparam>
         public async UniTask StartMachineAsync<T>(CancellationToken cancellation) where T : IGameState
-        {            
-            Debug.Log("GameStateMachine was started!");
+        {
+            Debug.Log("<color=green> GameStateMachine was started! </color>");
             
             if (_states.ContainsKey(typeof(T)))
             {
@@ -71,7 +72,7 @@ namespace TapAndRun.Architecture
             else throw new Exception($"Не найдено указанное состояние игры: {typeof(T)}");
         }
 
-        public void Dispose()
+        public void Decompose()
         {
             Cts?.Cancel();
             Cts?.Dispose();

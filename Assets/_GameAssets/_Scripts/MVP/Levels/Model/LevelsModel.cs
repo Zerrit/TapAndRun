@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TapAndRun.MVP.Levels.Model
 {
-    public class LevelsModel : ISelfLevelsModel, ILevelsModel, IProgressable
+    public class LevelsModel : ISelfLevelsModel, ILevelsModel, IProgressable, ISettingsUser
     {
         public string SaveKey => "Levels";
 
@@ -35,6 +35,8 @@ namespace TapAndRun.MVP.Levels.Model
 
         public int LastUnlockedLevelId { get; private set; }
         public int LevelCount { get; set; }
+
+        public bool IsTutorialComplete { get; set; }
 
         public int CurrentDifficulty { get; private set; }
         public int MaxDifficulty { get; } = 3; //TODO Вынести в конфиг
@@ -71,6 +73,22 @@ namespace TapAndRun.MVP.Levels.Model
             }
 
             LastUnlockedLevelId = Convert.ToInt32(loadData.Data[0]);
+        }
+        
+        SaveableData ISettingsUser.GetSettingsData()
+        {
+            return new(SaveKey, new object[] {IsTutorialComplete});
+        }
+
+        void ISettingsUser.RestoreSettings(SaveableData data)
+        {
+            if (data?.Data == null || data.Data.Length < 1)
+            {
+                Debug.LogError($"Can't restore LevelsModel settings");
+                return;
+            }
+
+            IsTutorialComplete = Convert.ToBoolean(data.Data[0]);
         }
 
         public void SelectLevel(int levelId) //TODO Проверка доступности уровня (изменить тип на bool)

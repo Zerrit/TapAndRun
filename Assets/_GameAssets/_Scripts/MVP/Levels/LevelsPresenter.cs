@@ -160,19 +160,13 @@ namespace TapAndRun.MVP.Levels
 
             _currentLevel.FinishSegment.OnPlayerEntered += ProcessLevelComplete;
         }
-        
-        /// <summary>
-        /// Передает уровень сложности в персонажа и камеру.
-        /// </summary>
+
         private void UpdateDifficulty()
         {
             _characterModel.ChangeSpeed(_model.CurrentDifficulty);
             _cameraModel.ChangeDifficulty(_model.CurrentDifficulty);
         }
 
-        /// <summary>
-        /// Обрабатывает клик игрока.
-        /// </summary>
         private void ProcessClick()
         {
             if (!_commandHandler.CheckAvailability())
@@ -220,7 +214,12 @@ namespace TapAndRun.MVP.Levels
         #region TUTORIALS
         private void CheckForTutorials()
         {
-            if (_model.CurrentLevelId == 0 & _currentLevel is TutorialLevelView) //TODO Проверка на прохождение обучения
+            if (_model.IsTutorialComplete)
+            {
+                return;
+            }
+
+            if (_model.CurrentLevelId == 0 & _currentLevel is TutorialLevelView)
             {
                 var tutorLevel = _currentLevel as TutorialLevelView;
                 if (tutorLevel)
@@ -267,6 +266,7 @@ namespace TapAndRun.MVP.Levels
                 ProcessClick();
 
                 _gameplayScreen.TapButton.onClick.AddListener(ProcessClick);
+                _model.IsTutorialComplete = true;
             }
         }
         #endregion

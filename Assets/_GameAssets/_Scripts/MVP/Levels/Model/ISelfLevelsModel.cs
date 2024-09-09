@@ -14,6 +14,8 @@ namespace TapAndRun.MVP.Levels.Model
         
         int CurrentLevelId { get; set; }
         int LevelCount { get; set; }
+        
+        bool IsTutorialComplete { get; set; }
 
         int CurrentDifficulty { get; }
 

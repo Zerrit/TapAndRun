@@ -31,7 +31,7 @@ namespace TapAndRun.PlayerData.SaveLoad
             Debug.Log("Save data has been written");
         }
 
-        public async UniTask<string> Readsync(CancellationToken token)
+        public async UniTask<string> ReadAsync(CancellationToken token)
         {
             if (!IsFileExist())
             {

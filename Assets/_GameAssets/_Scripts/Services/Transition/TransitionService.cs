@@ -33,7 +33,7 @@ namespace TapAndRun.Services.Transition
         {
             _canFinish = canFinish;
 
-            _audioService.PlaySound("InTransition");
+            _audioService.PlaySound("SwooshIn");
             await _view.ShowAsync(token);
 
             IsScreenHidden = true;
@@ -46,7 +46,7 @@ namespace TapAndRun.Services.Transition
 
         public void TryEndTransition() //TODO Продумать логику
         {
-            _audioService.PlaySound("OutTransition");
+            _audioService.PlaySound("SwooshOut");
             IsScreenHidden = false;
             _view.HideAsync(_cts.Token).Forget();
         }
