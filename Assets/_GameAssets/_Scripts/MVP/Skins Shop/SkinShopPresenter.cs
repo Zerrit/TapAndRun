@@ -39,7 +39,7 @@ namespace TapAndRun.MVP.Skins_Shop
 
             _selfModel.IsDisplaying.OnChanged += UpdateDisplaying;
 
-            _shopScreenView.BackButton.onClick.AddListener(_selfModel.BackTrigger.Trigger);
+            _shopScreenView.BackButton.onClick.AddListener(CloseSkinShop);
             _shopScreenView.LeftButton.onClick.AddListener(ScrollLeft);
             _shopScreenView.RightButton.onClick.AddListener(ScrollRight);
             _shopScreenView.ShopButton.Button.onClick.AddListener(ProccesShopButtonClick);
@@ -60,6 +60,12 @@ namespace TapAndRun.MVP.Skins_Shop
                 _shopScreenView.Hide();
                 ClearAssortment();
             }
+        }
+
+        private void CloseSkinShop()
+        {
+            _audioService.PlaySound("QuietClick");
+            _selfModel.BackTrigger.Trigger();
         }
 
         private void FillAssortment()
@@ -132,11 +138,14 @@ namespace TapAndRun.MVP.Skins_Shop
         {
             if (_shopScreenView.ShopButton.State == ShopButtonState.CantPurchase)
             {
+                _audioService.CallVibration();
                 _shopScreenView.ShopButton.PlayFailAnim();
             }
             else if(_shopScreenView.ShopButton.State == ShopButtonState.CanPurchase)
             {
+                _audioService.PlaySound("SlowClick");
                 _shopScreenView.ShopButton.PlayAcceptAnim(CancellationToken.None).Forget();
+
                 if (_selfModel.TryBuyCurrentSkin())
                 {
                     UpdateShopButton();
@@ -144,7 +153,9 @@ namespace TapAndRun.MVP.Skins_Shop
             }
             else if (_shopScreenView.ShopButton.State == ShopButtonState.Purchased)
             {
+                _audioService.PlaySound("SlowClick");
                 _shopScreenView.ShopButton.PlayAcceptAnim(CancellationToken.None).Forget();
+
                 _selfModel.SelectCurrentSkin();
                 UpdateShopButton();
             }
@@ -165,7 +176,7 @@ namespace TapAndRun.MVP.Skins_Shop
 
             _selfModel.IsDisplaying.OnChanged -= UpdateDisplaying;
 
-            _shopScreenView.BackButton.onClick.RemoveListener(_selfModel.BackTrigger.Trigger);
+            _shopScreenView.BackButton.onClick.RemoveListener(CloseSkinShop);
             _shopScreenView.LeftButton.onClick.RemoveListener(ScrollLeft);
             _shopScreenView.RightButton.onClick.RemoveListener(ScrollRight);
             _shopScreenView.ShopButton.Button.onClick.RemoveListener(ProccesShopButtonClick);

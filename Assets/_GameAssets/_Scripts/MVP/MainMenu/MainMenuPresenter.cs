@@ -46,7 +46,7 @@ namespace TapAndRun.MVP.MainMenu
             _view.PlayButton.onClick.AddListener(StartPlay);
             _view.SettingsButton.onClick.AddListener(OpenSettings);
             _view.LevelSelectButton.onClick.AddListener(OpenLevelSelect);
-            _view.SkinsShopButton.onClick.AddListener(_model.SkinShopTrigger.Trigger);
+            _view.SkinsShopButton.onClick.AddListener(OpenSkinShop);
             _levelSelectView.BackButton.onClick.AddListener(CloseLevelSelect);
 
             await UniTask.CompletedTask;
@@ -72,12 +72,19 @@ namespace TapAndRun.MVP.MainMenu
         
         private void OpenSettings()
         {
-            _audioService.PlaySound("Button");
+            _audioService.PlaySound("Click");
             _settingsModel.IsDisplaying.Value = true;
         }
 
+        private void OpenSkinShop()
+        {
+            _audioService.PlaySound("QuietClick");
+            _model.SkinShopTrigger.Trigger();
+        }
+        
         private void OpenLevelSelect()
         {
+            _audioService.PlaySound("QuietClick");
             _audioService.PlaySound("SwooshIn");
             _levelSelectView.UpdateButtons(_levelsModel.LastUnlockedLevelId);
 
@@ -86,6 +93,7 @@ namespace TapAndRun.MVP.MainMenu
 
         private void CloseLevelSelect()
         {
+            _audioService.PlaySound("QuietClick");
             _audioService.PlaySound("SwooshOut");
             _levelSelectView.Hide();
         }
@@ -99,6 +107,7 @@ namespace TapAndRun.MVP.MainMenu
                 if (levelButton.LevelId > _levelsModel.LastUnlockedLevelId)
                 {
                     levelButton.PlayLockAsync().Forget();
+                    _audioService.CallVibration();
                 }
                 else
                 {
@@ -133,7 +142,7 @@ namespace TapAndRun.MVP.MainMenu
             _view.PlayButton.onClick.RemoveListener(StartPlay);
             _view.SettingsButton.onClick.RemoveListener(OpenSettings);
             _view.LevelSelectButton.onClick.RemoveListener(OpenLevelSelect);
-            _view.SkinsShopButton.onClick.RemoveListener(_model.SkinShopTrigger.Trigger);
+            _view.SkinsShopButton.onClick.RemoveListener(OpenSkinShop);
             _levelSelectView.BackButton.onClick.RemoveListener(CloseLevelSelect);
         }
     }

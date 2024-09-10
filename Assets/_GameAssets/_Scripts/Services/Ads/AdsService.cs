@@ -17,8 +17,6 @@ namespace TapAndRun.Services.Ads
 
         public UniTask InitializeAsync(CancellationToken token)
         {
-            
-            Debug.Log("ЗАПУЩЕНА ИНИЦИАЛИЗАЦИЯ АДС");
             IronSource.Agent.validateIntegration();
             IronSource.Agent.init(_appKey);
 

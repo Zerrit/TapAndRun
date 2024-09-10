@@ -40,14 +40,14 @@ namespace TapAndRun.MVP.Settings
             _view.VibroToggle.OnStatusChanged += ChangeVibroStatus;
 
             _view.CloseButton.onClick.AddListener(Close);
-            _view.LanguagueButton.onClick.AddListener(_view.LanguagePopup.Show);
+            _view.LanguagueButton.onClick.AddListener(ShowLangPanel);
             
             await UniTask.CompletedTask;
         }
 
         private void Close()
         {
-            _audioService.PlaySound("Button");
+            _audioService.PlaySound("Click");
             _model.IsDisplaying.Value = false;
         }
 
@@ -80,6 +80,12 @@ namespace TapAndRun.MVP.Settings
             }
         }
 
+        private void ShowLangPanel()
+        {
+            _audioService.PlaySound("QuietClick");
+            _view.LanguagePopup.Show();
+        }
+
         private void ChangeAudioStatus()
         {
             _audioService.PlaySound("Toggle");
@@ -101,6 +107,7 @@ namespace TapAndRun.MVP.Settings
             _model.Language.Value =  langConfig.Id;
             _view.LanguagueButton.image.sprite = langConfig.Icon;
 
+            _audioService.PlaySound("QuietClick");
             _view.LanguagePopup.Hide();
         }
 
@@ -109,7 +116,7 @@ namespace TapAndRun.MVP.Settings
             _model.IsDisplaying.OnChanged -= UpdateDisplaying;
 
             _view.CloseButton.onClick.RemoveListener(Close);
-            _view.LanguagueButton.onClick.RemoveListener(_view.LanguagePopup.Show);
+            _view.LanguagueButton.onClick.RemoveListener(ShowLangPanel);
 
             _view.AudioToggle.OnStatusChanged -= ChangeAudioStatus;
             _view.VibroToggle.OnStatusChanged -= ChangeVibroStatus;
