@@ -34,9 +34,11 @@ namespace TapAndRun.MVP.Character.Model
 
         private CancellationTokenSource _cts;
 
+        private float _baseAnimSpeed;
+        
         private const float JumpDuration = 1f;
-        private const float BaseAnimSpeed = 1f;
-        private const float SfxAccelerationStep = .1f;
+        private const float AnimationTargetMoveSpeed = 2f;
+        private const float SfxAccelerationStep = .1f; //TODO донастроить
 
         private static readonly Vector2 MoveDirection = Vector2.up;
 
@@ -52,14 +54,16 @@ namespace TapAndRun.MVP.Character.Model
         public UniTask InitializeAsync(CancellationToken token)
         {
             _cts = new CancellationTokenSource();
+
+            _baseAnimSpeed = _config.BaseMoveSpeed / AnimationTargetMoveSpeed;
+
             IsActive = new BoolReactiveProperty();
             Position = new ReactiveProperty<Vector3>();
             Rotation = new ReactiveProperty<float>();
             IsMoving = new ReactiveProperty<bool>();
             IsFall = new BoolReactiveProperty();
-            AnimMultiplier = new ReactiveProperty<float>(BaseAnimSpeed);
+            AnimMultiplier = new ReactiveProperty<float>(_baseAnimSpeed);
             SfxAcceleration = new ReactiveProperty<float>();
-            
             SelectedSkin = new ReactiveProperty<string>(_config.DefaultSkinId);
 
             _updateService.Subscribe(this);
@@ -117,8 +121,10 @@ namespace TapAndRun.MVP.Character.Model
 
         public void ChangeSpeed(int difficultyLevel)
         {
-            _currentSpeed = _config.BaseMoveSpeed + difficultyLevel;
-            AnimMultiplier.Value = BaseAnimSpeed + (difficultyLevel / _config.BaseMoveSpeed);
+            var acceleration = difficultyLevel * _config.AccelerationByDiffLevel;
+            _currentSpeed = _config.BaseMoveSpeed + acceleration;
+
+            AnimMultiplier.Value = _baseAnimSpeed / _config.BaseMoveSpeed * _currentSpeed;
             SfxAcceleration.Value = difficultyLevel * SfxAccelerationStep; //TODO Подумать на формулой вычисления
         }
 
@@ -168,7 +174,7 @@ namespace TapAndRun.MVP.Character.Model
 
             var t = Time.time;
             var totalJumpDuration = JumpDuration / AnimMultiplier.Value;
-
+            Debug.Log(totalJumpDuration);
             while ((t + totalJumpDuration) >= Time.time) //TODO добавить логику согласно изменению сложности
             {
                 await UniTask.NextFrame(_cts.Token);
@@ -176,6 +182,7 @@ namespace TapAndRun.MVP.Character.Model
 
             OnFinishedJumping?.Invoke();
             _isVulnerable = true;
+            Debug.Log("Время закончилось");
         }
 
         private void TryMove()

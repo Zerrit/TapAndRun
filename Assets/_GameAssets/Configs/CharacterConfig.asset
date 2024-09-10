@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a26f0b35a674de58bc0b4b029ea51ea, type: 3}
   m_Name: CharacterConfig
   m_EditorClassIdentifier: 
-  <BaseMoveSpeed>k__BackingField: 2
+  <BaseMoveSpeed>k__BackingField: 3
+  <AccelerationByDiffLevel>k__BackingField: 1
   <TurnSpeed>k__BackingField: 10
   <CenteringSpeed>k__BackingField: 6
   <RoadCheckerOffset>k__BackingField: {x: 0, y: 0.1, z: 0}

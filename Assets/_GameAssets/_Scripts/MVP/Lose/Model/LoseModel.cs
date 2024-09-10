@@ -14,7 +14,7 @@ namespace TapAndRun.MVP.Lose.Model
 
         public int _loseBeforeAds;
 
-        private int _adsInterval = 2;
+        private int _adsInterval = 3;
 
         private readonly IAdsService _adsService;
 
@@ -38,11 +38,15 @@ namespace TapAndRun.MVP.Lose.Model
         {
             _loseBeforeAds--;
 
-            if (_loseBeforeAds == 0)
+            if (_loseBeforeAds == 1)
             {
-                ShowAds();
-
+                _adsService.LoadInterstitialAd();
+            }
+            else if (_loseBeforeAds == 0)
+            {
                 _loseBeforeAds = _adsInterval;
+
+                ShowAds();
             }
         }
         
