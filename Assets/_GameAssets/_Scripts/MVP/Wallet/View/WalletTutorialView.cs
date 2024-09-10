@@ -14,12 +14,10 @@ namespace TapAndRun.MVP.Wallet.View
         [SerializeField] private Vector3 _targetffset;
         [SerializeField] private Vector3 _cursorOffset;
 
-        private CancellationTokenSource _cts;
+        private CancellationTokenSource _cts = new();
 
         public void PlayCursorAnim()
         {
-            _cts = new CancellationTokenSource();
-            
             var target = _animTarget.localPosition + _targetffset;
             _cursor.transform.localPosition = target + _cursorOffset;
 

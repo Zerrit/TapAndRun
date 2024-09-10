@@ -151,7 +151,7 @@ namespace TapAndRun.MVP.Levels
             _commandHandler.GenerateCommand(_currentLevel.InteractionPoints);
             UpdateDifficulty();
 
-            _currentLevel.ActivateArrow(); //TODO Заименил переменную. (На случай ошибки)
+            _currentLevel.ActivateArrow();
 
             foreach (var crystal in _currentLevel.Crystals)
             {
@@ -256,6 +256,9 @@ namespace TapAndRun.MVP.Levels
 
             async UniTaskVoid StartTapTutorialAsync()
             {
+                var tutorLevel = _currentLevel as TutorialLevelView;
+                tutorLevel.TutorialInteractPoint.OnPlayerEntered -= StartTapTutorial;
+
                 _characterModel.StopMove();
                 _gameplayScreen.TutorialView.Show();
 
