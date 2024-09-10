@@ -51,7 +51,7 @@ namespace TapAndRun.MVP.Lose
 
         private void Home()
         {
-            _audioService.PlaySound("Button");
+            _audioService.PlaySound("Click");
             _model.HomeTrigger.Trigger();
         }
         

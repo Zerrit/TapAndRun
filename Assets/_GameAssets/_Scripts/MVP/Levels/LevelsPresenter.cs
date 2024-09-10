@@ -163,8 +163,23 @@ namespace TapAndRun.MVP.Levels
 
         private void UpdateDifficulty()
         {
-            _characterModel.ChangeSpeed(_model.CurrentDifficulty);
-            _cameraModel.ChangeDifficulty(_model.CurrentDifficulty);
+            if (_model.CurrentDifficulty < _currentLevel.SpeedDifficulty)
+            {
+                _characterModel.ChangeSpeed(_currentLevel.SpeedDifficulty);
+            }
+            else
+            {
+                _characterModel.ChangeSpeed(_model.CurrentDifficulty);
+            }
+
+            if (_model.CurrentDifficulty < _currentLevel.CameraDifficulty)
+            {
+                _cameraModel.ChangeDifficulty(_currentLevel.CameraDifficulty);
+            }
+            else
+            {
+                _cameraModel.ChangeDifficulty(_model.CurrentDifficulty);
+            }
         }
 
         private void ProcessClick()
@@ -178,18 +193,18 @@ namespace TapAndRun.MVP.Levels
             _currentLevel.SwitchToNextArrow(_commandHandler.CurrentInteractionIndex);
         }
 
-        private void ProcessLevelLose()  //TODO Подумать ещё над неймингом
+        private void ProcessLevelLose()
         {
             _model.LoseLevel();
             _walletModel.ResetCrystalsByLevel();
 
-            _gameplayScreen.Hide();  //TODO Донастроить скрипт окна геймплейного
-            _cameraModel.FlyUpAsync().Forget(); //TODO Возвомжно изменить логику
+            _gameplayScreen.Hide();
+            _cameraModel.FlyUpAsync().Forget();
             
             _audioService.CallVibration();
         }
 
-        private void ProcessLevelComplete() //TODO Подумать ещё над неймингом
+        private void ProcessLevelComplete()
         {
             _model.CompleteLevel();
             _walletModel.GainCrystalsByLevel();

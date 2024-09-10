@@ -174,7 +174,7 @@ namespace TapAndRun.MVP.Character.Model
 
             var t = Time.time;
             var totalJumpDuration = JumpDuration / AnimMultiplier.Value;
-            Debug.Log(totalJumpDuration);
+
             while ((t + totalJumpDuration) >= Time.time) //TODO добавить логику согласно изменению сложности
             {
                 await UniTask.NextFrame(_cts.Token);
@@ -182,7 +182,6 @@ namespace TapAndRun.MVP.Character.Model
 
             OnFinishedJumping?.Invoke();
             _isVulnerable = true;
-            Debug.Log("Время закончилось");
         }
 
         private void TryMove()

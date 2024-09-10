@@ -9,7 +9,8 @@ namespace TapAndRun.MVP.Levels.Views
     {
         public event Action OnFinishReached;
 
-        [field: SerializeField] public int Difficulty { get; set; }
+        [field: SerializeField] public int SpeedDifficulty { get; set; }
+        [field: SerializeField] public int CameraDifficulty { get; set; }
 
         [field: SerializeField] public StartSegmentView StartSegment { get; set; }
         [field: SerializeField] public FinishSegmentView FinishSegment { get; set; }

@@ -28,7 +28,7 @@ namespace TapAndRun.Architecture.GameScene
         {
             if (!hasFocus)
             {
-                SaveAndDecomposeAll();
+                QuickSave();
             }
         }
 
@@ -36,32 +36,37 @@ namespace TapAndRun.Architecture.GameScene
         {
             if (pauseStatus)
             {
-                SaveAndDecomposeAll();
+                QuickSave();
             }
         }
 
         private void OnApplicationQuit()
         {
-            SaveAndDecomposeAll();
+            QuickSave();
+            DecomposeScope();
         }
 
-        private void SaveAndDecomposeAll()
+        private void DecomposeScope()
         {
-            if (Time.time - _lastQuickSaveTime < _quickSaveTimeout)
-            {
-                return;
-            }
-            
-            _dataService.Save();
-
             foreach (var decomposable in _decomposables)
             {
                 decomposable.Decompose();
             }
 
-            _lastQuickSaveTime = Time.time;
-
             Debug.Log("Scope decomposition was completed");
+        }
+        
+        private void QuickSave()
+        {
+            if (Time.time - _lastQuickSaveTime < _quickSaveTimeout && _lastQuickSaveTime != 0)
+            {
+                return;
+            }
+ 
+            _lastQuickSaveTime = Time.time;
+            _dataService.Save();
+            
+            Debug.Log("QuickSave was completed");
         }
     }
 }

@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e02fd9c73b14472990db6df3a132801a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _quickSaveTimeout: 60
+  _quickSaveTimeout: 10
 --- !u!4 &56126967
 Transform:
   m_ObjectHideFlags: 0
@@ -2552,7 +2552,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8457647366083658450, guid: 8641e0e324376c541b08213d5d3fde0b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 51.499756
+      value: 51.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2708,11 +2708,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8825180913306768107, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -75.00012
+      value: -75
       objectReference: {fileID: 0}
     - target: {fileID: 8825180913306768107, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 49.999756
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
