@@ -2,7 +2,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,7 +17,7 @@ namespace TapAndRun.MVP.MainMenu.Views
         [field:SerializeField] public Button Button { get; private set; }
         [field:SerializeField] public Image Background { get; private set; }
         [field:SerializeField] public Image LockIcon { get; private set; }
-        [field:SerializeField] public TextMeshProUGUI LevelText { get; private set; }
+        [field:SerializeField] public Text LevelText { get; private set; }
 
         [SerializeField] private Color _unlockColor;
         [SerializeField] private Color _lockColor;
