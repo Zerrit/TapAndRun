@@ -82,15 +82,17 @@ namespace TapAndRun.MVP.Settings
 
         private void ChangeAudioStatus()
         {
-            _model.AudioStatus.Value = !_model.AudioStatus.Value;
+            _audioService.PlaySound("Toggle");
 
+            _model.AudioStatus.Value = !_model.AudioStatus.Value;
             _view.AudioToggle.Switch(_model.AudioStatus.Value);
         }
 
         private void ChangeVibroStatus()
         {
-            _model.VibroStatus.Value = !_model.VibroStatus.Value;
+            _audioService.PlaySound("Toggle");
 
+            _model.VibroStatus.Value = !_model.VibroStatus.Value;
             _view.VibroToggle.Switch(_model.VibroStatus.Value);
         }
 

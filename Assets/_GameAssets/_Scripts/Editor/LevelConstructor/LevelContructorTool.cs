@@ -6,7 +6,7 @@ using TapAndRun.MVP.Levels.Views;
 using UnityEditor;
 using UnityEngine;
 
-namespace TapAndRun.Editor.LevelConstructor
+namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor
 {
     public class LevelContructorTool : EditorWindow
     {
@@ -19,7 +19,7 @@ namespace TapAndRun.Editor.LevelConstructor
         private Stack<AbstractSegmentBuilder> _buildersStack;
         private LevelConstructorToolConfig _config;
 
-        [MenuItem("My Tool/Show LevelConstructor")]
+        [MenuItem("Tools/Show LevelConstructor")]
         public static void ShowWindow()
         {
             GetWindow<LevelContructorTool>(true, "Level Constructor");

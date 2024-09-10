@@ -496,8 +496,8 @@ MonoBehaviour:
   _turnSound: {fileID: 8300000, guid: 99119b4d39470d0489a875b1b0d73b88, type: 3}
   _jumpSound: {fileID: 8300000, guid: bb88b86d3027b5e499b5e2d372291356, type: 3}
   _loseSound: {fileID: 8300000, guid: 48c79f71749a1894e95e6aadc783a8f2, type: 3}
-  _audioSource: {fileID: 6922010062234094946}
   _baseSpeedPitch: 1
+  _audioSource: {fileID: 6922010062234094946}
 --- !u!82 &6922010062234094946
 AudioSource:
   m_ObjectHideFlags: 0

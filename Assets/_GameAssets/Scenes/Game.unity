@@ -281,6 +281,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1434436528}
     m_Modifications:
+    - target: {fileID: 3075313043243415902, guid: 2138a0885073afa4d81be31abb6aa37e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1992f8f7aeed10c48bed1df28d83959e, type: 3}
+    - target: {fileID: 3075313043243415902, guid: 2138a0885073afa4d81be31abb6aa37e, type: 3}
+      propertyPath: m_Maskable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3887338288490872511, guid: 2138a0885073afa4d81be31abb6aa37e, type: 3}
       propertyPath: m_Name
       value: Main Screen View
@@ -368,6 +376,26 @@ PrefabInstance:
     - target: {fileID: 5184925118088558588, guid: 2138a0885073afa4d81be31abb6aa37e, type: 3}
       propertyPath: m_SizeDelta.x
       value: 3000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292662665883031794, guid: 2138a0885073afa4d81be31abb6aa37e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3b902f226593c084fba20ed761508616, type: 3}
+    - target: {fileID: 5292662665883031794, guid: 2138a0885073afa4d81be31abb6aa37e, type: 3}
+      propertyPath: m_Maskable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5643887320932943289, guid: 2138a0885073afa4d81be31abb6aa37e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c398922a20f2f984db55718ac2c394f5, type: 3}
+    - target: {fileID: 6883150059462574963, guid: 2138a0885073afa4d81be31abb6aa37e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 19b2b02a9feef8b4fa2f431692a804b5, type: 3}
+    - target: {fileID: 6883150059462574963, guid: 2138a0885073afa4d81be31abb6aa37e, type: 3}
+      propertyPath: m_Maskable
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2204,6 +2232,30 @@ PrefabInstance:
     - target: {fileID: 2472986179952924415, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2778629072285788561, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_Spacing.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2778629072285788561, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_Spacing.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2778629072285788561, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_CellSize.x
+      value: 225
+      objectReference: {fileID: 0}
+    - target: {fileID: 2778629072285788561, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_CellSize.y
+      value: 225
+      objectReference: {fileID: 0}
+    - target: {fileID: 2778629072285788561, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_Padding.m_Left
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2778629072285788561, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
+      propertyPath: m_Padding.m_Right
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5956892458761845273, guid: 7b2bbcd38b9136f4a87bf6c32dd520d0, type: 3}
       propertyPath: m_SizeDelta.y

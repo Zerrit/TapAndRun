@@ -3,13 +3,14 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace TapAndRun.MVP.Wallet.View
 {
     public class WalletView : MonoBehaviour
     {
-        [field:SerializeField] public TextMeshProUGUI AvailableCrystals { get; private set; }
-        [field:SerializeField] public TextMeshProUGUI CrystalsByLevel { get; private set; }
+        [field:SerializeField] public Text AvailableCrystals { get; private set; }
+        [field:SerializeField] public Text CrystalsByLevel { get; private set; }
         [field:SerializeField] public WalletTutorialView WalletTutorialView { get; private set; }
 
         private CancellationTokenSource _cts = new();
