@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Offset>k__BackingField: {x: 0, y: 0, z: -5}
   <TurnSpeed>k__BackingField: 7
-  <Height>k__BackingField: 3
-  <HeightStep>k__BackingField: 1
-  <LoseHeight>k__BackingField: 6
+  <Height>k__BackingField: 4
+  <HeightStep>k__BackingField: 0.5
+  <LoseHeight>k__BackingField: 8
   <RotationDifficulties>k__BackingField: 5a0000002d00000064000000

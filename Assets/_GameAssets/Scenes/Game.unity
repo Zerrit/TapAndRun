@@ -2398,6 +2398,10 @@ PrefabInstance:
       propertyPath: m_FontData.m_LineSpacing
       value: 0.8
       objectReference: {fileID: 0}
+    - target: {fileID: 1856258608691890477, guid: 2ec2e7700c0265f4a8717ade4ee988b1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5d3ba75a9c8d0ec4e98ea53b9f8fb010, type: 3}
     - target: {fileID: 2813764710064940458, guid: 2ec2e7700c0265f4a8717ade4ee988b1, type: 3}
       propertyPath: m_Name
       value: Transition Curtain
@@ -2658,58 +2662,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lose Screen View
       objectReference: {fileID: 0}
-    - target: {fileID: 3261193975810069448, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3261193975810069448, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4099301690096363057, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4099301690096363057, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4099301690096363057, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1253423114}
-    - target: {fileID: 4099301690096363057, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4099301690096363057, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlaySound
-      objectReference: {fileID: 0}
-    - target: {fileID: 4099301690096363057, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: TapAndRun.Services.Audio.AudioService, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 4099301690096363057, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 7260879873748197189, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 7260879873748197189, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 600
-      objectReference: {fileID: 0}
-    - target: {fileID: 7260879873748197189, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7260879873748197189, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7544860985697885585, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2789,14 +2741,6 @@ PrefabInstance:
     - target: {fileID: 7544860985697885585, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8825180913306768107, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -75
-      objectReference: {fileID: 0}
-    - target: {fileID: 8825180913306768107, guid: a31e1802da8bdaa4b9bce51a323166bb, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 49.99994
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

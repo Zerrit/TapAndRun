@@ -138,6 +138,7 @@ namespace TapAndRun.MVP.Skins_Shop
         {
             if (_shopScreenView.ShopButton.State == ShopButtonState.CantPurchase)
             {
+                _audioService.PlaySound("Error");
                 _audioService.CallVibration();
                 _shopScreenView.ShopButton.PlayFailAnim();
             }

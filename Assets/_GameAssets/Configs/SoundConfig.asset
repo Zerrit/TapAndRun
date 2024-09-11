@@ -43,3 +43,6 @@ MonoBehaviour:
   - <SoundId>k__BackingField: SlowClick
     <Volume>k__BackingField: 0.2
     <Clip>k__BackingField: {fileID: 8300000, guid: 077b48213cebcb4488331c65de1dd582, type: 3}
+  - <SoundId>k__BackingField: Error
+    <Volume>k__BackingField: 0.2
+    <Clip>k__BackingField: {fileID: 8300000, guid: 3b6e6e58a1e495846bee1de8f321e026, type: 3}

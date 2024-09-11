@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Factories.Levels;
 using TapAndRun.Interfaces;
@@ -305,9 +304,9 @@ namespace TapAndRun.MVP.Levels
             }
         }
 
-        private void ClearLevels() //TODO Возможно достаточно вызвать декомпоуз у фабрики
+        private void ClearLevels()
         {
-            if (_oldLevel)
+            /*if (_oldLevel)
             {
                 _oldLevel.Destroy();
             }
@@ -320,7 +319,7 @@ namespace TapAndRun.MVP.Levels
             if (_nextLevel)
             {
                 _nextLevel.Destroy();
-            }
+            }*/
 
             _levelFactory.Decompose();
         }

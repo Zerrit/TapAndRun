@@ -108,6 +108,7 @@ namespace TapAndRun.MVP.MainMenu
                 {
                     levelButton.PlayLockAsync().Forget();
                     _audioService.CallVibration();
+                    _audioService.PlaySound("Error");
                 }
                 else
                 {
