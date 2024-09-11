@@ -221,7 +221,6 @@ namespace TapAndRun.MVP.Levels
 
         private void TakeCrystal()
         {
-            _audioService.PlaySound("TakeCrystal");
             _walletModel.IncreaseCrystalsByLevel();
         }
 

@@ -37,7 +37,6 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 1992f8f7aeed10c48bed1df28d83959e, type: 3}
     - {fileID: 2800000, guid: a1d46ee6e3095964993e1903750f56f4, type: 3}
     - {fileID: 2800000, guid: 86aed09a79a45634db11ee20e5da73d2, type: 3}
-    - {fileID: 2800000, guid: 8557a878935bc6941b0797e197f3bd4e, type: 3}
     - {fileID: 2800000, guid: d61c8de01ebb1384db924ee15d9c698b, type: 3}
     - {fileID: 2800000, guid: cb8d0af83256b874589d2fccb1fc10a7, type: 3}
     - {fileID: 2800000, guid: 8b3bca9f9f00f834e998b60f7254b01d, type: 3}
@@ -51,13 +50,13 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 5d3ba75a9c8d0ec4e98ea53b9f8fb010, type: 3}
     - {fileID: 2800000, guid: 43be896ca1a54e548aa65765e21bfe3b, type: 3}
     - {fileID: 2800000, guid: 70516f157cb2123409da2f47b44e3150, type: 3}
-    - {fileID: 2800000, guid: 6c4eb2db7a52643438ea2527bce37bfc, type: 3}
+    - {fileID: 2800000, guid: 344a83efc8314f44bbc60a11cc86e2c9, type: 3}
     - {fileID: 2800000, guid: 861ffb8acf0f6fd4780e909c3bb95481, type: 3}
     - {fileID: 2800000, guid: 68022c113b94ade478ace0689ed02fe2, type: 3}
     - {fileID: 2800000, guid: a4d9ce1079c6b8446905d433a1328dba, type: 3}
     - {fileID: 2800000, guid: 30f786cff9190184dbad5d32a574e4ce, type: 3}
     - {fileID: 2800000, guid: 806833bd442926f46bc868dd95b349b5, type: 3}
-    - {fileID: 2800000, guid: 344a83efc8314f44bbc60a11cc86e2c9, type: 3}
+    - {fileID: 2800000, guid: 6ea430dc37e6fe046911b3a1a7cdd90f, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -71,7 +70,6 @@ SpriteAtlas:
     - 4eae66e6201c1c847b00271a8f86b615: 21300000
     - a1d46ee6e3095964993e1903750f56f4: 21300000
     - 1992f8f7aeed10c48bed1df28d83959e: 21300000
-    - 8557a878935bc6941b0797e197f3bd4e: 21300000
     - cb8d0af83256b874589d2fccb1fc10a7: 21300000
     - 113163b906b266f40bf34bc633f4f577: 21300000
     - 5d3ba75a9c8d0ec4e98ea53b9f8fb010: 21300000
@@ -80,9 +78,9 @@ SpriteAtlas:
     - b6641e8af16e52b4ca888b00e3552e00: 21300000
     - 86aed09a79a45634db11ee20e5da73d2: 21300000
     - c18df32b333c4064d949d3333a613a7b: 21300000
-    - 6c4eb2db7a52643438ea2527bce37bfc: 21300000
     - 33e6855cebeb23d4a92d49a6907cf7f2: 21300000
     - 43be896ca1a54e548aa65765e21bfe3b: 21300000
+    - 6ea430dc37e6fe046911b3a1a7cdd90f: 21300000
     - 806833bd442926f46bc868dd95b349b5: 21300000
     - 04bee37ea05f44049a4f563f0c25f282: 21300000
     - 8b3bca9f9f00f834e998b60f7254b01d: 21300000
@@ -99,7 +97,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 4eae66e6201c1c847b00271a8f86b615, type: 3}
   - {fileID: 21300000, guid: a1d46ee6e3095964993e1903750f56f4, type: 3}
   - {fileID: 21300000, guid: 1992f8f7aeed10c48bed1df28d83959e, type: 3}
-  - {fileID: 21300000, guid: 8557a878935bc6941b0797e197f3bd4e, type: 3}
   - {fileID: 21300000, guid: cb8d0af83256b874589d2fccb1fc10a7, type: 3}
   - {fileID: 21300000, guid: 113163b906b266f40bf34bc633f4f577, type: 3}
   - {fileID: 21300000, guid: 5d3ba75a9c8d0ec4e98ea53b9f8fb010, type: 3}
@@ -108,9 +105,9 @@ SpriteAtlas:
   - {fileID: 21300000, guid: b6641e8af16e52b4ca888b00e3552e00, type: 3}
   - {fileID: 21300000, guid: 86aed09a79a45634db11ee20e5da73d2, type: 3}
   - {fileID: 21300000, guid: c18df32b333c4064d949d3333a613a7b, type: 3}
-  - {fileID: 21300000, guid: 6c4eb2db7a52643438ea2527bce37bfc, type: 3}
   - {fileID: 21300000, guid: 33e6855cebeb23d4a92d49a6907cf7f2, type: 3}
   - {fileID: 21300000, guid: 43be896ca1a54e548aa65765e21bfe3b, type: 3}
+  - {fileID: 21300000, guid: 6ea430dc37e6fe046911b3a1a7cdd90f, type: 3}
   - {fileID: 21300000, guid: 806833bd442926f46bc868dd95b349b5, type: 3}
   - {fileID: 21300000, guid: 04bee37ea05f44049a4f563f0c25f282, type: 3}
   - {fileID: 21300000, guid: 8b3bca9f9f00f834e998b60f7254b01d, type: 3}
@@ -126,7 +123,6 @@ SpriteAtlas:
   - vibratsiya_mobilnogo_telefona_4d192485lrwx_256
   - shop
   - menu
-  - background
   - Cursor
   - repeat
   - Icon 1
@@ -135,9 +131,9 @@ SpriteAtlas:
   - Crystal
   - settings
   - planet-256
-  - 2
   - Retry
   - button_100
+  - Gradient
   - StartJump
   - "icons8-\u0433\u043B\u0430\u0432\u043D\u0430\u044F-256"
   - TutorCursor
