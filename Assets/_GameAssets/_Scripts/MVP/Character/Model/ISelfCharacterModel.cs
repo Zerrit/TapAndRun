@@ -16,6 +16,7 @@ namespace TapAndRun.MVP.Character.Model
         ReactiveProperty<bool> IsMoving { get; }
         BoolReactiveProperty IsFall { get; }
         ReactiveProperty<float> AnimMultiplier { get; }
+        ReactiveProperty<float> SfxAcceleration { get; }
         
         ReactiveProperty<string> SelectedSkin { get; }
     }

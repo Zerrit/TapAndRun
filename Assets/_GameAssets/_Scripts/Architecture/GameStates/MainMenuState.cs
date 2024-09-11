@@ -25,7 +25,11 @@ namespace TapAndRun.Architecture.GameStates
 
         public UniTask EnterAsync(CancellationToken token)
         {
-            _levelsModel.PrepeareCurrentLevel();
+            if (!_levelsModel.IsDisplaying.Value)
+            {
+                _levelsModel.IsDisplaying.Value = true;
+            }
+
             _mainMenuModel.IsDisplaying.Value = true;
 
             _transitionService.TryEndTransition();
@@ -58,7 +62,7 @@ namespace TapAndRun.Architecture.GameStates
             async UniTaskVoid ToSkinShopAsync(CancellationToken token)
             {
                 await _transitionService.ShowTransition(token);
-                _levelsModel.RemoveTrigger.Trigger();
+                _levelsModel.IsDisplaying.Value = false;
 
                 _gameStateMachine.ChangeStateAsync<SkinShopState>().Forget();
             }

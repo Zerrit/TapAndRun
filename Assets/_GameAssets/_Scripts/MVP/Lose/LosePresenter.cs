@@ -3,25 +3,29 @@ using Cysharp.Threading.Tasks;
 using TapAndRun.Interfaces;
 using TapAndRun.MVP.Lose.Model;
 using TapAndRun.MVP.Lose.View;
+using TapAndRun.Services.Audio;
 
 namespace TapAndRun.MVP.Lose
 {
     public class LosePresenter : IInitializableAsync, IDecomposable
     {
         private readonly ISelfLoseModel _model;
+        private readonly IAudioService _audioService;
         private readonly LoseView _view;
 
-        public LosePresenter(ISelfLoseModel model, LoseView view)
+        public LosePresenter(ISelfLoseModel model, IAudioService audioService, LoseView view)
         {
             _model = model;
+            _audioService = audioService;
             _view = view;
         }
 
         public UniTask InitializeAsync(CancellationToken token)
         {
             _model.IsDisplaying.OnChanged += UpdateDisplaying;
-            _view.RestartButton.onClick.AddListener(_model.RestartTrigger.Trigger);
-            _view.HomeButton.onClick.AddListener(_model.HomeTrigger.Trigger);
+
+            _view.RestartButton.onClick.AddListener(Restart);
+            _view.HomeButton.onClick.AddListener(Home);
 
             return UniTask.CompletedTask;
         }
@@ -30,6 +34,7 @@ namespace TapAndRun.MVP.Lose
         {
             if (status)
             {
+                _model.IncreaseLoseCount();
                 _view.Show();
             }
             else
@@ -38,11 +43,24 @@ namespace TapAndRun.MVP.Lose
             }
         }
 
+        private void Restart()
+        {
+            _audioService.PlaySound("Play");
+            _model.RestartTrigger.Trigger();
+        }
+
+        private void Home()
+        {
+            _audioService.PlaySound("Click");
+            _model.HomeTrigger.Trigger();
+        }
+        
         public void Decompose()
         {
             _model.IsDisplaying.OnChanged -= UpdateDisplaying;
-            _view.RestartButton.onClick.RemoveListener(_model.RestartTrigger.Trigger);
-            _view.HomeButton.onClick.RemoveListener(_model.HomeTrigger.Trigger);
+
+            _view.RestartButton.onClick.RemoveListener(Restart);
+            _view.HomeButton.onClick.RemoveListener(Home);
         }
     }
 }

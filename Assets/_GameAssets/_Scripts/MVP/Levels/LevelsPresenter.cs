@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Factories.Levels;
 using TapAndRun.Interfaces;
@@ -52,10 +51,13 @@ namespace TapAndRun.MVP.Levels
             _commandHandler = new TapCommandHandler(_characterModel, _cameraModel);
             _model.LevelCount = _levelFactory.GetLevelCount();
 
-            _model.StartupTrigger.OnTriggered += StartGameplay;
-            _model.RemoveTrigger.OnTriggered += RemoveLevels; // TODO Подумать на версией
+            _model.IsDisplaying.Subscribe(BuildLevel, true);
+            _model.IsDisplaying.Subscribe(HideLevels, false);
+            
+            _model.StartupTrigger.Subscribe(StartGameplay);
+            _model.ResetLevelTrigger.Subscribe(ResetLevel);
+
             _model.OnLevelChanged += BuildLevel;
-            _model.OnLevelReseted += ResetLevel;
 
             _characterModel.IsFall.OnChangedToTrue += ProcessLevelLose;
             _gameplayScreen.TapButton.onClick.AddListener(ProcessClick);
@@ -65,6 +67,8 @@ namespace TapAndRun.MVP.Levels
 
         private void StartGameplay()
         {
+            CheckForTutorials();
+            
             _gameplayScreen.Show();
             _characterModel.StartMove();
         }
@@ -146,7 +150,7 @@ namespace TapAndRun.MVP.Levels
             _commandHandler.GenerateCommand(_currentLevel.InteractionPoints);
             UpdateDifficulty();
 
-            _currentLevel.ActivateArrow(); //TODO Заименил переменную. (На случай ошибки)
+            _currentLevel.ActivateArrow();
 
             foreach (var crystal in _currentLevel.Crystals)
             {
@@ -154,22 +158,29 @@ namespace TapAndRun.MVP.Levels
             }
 
             _currentLevel.FinishSegment.OnPlayerEntered += ProcessLevelComplete;
-
-            CheckForTutorials();
         }
-        
-        /// <summary>
-        /// Передает уровень сложности в персонажа и камеру.
-        /// </summary>
+
         private void UpdateDifficulty()
         {
-            _characterModel.ChangeSpeed(_model.CurrentDifficulty);
-            _cameraModel.ChangeDifficulty(_model.CurrentDifficulty);
+            if (_model.CurrentDifficulty < _currentLevel.SpeedDifficulty)
+            {
+                _characterModel.ChangeSpeed(_currentLevel.SpeedDifficulty);
+            }
+            else
+            {
+                _characterModel.ChangeSpeed(_model.CurrentDifficulty);
+            }
+
+            if (_model.CurrentDifficulty < _currentLevel.CameraDifficulty)
+            {
+                _cameraModel.ChangeDifficulty(_currentLevel.CameraDifficulty);
+            }
+            else
+            {
+                _cameraModel.ChangeDifficulty(_model.CurrentDifficulty);
+            }
         }
 
-        /// <summary>
-        /// Обрабатывает клик игрока.
-        /// </summary>
         private void ProcessClick()
         {
             if (!_commandHandler.CheckAvailability())
@@ -181,18 +192,18 @@ namespace TapAndRun.MVP.Levels
             _currentLevel.SwitchToNextArrow(_commandHandler.CurrentInteractionIndex);
         }
 
-        private void ProcessLevelLose()  //TODO Подумать ещё над неймингом
+        private void ProcessLevelLose()
         {
             _model.LoseLevel();
             _walletModel.ResetCrystalsByLevel();
 
-            _gameplayScreen.Hide();  //TODO Донастроить скрипт окна геймплейного
-            _cameraModel.FlyUpAsync().Forget(); //TODO Возвомжно изменить логику
+            _gameplayScreen.Hide();
+            _cameraModel.FlyUpAsync().Forget();
             
             _audioService.CallVibration();
         }
 
-        private void ProcessLevelComplete() //TODO Подумать ещё над неймингом
+        private void ProcessLevelComplete()
         {
             _model.CompleteLevel();
             _walletModel.GainCrystalsByLevel();
@@ -217,7 +228,12 @@ namespace TapAndRun.MVP.Levels
         #region TUTORIALS
         private void CheckForTutorials()
         {
-            if (_model.CurrentLevelId == 0 & _currentLevel is TutorialLevelView) //TODO Проверка на прохождение обучяения
+            if (_model.IsTutorialComplete)
+            {
+                return;
+            }
+
+            if (_model.CurrentLevelId == 0 & _currentLevel is TutorialLevelView)
             {
                 var tutorLevel = _currentLevel as TutorialLevelView;
                 if (tutorLevel)
@@ -254,6 +270,9 @@ namespace TapAndRun.MVP.Levels
 
             async UniTaskVoid StartTapTutorialAsync()
             {
+                var tutorLevel = _currentLevel as TutorialLevelView;
+                tutorLevel.TutorialInteractPoint.OnPlayerEntered -= StartTapTutorial;
+
                 _characterModel.StopMove();
                 _gameplayScreen.TutorialView.Show();
 
@@ -264,15 +283,14 @@ namespace TapAndRun.MVP.Levels
                 ProcessClick();
 
                 _gameplayScreen.TapButton.onClick.AddListener(ProcessClick);
+                _model.IsTutorialComplete = true;
             }
         }
         #endregion
 
-        //TODO Метод удаляет уровни и выключает героя.
-
-        private void RemoveLevels()
+        private void HideLevels() //TODO нейминг
         {
-            _model.CurrentLevelId = -1;
+            _characterModel.IsActive.Value = false;
             DeactivateLevel();
             ClearLevels();
         }
@@ -288,9 +306,7 @@ namespace TapAndRun.MVP.Levels
 
         private void ClearLevels()
         {
-            _characterModel.IsActive.Value = false;
-            
-            if (_oldLevel)
+            /*if (_oldLevel)
             {
                 _oldLevel.Destroy();
             }
@@ -303,7 +319,7 @@ namespace TapAndRun.MVP.Levels
             if (_nextLevel)
             {
                 _nextLevel.Destroy();
-            }
+            }*/
 
             _levelFactory.Decompose();
         }
@@ -313,10 +329,13 @@ namespace TapAndRun.MVP.Levels
             _cts?.Cancel();
             _cts?.Dispose();
 
-            _model.StartupTrigger.OnTriggered -= StartGameplay;
-            _model.RemoveTrigger.OnTriggered -= RemoveLevels;
+            _model.IsDisplaying.Unsubscribe(BuildLevel, true);
+            _model.IsDisplaying.Unsubscribe(HideLevels, false);
+
+            _model.StartupTrigger.Unsubscribe(StartGameplay);
+            _model.ResetLevelTrigger.Unsubscribe(ResetLevel);
+
             _model.OnLevelChanged -= BuildLevel;
-            _model.OnLevelReseted -= ResetLevel;
 
             _characterModel.IsFall.OnChangedToTrue -= ProcessLevelLose;
             _gameplayScreen.TapButton.onClick.RemoveListener(ProcessClick);

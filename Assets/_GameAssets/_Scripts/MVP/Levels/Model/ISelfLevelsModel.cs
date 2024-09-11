@@ -4,15 +4,18 @@ using TapAndRun.Tools.Reactivity;
 namespace TapAndRun.MVP.Levels.Model
 {
     public interface ISelfLevelsModel
-    { 
-        event Action OnLevelReseted;
+    {
         event Action OnLevelChanged;
 
+        BoolReactiveProperty IsDisplaying { get; }
+
         TriggerReactiveProperty StartupTrigger { get; }
-        TriggerReactiveProperty RemoveTrigger { get; }
+        TriggerReactiveProperty ResetLevelTrigger { get; } 
         
         int CurrentLevelId { get; set; }
         int LevelCount { get; set; }
+        
+        bool IsTutorialComplete { get; set; }
 
         int CurrentDifficulty { get; }
 

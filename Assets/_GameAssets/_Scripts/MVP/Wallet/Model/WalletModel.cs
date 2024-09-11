@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using TapAndRun.PlayerProgress;
+using TapAndRun.PlayerData;
 using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Wallet.Model
 {
-    public class WalletModel : IWalletModel, ISelfWalletModel, ISaveLoadable
+    public class WalletModel : IWalletModel, ISelfWalletModel, IProgressable
     {
         public string SaveKey => "Wallet";
 
@@ -23,6 +23,22 @@ namespace TapAndRun.MVP.Wallet.Model
             CrystalsByLevel = new ReactiveProperty<int>(0);
 
             return UniTask.CompletedTask;
+        }
+
+        SaveableData IProgressable.GetProgressData()
+        {
+            return new SaveableData(SaveKey, new object[] {AvailableCrystals.Value});
+        }
+
+        void IProgressable.RestoreProgress(SaveableData loadData)
+        {
+            if (loadData?.Data == null || loadData.Data.Length < 1)
+            {
+                Debug.LogError($"Can't restore Wallet data");
+                return;
+            }
+
+            AvailableCrystals.Value = Convert.ToInt32(loadData.Data[0]);
         }
 
         public void IncreaseCrystalsByLevel()
@@ -57,22 +73,6 @@ namespace TapAndRun.MVP.Wallet.Model
                 AvailableCrystals.Value -= value;
                 return true;
             }
-        }
-
-        ProgressData ISaveLoadable.GetProgressData()
-        {
-            return new ProgressData(SaveKey, new object[] {AvailableCrystals.Value});
-        }
-
-        void ISaveLoadable.RestoreProgress(ProgressData loadData)
-        {
-            if (loadData?.Data == null || loadData.Data.Length < 1)
-            {
-                Debug.LogError($"Can't restore Wallet data");
-                return;
-            }
-
-            AvailableCrystals.Value = Convert.ToInt32(loadData.Data[0]);
         }
     }
 }

@@ -3,14 +3,17 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Configs;
 using TapAndRun.Interfaces;
+using TapAndRun.PlayerData;
 using TapAndRun.Services.Update;
 using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Character.Model
 {
-    public class CharacterModel : ISelfCharacterModel, ICharacterModel, IUpdatable, IDecomposable
+    public class CharacterModel : ISelfCharacterModel, ICharacterModel, IUpdatable, IProgressable, IDecomposable
     {
+        public string SaveKey => "Character";
+
         public event Action OnBeganTurning;
         public event Action OnBeganJumping;
         public event Action OnFinishedJumping;
@@ -21,17 +24,21 @@ namespace TapAndRun.MVP.Character.Model
         public ReactiveProperty<bool> IsMoving { get; private set; }
         public BoolReactiveProperty IsFall { get; private set; }
         public ReactiveProperty<float> AnimMultiplier { get; private set; }
+        public ReactiveProperty<float> SfxAcceleration { get; private set; }
 
         public ReactiveProperty<string> SelectedSkin { get; private set; }
-        
+
         private Vector3 _roadCheckerPosition;
         private float _currentSpeed;
         private bool _isVulnerable;
 
         private CancellationTokenSource _cts;
 
-        private const float BaseAnimSpeed = 1f;
+        private float _baseAnimSpeed;
+        
         private const float JumpDuration = 1f;
+        private const float AnimationTargetMoveSpeed = 2f;
+        private const float SfxAccelerationStep = .1f; //TODO донастроить
 
         private static readonly Vector2 MoveDirection = Vector2.up;
 
@@ -47,18 +54,37 @@ namespace TapAndRun.MVP.Character.Model
         public UniTask InitializeAsync(CancellationToken token)
         {
             _cts = new CancellationTokenSource();
+
+            _baseAnimSpeed = _config.BaseMoveSpeed / AnimationTargetMoveSpeed;
+
             IsActive = new BoolReactiveProperty();
             Position = new ReactiveProperty<Vector3>();
             Rotation = new ReactiveProperty<float>();
             IsMoving = new ReactiveProperty<bool>();
             IsFall = new BoolReactiveProperty();
-            AnimMultiplier = new ReactiveProperty<float>(BaseAnimSpeed);
-
-            SelectedSkin = new ReactiveProperty<string>("Chinchilla");
+            AnimMultiplier = new ReactiveProperty<float>(_baseAnimSpeed);
+            SfxAcceleration = new ReactiveProperty<float>();
+            SelectedSkin = new ReactiveProperty<string>(_config.DefaultSkinId);
 
             _updateService.Subscribe(this);
             
             return UniTask.CompletedTask;
+        }
+
+        SaveableData IProgressable.GetProgressData()
+        {
+            return new (SaveKey, new object[] {SelectedSkin.Value});
+        }
+
+        void IProgressable.RestoreProgress(SaveableData loadData)
+        {
+            if (loadData?.Data == null || loadData.Data.Length < 1)
+            {
+                Debug.LogError($"Can't restore Wallet data");
+                return;
+            }
+
+            SelectedSkin.Value = Convert.ToString(loadData.Data[0]);
         }
 
         public void Update()
@@ -93,13 +119,15 @@ namespace TapAndRun.MVP.Character.Model
             IsFall.Value = false;
         }
 
-        public void ChangeSpeed(int difficultyLevel) //TODO Проверить работает ли всё
+        public void ChangeSpeed(int difficultyLevel)
         {
-            _currentSpeed = _config.BaseMoveSpeed + difficultyLevel;
-            AnimMultiplier.Value = BaseAnimSpeed + (difficultyLevel / _config.BaseMoveSpeed);
-            //CharacterSfx.ChangeSpeed(difficultyLevel); 
+            var acceleration = difficultyLevel * _config.AccelerationByDiffLevel;
+            _currentSpeed = _config.BaseMoveSpeed + acceleration;
+
+            AnimMultiplier.Value = _baseAnimSpeed / _config.BaseMoveSpeed * _currentSpeed;
+            SfxAcceleration.Value = difficultyLevel * SfxAccelerationStep; //TODO Подумать на формулой вычисления
         }
-        
+
         public async UniTask CenteringAsync(Vector3 centre)
         {
             var origin = Position.Value;

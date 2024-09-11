@@ -6,7 +6,7 @@ namespace TapAndRun.MVP.Character.View
     public class CharacterView : MonoBehaviour
     {
         [field:SerializeField] public Transform Transform { get; private set; }
-        [field:SerializeField] public Transform RoadChecker{ get; private set; }
+        //[field:SerializeField] public Transform RoadChecker{ get; private set; }
 
         [field:SerializeField] public Transform SkinHandler { get; private set; }
         [field:SerializeField] public Animator Animator { get; private set; }
@@ -54,6 +54,11 @@ namespace TapAndRun.MVP.Character.View
         public void UpdateAnimMultiplier(float multiplier)
         {
             Animator.SetFloat(_speed, multiplier);
+        }
+        
+        public void UpdateSfxAcceleration(float value)
+        {
+            Sfx.ChangeSpeed(value);
         }
 
         public void DisplayJumping()

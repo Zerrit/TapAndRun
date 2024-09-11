@@ -11,12 +11,10 @@ namespace TapAndRun.MVP.Levels.Views.Tutorial
     {
         [SerializeField] private Image _cursor;
 
-        private CancellationTokenSource _cts;
+        private CancellationTokenSource _cts = new();
 
         public void PlayTapAnimAsync()
         {
-            _cts = new CancellationTokenSource();
-            
             _cursor.transform.DOScale(new Vector3(0.8f, 0.8f, 1f), 0.5f)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(Ease.InOutSine)
@@ -36,7 +34,6 @@ namespace TapAndRun.MVP.Levels.Views.Tutorial
 
             _cts?.Cancel();
             _cts?.Dispose();
-            Debug.Log("Проверить останавливается ли анимация");
         }
     }
 }

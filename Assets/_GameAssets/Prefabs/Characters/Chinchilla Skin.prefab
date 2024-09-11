@@ -496,8 +496,8 @@ MonoBehaviour:
   _turnSound: {fileID: 8300000, guid: 99119b4d39470d0489a875b1b0d73b88, type: 3}
   _jumpSound: {fileID: 8300000, guid: bb88b86d3027b5e499b5e2d372291356, type: 3}
   _loseSound: {fileID: 8300000, guid: 48c79f71749a1894e95e6aadc783a8f2, type: 3}
-  _audioSource: {fileID: 6922010062234094946}
   _baseSpeedPitch: 1
+  _audioSource: {fileID: 6922010062234094946}
 --- !u!82 &6922010062234094946
 AudioSource:
   m_ObjectHideFlags: 0
@@ -667,7 +667,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 7642396944758135780, guid: 0db99f6c1b4a3c24bb70fb7a5889c52b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c4cc62b99cc6a124cb657ce02a8c0ec3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

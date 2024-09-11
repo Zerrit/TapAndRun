@@ -6,8 +6,11 @@ namespace TapAndRun.Configs
     public class CharacterConfig : ScriptableObject
     {
         [field: SerializeField] public float BaseMoveSpeed { get; private set; }
+        [field: SerializeField] public float AccelerationByDiffLevel { get; private set; }
         [field: SerializeField] public float TurnSpeed { get; private set; }
         [field: SerializeField] public float CenteringSpeed { get; private set; }
         [field: SerializeField] public Vector3 RoadCheckerOffset { get; private set; }
+
+        [field: SerializeField] public string DefaultSkinId { get; private set; }
     }
 }

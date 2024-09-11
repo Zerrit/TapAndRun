@@ -11,8 +11,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_GameAssets/Scenes/Game.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 0
-    path: Assets/LevelPlay/Samples/UnityLevelPlaySample/Scenes/LevelPlaySample.unity
-    guid: bd1eb3e1953724de08fadd7cbbc6d358
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 841cf2da4835acb468a788d026009ce2, type: 2}

@@ -4,6 +4,7 @@ using TapAndRun.Factories.Skins;
 using TapAndRun.Interfaces;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Character.View;
+using UnityEngine;
 
 namespace TapAndRun.MVP.Character
 {
@@ -35,6 +36,7 @@ namespace TapAndRun.MVP.Character
             _model.IsMoving.OnChanged += _view.UpdateMoving;
             _model.IsFall.OnChanged += _view.UpdateFalling;
             _model.AnimMultiplier.OnChanged += _view.UpdateAnimMultiplier;
+            _model.SfxAcceleration.OnChanged += _view.UpdateSfxAcceleration;
 
             _model.OnBeganTurning += _view.DisplayTurning;
             _model.OnBeganJumping += _view.DisplayJumping;
@@ -67,6 +69,7 @@ namespace TapAndRun.MVP.Character
             _model.IsMoving.OnChanged -= _view.UpdateMoving;
             _model.IsFall.OnChanged -= _view.UpdateFalling;
             _model.AnimMultiplier.OnChanged -= _view.UpdateAnimMultiplier;
+            _model.SfxAcceleration.OnChanged -= _view.UpdateSfxAcceleration;
 
             _model.OnBeganTurning -= _view.DisplayTurning;
             _model.OnBeganJumping -= _view.DisplayJumping;

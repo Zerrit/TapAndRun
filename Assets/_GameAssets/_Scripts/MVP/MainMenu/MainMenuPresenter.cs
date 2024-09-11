@@ -7,6 +7,7 @@ using TapAndRun.MVP.MainMenu.Model;
 using TapAndRun.MVP.MainMenu.Views;
 using TapAndRun.MVP.Settings.Model;
 using TapAndRun.MVP.Skins_Shop.Model;
+using TapAndRun.Services.Audio;
 
 namespace TapAndRun.MVP.MainMenu
 {
@@ -18,11 +19,12 @@ namespace TapAndRun.MVP.MainMenu
         private readonly ILevelsModel _levelsModel;
         private readonly ILevelButtonFactory _levelButtonFactory;
         private readonly ISettingsModel _settingsModel;
+        private readonly IAudioService _audioService;
         private readonly MainMenuView _view;
         private readonly LevelSelectView _levelSelectView;
 
         public MainMenuPresenter(ISelfMainMenuModel model, ILevelsModel levelsModel, ILevelButtonFactory levelButtonFactory,
-            ISettingsModel settingsModel, ISkinShopModel skinShopModel, MainMenuView view, LevelSelectView levelSelectView)
+            ISettingsModel settingsModel, IAudioService audioService, MainMenuView view, LevelSelectView levelSelectView)
         {
             _model = model;
             _levelsModel = levelsModel;
@@ -30,6 +32,7 @@ namespace TapAndRun.MVP.MainMenu
             _view = view;
             _levelSelectView = levelSelectView;
             _settingsModel = settingsModel;
+            _audioService = audioService;
         }
 
         public async UniTask InitializeAsync(CancellationToken token)
@@ -40,12 +43,11 @@ namespace TapAndRun.MVP.MainMenu
             
             _model.IsDisplaying.OnChanged += UpdateDisplaying;
 
-            _view.PlayButton.onClick.AddListener(_model.PlayTrigger.Trigger);
+            _view.PlayButton.onClick.AddListener(StartPlay);
             _view.SettingsButton.onClick.AddListener(OpenSettings);
             _view.LevelSelectButton.onClick.AddListener(OpenLevelSelect);
-            _view.SkinsShopButton.onClick.AddListener(_model.SkinShopTrigger.Trigger);
-            
-            _levelSelectView.BackButton.onClick.AddListener(_levelSelectView.Hide);
+            _view.SkinsShopButton.onClick.AddListener(OpenSkinShop);
+            _levelSelectView.BackButton.onClick.AddListener(CloseLevelSelect);
 
             await UniTask.CompletedTask;
         }
@@ -62,18 +64,40 @@ namespace TapAndRun.MVP.MainMenu
             }
         }
 
+        private void StartPlay()
+        {
+            _audioService.PlaySound("Play");
+            _model.PlayTrigger.Trigger();
+        }
+        
         private void OpenSettings()
         {
+            _audioService.PlaySound("Click");
             _settingsModel.IsDisplaying.Value = true;
         }
 
+        private void OpenSkinShop()
+        {
+            _audioService.PlaySound("QuietClick");
+            _model.SkinShopTrigger.Trigger();
+        }
+        
         private void OpenLevelSelect()
         {
+            _audioService.PlaySound("QuietClick");
+            _audioService.PlaySound("SwooshIn");
             _levelSelectView.UpdateButtons(_levelsModel.LastUnlockedLevelId);
 
             _levelSelectView.Show();
         }
 
+        private void CloseLevelSelect()
+        {
+            _audioService.PlaySound("QuietClick");
+            _audioService.PlaySound("SwooshOut");
+            _levelSelectView.Hide();
+        }
+        
         private void HandleLevelSelection(LevelButtonView levelButton)
         {
             HandleLevelSelectionAsync(_cts.Token).Forget();
@@ -83,11 +107,13 @@ namespace TapAndRun.MVP.MainMenu
                 if (levelButton.LevelId > _levelsModel.LastUnlockedLevelId)
                 {
                     levelButton.PlayLockAsync().Forget();
+                    _audioService.CallVibration();
+                    _audioService.PlaySound("Error");
                 }
                 else
                 {
-                    _levelsModel.PrepareLevel(levelButton.LevelId);
-                    await _levelSelectView.HideAsync(token); //TODO Возможно стоит добавить ожидание окончания создания уровня
+                    _levelsModel.SelectLevel(levelButton.LevelId);
+                    await _levelSelectView.HideAsync(token);
                 }
             }
         }
@@ -114,11 +140,11 @@ namespace TapAndRun.MVP.MainMenu
 
             _model.IsDisplaying.OnChanged -= UpdateDisplaying;
 
-            _view.PlayButton.onClick.RemoveListener(_model.PlayTrigger.Trigger);
+            _view.PlayButton.onClick.RemoveListener(StartPlay);
             _view.SettingsButton.onClick.RemoveListener(OpenSettings);
             _view.LevelSelectButton.onClick.RemoveListener(OpenLevelSelect);
-            _view.SkinsShopButton.onClick.RemoveListener(_model.SkinShopTrigger.Trigger);
-            _levelSelectView.BackButton.onClick.RemoveListener(_levelSelectView.Hide);
+            _view.SkinsShopButton.onClick.RemoveListener(OpenSkinShop);
+            _levelSelectView.BackButton.onClick.RemoveListener(CloseLevelSelect);
         }
     }
 }

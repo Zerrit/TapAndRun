@@ -9,17 +9,17 @@ namespace TapAndRun.Audio
         [SerializeField] private AudioClip _jumpSound;
         [SerializeField] private AudioClip _loseSound;
 
-        [SerializeField] private AudioSource _audioSource;
         [SerializeField] private float _baseSpeedPitch;
+        [SerializeField] private AudioSource _audioSource;
 
         private void Awake()
         {
             _audioSource.clip = _runSound;
         }
 
-        public void ChangeSpeed(int speed)
+        public void ChangeSpeed(float acceleration)
         {
-            _audioSource.pitch = _baseSpeedPitch + (0.1f * speed);
+            _audioSource.pitch = _baseSpeedPitch + acceleration;
         }
 
         public void SwitchRunSfx(bool isOn)

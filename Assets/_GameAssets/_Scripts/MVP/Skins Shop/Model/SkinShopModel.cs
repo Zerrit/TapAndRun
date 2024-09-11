@@ -6,13 +6,13 @@ using Newtonsoft.Json.Linq;
 using TapAndRun.Configs;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Wallet.Model;
-using TapAndRun.PlayerProgress;
+using TapAndRun.PlayerData;
 using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Skins_Shop.Model
 {
-    public class SkinShopModel : ISelfSkinShopModel, ISkinShopModel, ISaveLoadable
+    public class SkinShopModel : ISelfSkinShopModel, ISkinShopModel, IProgressable
     {
         public string SaveKey => "Skins";
 
@@ -40,9 +40,26 @@ namespace TapAndRun.MVP.Skins_Shop.Model
             BackTrigger = new TriggerReactiveProperty();
 
             UnlockedSkins = new List<string> 
-                {"Chinchilla"};
+                {_characterModel.SelectedSkin.Value};
             
             return UniTask.CompletedTask;
+        }
+
+        SaveableData IProgressable.GetProgressData()
+        {
+            return new SaveableData(SaveKey, new object[] {UnlockedSkins});
+        }
+
+        void IProgressable.RestoreProgress(SaveableData loadData)
+        {
+            if (loadData?.Data == null || loadData.Data.Length < 1)
+            {
+                Debug.LogError($"Can't restore Skins data");
+                return;
+            }
+
+            var skins = ((JArray)loadData.Data[0]).ToObject<List<string>>();
+            UnlockedSkins = skins;
         }
 
         public void SelectCurrentSkin()
@@ -75,23 +92,6 @@ namespace TapAndRun.MVP.Skins_Shop.Model
         public bool IsCanPurchase()
         {
             return _walletModel.IsEnough(CurrentSkinsData.Price);
-        }
-
-        ProgressData ISaveLoadable.GetProgressData()
-        {
-            return new ProgressData(SaveKey, new object[] {UnlockedSkins});
-        }
-
-        void ISaveLoadable.RestoreProgress(ProgressData loadData)
-        {
-            if (loadData?.Data == null || loadData.Data.Length < 1)
-            {
-                Debug.LogError($"Can't restore Skins data");
-                return;
-            }
-
-            var skins = ((JArray)loadData.Data[0]).ToObject<List<string>>();
-            UnlockedSkins = skins;
         }
     }
 }

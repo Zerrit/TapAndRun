@@ -98,20 +98,6 @@ namespace TapAndRun.MVP.CharacterCamera.Model
             }
         }
 
-        /*public async UniTaskVoid TurnAsync(float angle)
-        {
-            var originRotation = Rotation.Value;
-            float t = 0;
-
-            while (t < 1)
-            {
-                t += _config.TurnSpeed * Time.deltaTime;
-                Rotation.Value = Mathf.LerpAngle(originRotation, originRotation + angle, t);
-
-                await UniTask.NextFrame(_cts.Token);
-            }
-        }*/
-
         public async UniTask ChangeDistanceAsync(float targetHaight)
         {
             var originDistance = Height.Value;

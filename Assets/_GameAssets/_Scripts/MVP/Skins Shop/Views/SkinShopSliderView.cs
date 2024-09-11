@@ -84,7 +84,7 @@ namespace TapAndRun.MVP.Skins_Shop.Views
 
                 skin.DOScale(finalScale, _scrollDuration)
                     .SetEase(Ease.InOutCubic)
-                    .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
+                    .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token).Forget();
             }
         }
 

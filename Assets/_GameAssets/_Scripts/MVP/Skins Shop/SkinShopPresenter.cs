@@ -5,6 +5,7 @@ using TapAndRun.Interfaces;
 using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Skins_Shop.Model;
 using TapAndRun.MVP.Skins_Shop.Views;
+using TapAndRun.Services.Audio;
 using TapAndRun.UI;
 using UnityEngine;
 
@@ -14,17 +15,19 @@ namespace TapAndRun.MVP.Skins_Shop
     {
         private readonly ISelfSkinShopModel _selfModel;
         private readonly ICameraModel _cameraModel;
+        private readonly IAudioService _audioService;
         private readonly ISkinFactory _skinFactory;
         private readonly SkinShopView _shopScreenView;
         private readonly SkinShopSliderView _sliderView;
 
         private CancellationTokenSource _cts;
 
-        public SkinShopPresenter(ISelfSkinShopModel selfModel, ICameraModel cameraModel, 
+        public SkinShopPresenter(ISelfSkinShopModel selfModel, ICameraModel cameraModel, IAudioService audioService,
             ISkinFactory skinFactory, SkinShopView shopScreenView, SkinShopSliderView sliderView)
         {
             _selfModel = selfModel;
             _cameraModel = cameraModel;
+            _audioService = audioService;
             _skinFactory = skinFactory;
             _shopScreenView = shopScreenView;
             _sliderView = sliderView;
@@ -36,7 +39,7 @@ namespace TapAndRun.MVP.Skins_Shop
 
             _selfModel.IsDisplaying.OnChanged += UpdateDisplaying;
 
-            _shopScreenView.BackButton.onClick.AddListener(_selfModel.BackTrigger.Trigger);
+            _shopScreenView.BackButton.onClick.AddListener(CloseSkinShop);
             _shopScreenView.LeftButton.onClick.AddListener(ScrollLeft);
             _shopScreenView.RightButton.onClick.AddListener(ScrollRight);
             _shopScreenView.ShopButton.Button.onClick.AddListener(ProccesShopButtonClick);
@@ -59,6 +62,12 @@ namespace TapAndRun.MVP.Skins_Shop
             }
         }
 
+        private void CloseSkinShop()
+        {
+            _audioService.PlaySound("QuietClick");
+            _selfModel.BackTrigger.Trigger();
+        }
+
         private void FillAssortment()
         {
             FillAssortmentAsync(_cts.Token).Forget();
@@ -77,6 +86,7 @@ namespace TapAndRun.MVP.Skins_Shop
 
         private void ScrollRight()
         {
+            _audioService.PlaySound("Snap");
             var index = _sliderView.CurrentSkinIndex + 1;
 
             ChangeSelectedSkin(index, _cts.Token).Forget();
@@ -84,6 +94,7 @@ namespace TapAndRun.MVP.Skins_Shop
 
         private void ScrollLeft()
         {
+            _audioService.PlaySound("Snap");
             var index = _sliderView.CurrentSkinIndex - 1;
 
             ChangeSelectedSkin(index, _cts.Token).Forget();
@@ -127,11 +138,15 @@ namespace TapAndRun.MVP.Skins_Shop
         {
             if (_shopScreenView.ShopButton.State == ShopButtonState.CantPurchase)
             {
+                _audioService.PlaySound("Error");
+                _audioService.CallVibration();
                 _shopScreenView.ShopButton.PlayFailAnim();
             }
             else if(_shopScreenView.ShopButton.State == ShopButtonState.CanPurchase)
             {
+                _audioService.PlaySound("SlowClick");
                 _shopScreenView.ShopButton.PlayAcceptAnim(CancellationToken.None).Forget();
+
                 if (_selfModel.TryBuyCurrentSkin())
                 {
                     UpdateShopButton();
@@ -139,7 +154,9 @@ namespace TapAndRun.MVP.Skins_Shop
             }
             else if (_shopScreenView.ShopButton.State == ShopButtonState.Purchased)
             {
+                _audioService.PlaySound("SlowClick");
                 _shopScreenView.ShopButton.PlayAcceptAnim(CancellationToken.None).Forget();
+
                 _selfModel.SelectCurrentSkin();
                 UpdateShopButton();
             }
@@ -160,7 +177,7 @@ namespace TapAndRun.MVP.Skins_Shop
 
             _selfModel.IsDisplaying.OnChanged -= UpdateDisplaying;
 
-            _shopScreenView.BackButton.onClick.RemoveListener(_selfModel.BackTrigger.Trigger);
+            _shopScreenView.BackButton.onClick.RemoveListener(CloseSkinShop);
             _shopScreenView.LeftButton.onClick.RemoveListener(ScrollLeft);
             _shopScreenView.RightButton.onClick.RemoveListener(ScrollRight);
             _shopScreenView.ShopButton.Button.onClick.RemoveListener(ProccesShopButtonClick);

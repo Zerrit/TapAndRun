@@ -1,11 +1,16 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
+using TapAndRun.PlayerData;
 using TapAndRun.Tools.Reactivity;
+using UnityEngine;
 
 namespace TapAndRun.MVP.Settings.Model
 {
-    public class SettingsModel : ISelfSettingsModel, ISettingsModel
+    public class SettingsModel : ISelfSettingsModel, ISettingsModel, ISettingsUser
     {
+        public string SaveKey => "Settings";
+        
         public ReactiveProperty<bool> IsDisplaying { get; set; }
 
         public ReactiveProperty<bool> AudioStatus { get; private set; }
@@ -14,15 +19,37 @@ namespace TapAndRun.MVP.Settings.Model
 
         public UniTask InitializeAsync(CancellationToken token)
         {
-            IsDisplaying = new ReactiveProperty<bool>(false);
-            
-            //TODO Try Load Data
+            IsDisplaying = new ReactiveProperty<bool>();
 
             AudioStatus = new ReactiveProperty<bool>(true);
             VibroStatus = new ReactiveProperty<bool>(true);
             Language = new ReactiveProperty<string>("en");
 
             return UniTask.CompletedTask;
+        }
+
+        public SaveableData GetSettingsData()
+        {
+            return new (SaveKey, new object[] 
+                {
+                    AudioStatus.Value, 
+                    VibroStatus.Value, 
+                    Language.Value
+                    
+                });
+        }
+
+        public void RestoreSettings(SaveableData data)
+        {
+            if (data?.Data == null || data.Data.Length < 1)
+            {
+                Debug.LogError($"Can't restore SettingsModel settings");
+                return;
+            }
+
+            AudioStatus.Value = Convert.ToBoolean(data.Data[0]);
+            VibroStatus.Value = Convert.ToBoolean(data.Data[1]);
+            Language.Value = Convert.ToString(data.Data[2]);
         }
     }
 }
