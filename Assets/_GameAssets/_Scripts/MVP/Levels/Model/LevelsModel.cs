@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.PlayerData;
 using TapAndRun.Tools.Reactivity;
 using UnityEngine;
@@ -36,15 +37,24 @@ namespace TapAndRun.MVP.Levels.Model
         public int LastUnlockedLevelId { get; private set; }
         public int LevelCount { get; set; }
 
-        public bool IsTutorialComplete { get; set; }
-
         public int CurrentDifficulty { get; private set; }
         public int MaxDifficulty { get; } = 3; //TODO Вынести в конфиг
+
+        private int _crystalsByRun; // TODO Для возможной статистики
+        
+        public bool IsTutorialComplete { get; set; }
 
         private int _currentLevel;
         
         private const int NonSelectedLevelId = -1;
         private const int MinDifficulty = 1;
+
+        private readonly IWalletModel _walletModel;
+
+        public LevelsModel(IWalletModel walletModel)
+        {
+            _walletModel = walletModel;
+        }
 
         public UniTask InitializeAsync(CancellationToken token)
         {
@@ -104,8 +114,15 @@ namespace TapAndRun.MVP.Levels.Model
             }
         }
 
+        public void AddCrystalByRun()
+        {
+            _crystalsByRun++;
+            _walletModel.IncreaseCrystalsByRun();
+        }
+        
         public void LoseLevel()
         {
+            _walletModel.GainCrystalsByRun();
             CurrentDifficulty = MinDifficulty;
 
             OnLevelFailed?.Invoke();
@@ -125,6 +142,8 @@ namespace TapAndRun.MVP.Levels.Model
 
             CurrentDifficulty = Mathf.Clamp(++CurrentDifficulty, MinDifficulty, MaxDifficulty);
             CurrentLevelId++;
+            
+            _walletModel.SaveCrystals();
         }
 
         public bool CheckLevelExist(int levelId)

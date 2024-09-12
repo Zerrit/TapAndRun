@@ -11,14 +11,14 @@ namespace TapAndRun.MVP.Levels.Model
 
         TriggerReactiveProperty StartupTrigger { get; }
         TriggerReactiveProperty ResetLevelTrigger { get; } 
-        
-        int CurrentLevelId { get; set; }
-        int LevelCount { get; set; }
-        
-        bool IsTutorialComplete { get; set; }
 
+        int CurrentLevelId { get; }
+        int LevelCount { get; set; }
         int CurrentDifficulty { get; }
 
+        bool IsTutorialComplete { get; set; }
+
+        void AddCrystalByRun();
         void LoseLevel();
         void CompleteLevel();
 
