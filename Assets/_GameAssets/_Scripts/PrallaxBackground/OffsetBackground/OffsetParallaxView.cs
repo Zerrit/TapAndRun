@@ -1,10 +1,9 @@
 ﻿using TapAndRun.Configs;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
-namespace TapAndRun.PrallaxBackground
+namespace TapAndRun.PrallaxBackground.OffsetBackground
 {
-    public class ParallaxBackground : MonoBehaviour
+    public class OffsetParallaxView : MonoBehaviour
     {
         [SerializeField] private Transform _transform;
         [SerializeField] private Transform _camera;

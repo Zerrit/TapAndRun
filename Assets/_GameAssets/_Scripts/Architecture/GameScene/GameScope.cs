@@ -29,6 +29,7 @@ using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.MVP.Wallet.View;
 using TapAndRun.PrallaxBackground;
+using TapAndRun.PrallaxBackground.OffsetBackground;
 using TapAndRun.Services.Audio;
 using TapAndRun.Services.Data;
 using TapAndRun.Services.Localization;
@@ -65,7 +66,7 @@ namespace TapAndRun.Architecture.GameScene
         [SerializeField] private AudioService _audioService;
 
         [Header("Views")]
-        [SerializeField] private ParallaxBackground _background;
+        [SerializeField] private AbstractParallaxView _view;
         [SerializeField] private CharacterView _characterView;
         [SerializeField] private CameraView _cameraView;
         [SerializeField] private WalletView _walletView;
@@ -150,7 +151,7 @@ namespace TapAndRun.Architecture.GameScene
         {
             builder.Register<LevelsModel>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<LevelsPresenter>(Lifetime.Singleton)
-                .WithParameter(_background)
+                .WithParameter(_view)
                 .WithParameter(_gameplayScreenView);
         }
 

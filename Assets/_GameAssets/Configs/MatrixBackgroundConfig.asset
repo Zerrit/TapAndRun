@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbf1d4ec0a774299b3459409fe7d1873, type: 3}
-  m_Name: BackgroundConfig
+  m_Name: MatrixBackgroundConfig
   m_EditorClassIdentifier: 
   <BackgroundsPresets>k__BackingField:
-  - <Texture>k__BackingField: {fileID: 21300000, guid: 20bb7cf061578cd4fa6be619b8c2b7de, type: 3}
+  - <Texture>k__BackingField: {fileID: 21300000, guid: ca5627c93694be542879c649c2ba655f, type: 3}
     <Color>k__BackingField: {r: 0.16055535, g: 0.528197, b: 0.8301887, a: 1}
-  - <Texture>k__BackingField: {fileID: 21300000, guid: f68be3714eb30b44aa9ffc6cfdc7e600, type: 3}
+  - <Texture>k__BackingField: {fileID: 21300000, guid: b674cd36f58c75241b623e7c142fbce0, type: 3}
     <Color>k__BackingField: {r: 0.9245283, g: 0.50439435, b: 0.07413671, a: 1}
-  - <Texture>k__BackingField: {fileID: 21300000, guid: 1d77b2b2d3ef7be41b2cad19a9772415, type: 3}
+  - <Texture>k__BackingField: {fileID: 21300000, guid: 360eeeccad00ade4eb2d26d2ad62cef9, type: 3}
     <Color>k__BackingField: {r: 0.36862746, g: 0.6784314, b: 0.24313726, a: 1}
-  - <Texture>k__BackingField: {fileID: 21300000, guid: 6a9b1b4e202f36f44ad33810368ce881, type: 3}
+  - <Texture>k__BackingField: {fileID: 21300000, guid: c553cecaba4aa664abfadeb8e8019af6, type: 3}
     <Color>k__BackingField: {r: 0.9245283, g: 0.8664282, b: 0.16135636, a: 1}

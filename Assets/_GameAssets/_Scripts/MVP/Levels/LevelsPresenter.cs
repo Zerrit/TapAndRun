@@ -9,6 +9,7 @@ using TapAndRun.MVP.Levels.Views;
 using TapAndRun.MVP.Levels.Views.Tutorial;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.PrallaxBackground;
+using TapAndRun.PrallaxBackground.OffsetBackground;
 using TapAndRun.Services.Audio;
 using TapAndRun.TapSystem;
 using UnityEngine;
@@ -24,7 +25,7 @@ namespace TapAndRun.MVP.Levels
         private CancellationTokenSource _cts;
         private TapCommandHandler _commandHandler;
 
-        private readonly ParallaxBackground _background;
+        private readonly AbstractParallaxView _view;
         private readonly GameplayScreenView _gameplayScreen;
 
         private readonly ICharacterModel _characterModel;
@@ -36,7 +37,7 @@ namespace TapAndRun.MVP.Levels
 
         public LevelsPresenter(ISelfLevelsModel model, ILevelFactory levelFactory, IAudioService audioService,
             ICharacterModel characterModel, ICameraModel cameraModel, IWalletTutorial walletTutorial,
-            ParallaxBackground background, GameplayScreenView gameplayScreen)
+            AbstractParallaxView view, GameplayScreenView gameplayScreen)
         {
             _model = model;
             _levelFactory = levelFactory;
@@ -44,7 +45,7 @@ namespace TapAndRun.MVP.Levels
             _characterModel = characterModel;
             _cameraModel = cameraModel;
             _walletTutorial = walletTutorial;
-            _background = background;
+            _view = view;
             _gameplayScreen = gameplayScreen;
         }
 
@@ -217,7 +218,7 @@ namespace TapAndRun.MVP.Levels
             BuildNextLevel();
 
             _characterModel.CenteringAsync(_currentLevel.StartSegment.SegmentCenter.position).Forget();
-            _background.ChangeStyle();
+            _view.ChangeStyle();
             _audioService.PlaySound("Finish");
         }
 
