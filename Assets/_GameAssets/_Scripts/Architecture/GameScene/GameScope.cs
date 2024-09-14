@@ -29,6 +29,7 @@ using TapAndRun.MVP.Wallet;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.MVP.Wallet.View;
 using TapAndRun.PrallaxBackground;
+using TapAndRun.PrallaxBackground.MatrixBackground;
 using TapAndRun.PrallaxBackground.OffsetBackground;
 using TapAndRun.Services.Audio;
 using TapAndRun.Services.Data;
@@ -66,7 +67,7 @@ namespace TapAndRun.Architecture.GameScene
         [SerializeField] private AudioService _audioService;
 
         [Header("Views")]
-        [SerializeField] private AbstractParallaxView _view;
+        [SerializeField] private MatrixParallaxView _backgroundView;
         [SerializeField] private CharacterView _characterView;
         [SerializeField] private CameraView _cameraView;
         [SerializeField] private WalletView _walletView;
@@ -84,6 +85,7 @@ namespace TapAndRun.Architecture.GameScene
             RegisterFactories(builder);
             RegisterServices(builder);
 
+            RegisterBackground(builder);
             RegisterCamera(builder);
             RegisterCharacter(builder);
             RegisterLevels(builder);
@@ -131,6 +133,11 @@ namespace TapAndRun.Architecture.GameScene
             builder.Register<DataService>(Lifetime.Singleton).As<IDataService>();
         }
 
+        private void RegisterBackground(IContainerBuilder builder)
+        {
+            builder.RegisterInstance(_backgroundView).As<IParallaxView>();
+        }
+        
         private void RegisterCamera(IContainerBuilder builder)
         {
             builder.Register<CameraModel>(Lifetime.Singleton).AsImplementedInterfaces()
@@ -151,7 +158,6 @@ namespace TapAndRun.Architecture.GameScene
         {
             builder.Register<LevelsModel>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<LevelsPresenter>(Lifetime.Singleton)
-                .WithParameter(_view)
                 .WithParameter(_gameplayScreenView);
         }
 

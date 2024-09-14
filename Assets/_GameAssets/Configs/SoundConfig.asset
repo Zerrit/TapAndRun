@@ -13,9 +13,6 @@ MonoBehaviour:
   m_Name: SoundConfig
   m_EditorClassIdentifier: 
   <Sounds>k__BackingField:
-  - <SoundId>k__BackingField: TakeCrystal
-    <Volume>k__BackingField: 0.07
-    <Clip>k__BackingField: {fileID: 8300000, guid: bd64cae8dca11154d8306ffcfd60c2e9, type: 3}
   - <SoundId>k__BackingField: Finish
     <Volume>k__BackingField: 0.6
     <Clip>k__BackingField: {fileID: 8300000, guid: 360784ad7c1551c4dbe5cd8614b3c5f4, type: 3}

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TapAndRun.PrallaxBackground.MatrixBackground
 {
-    public class MatrixParallaxView : AbstractParallaxView
+    public class MatrixParallaxView : MonoBehaviour, IParallaxView
     {
         [SerializeField, Header("Self Transform")] 
         private Transform _transform;
@@ -28,7 +28,7 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
 
             foreach (var layer in _layers)
             {
-                layer.Initialize();
+                layer.Initialize(_target);
             }
 
             SetStyle(_currentPresetIndex);
@@ -50,11 +50,17 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
 
             foreach (var layer in _layers)
             {
-                layer.Move(motionVector, targetPos);
+                layer.Move(motionVector);
             }
         }
 
-        public override void ChangeStyle()
+        public void SetDefault()
+        {
+            _currentPresetIndex = 0;
+            SetStyle(_currentPresetIndex);
+        }
+
+        public void ChangeStyle()
         {
             if (_currentPresetIndex == _presetsCount - 1)
             {

@@ -25,7 +25,7 @@ namespace TapAndRun.MVP.Levels
         private CancellationTokenSource _cts;
         private TapCommandHandler _commandHandler;
 
-        private readonly AbstractParallaxView _view;
+        private readonly IParallaxView _view;
         private readonly GameplayScreenView _gameplayScreen;
 
         private readonly ICharacterModel _characterModel;
@@ -37,7 +37,7 @@ namespace TapAndRun.MVP.Levels
 
         public LevelsPresenter(ISelfLevelsModel model, ILevelFactory levelFactory, IAudioService audioService,
             ICharacterModel characterModel, ICameraModel cameraModel, IWalletTutorial walletTutorial,
-            AbstractParallaxView view, GameplayScreenView gameplayScreen)
+            IParallaxView view, GameplayScreenView gameplayScreen)
         {
             _model = model;
             _levelFactory = levelFactory;

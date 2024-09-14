@@ -1,10 +1,11 @@
 ﻿using System;
+using TapAndRun.Editor.LevelConstructor.BuildCommands;
 using TapAndRun.MVP.Levels.Views;
 using TapAndRun.MVP.Levels.Views.SegmentViews;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace TapAndRun.Editor.LevelConstructor.BuildCommands
+namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor.BuildCommands
 {
     public class RoadSegmentBuilder : AbstractSegmentBuilder
     {

@@ -16,8 +16,10 @@ MonoBehaviour:
   - <Texture>k__BackingField: {fileID: 21300000, guid: ca5627c93694be542879c649c2ba655f, type: 3}
     <Color>k__BackingField: {r: 0.16055535, g: 0.528197, b: 0.8301887, a: 1}
   - <Texture>k__BackingField: {fileID: 21300000, guid: b674cd36f58c75241b623e7c142fbce0, type: 3}
-    <Color>k__BackingField: {r: 0.9245283, g: 0.50439435, b: 0.07413671, a: 1}
+    <Color>k__BackingField: {r: 0.8509804, g: 0.5015022, b: 0.14466669, a: 1}
   - <Texture>k__BackingField: {fileID: 21300000, guid: 360eeeccad00ade4eb2d26d2ad62cef9, type: 3}
-    <Color>k__BackingField: {r: 0.36862746, g: 0.6784314, b: 0.24313726, a: 1}
+    <Color>k__BackingField: {r: 0.34140375, g: 0.6784314, b: 0.20488627, a: 1}
   - <Texture>k__BackingField: {fileID: 21300000, guid: c553cecaba4aa664abfadeb8e8019af6, type: 3}
-    <Color>k__BackingField: {r: 0.9245283, g: 0.8664282, b: 0.16135636, a: 1}
+    <Color>k__BackingField: {r: 0.8, g: 0.75686276, b: 0, a: 1}
+  - <Texture>k__BackingField: {fileID: 21300000, guid: 362f0ce670410c442a2abe84c2ab89d8, type: 3}
+    <Color>k__BackingField: {r: 0.58924717, g: 0.16420436, b: 0.7735849, a: 1}
