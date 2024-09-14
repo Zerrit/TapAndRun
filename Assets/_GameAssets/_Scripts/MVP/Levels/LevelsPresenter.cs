@@ -8,6 +8,8 @@ using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.Levels.Views;
 using TapAndRun.MVP.Levels.Views.Tutorial;
 using TapAndRun.MVP.Wallet.Model;
+using TapAndRun.PrallaxBackground;
+using TapAndRun.PrallaxBackground.OffsetBackground;
 using TapAndRun.Services.Audio;
 using TapAndRun.TapSystem;
 using UnityEngine;
@@ -23,25 +25,27 @@ namespace TapAndRun.MVP.Levels
         private CancellationTokenSource _cts;
         private TapCommandHandler _commandHandler;
 
+        private readonly IParallaxView _view;
         private readonly GameplayScreenView _gameplayScreen;
 
         private readonly ICharacterModel _characterModel;
         private readonly ICameraModel _cameraModel;
-        private readonly IWalletModel _walletModel;
+        private readonly IWalletTutorial _walletTutorial;
         private readonly ISelfLevelsModel _model;
         private readonly ILevelFactory _levelFactory;
         private readonly IAudioService _audioService;
 
         public LevelsPresenter(ISelfLevelsModel model, ILevelFactory levelFactory, IAudioService audioService,
-            ICharacterModel characterModel, ICameraModel cameraModel, IWalletModel walletModel, 
-            GameplayScreenView gameplayScreen)
+            ICharacterModel characterModel, ICameraModel cameraModel, IWalletTutorial walletTutorial,
+            IParallaxView view, GameplayScreenView gameplayScreen)
         {
             _model = model;
             _levelFactory = levelFactory;
             _audioService = audioService;
             _characterModel = characterModel;
             _cameraModel = cameraModel;
-            _walletModel = walletModel;
+            _walletTutorial = walletTutorial;
+            _view = view;
             _gameplayScreen = gameplayScreen;
         }
 
@@ -195,18 +199,16 @@ namespace TapAndRun.MVP.Levels
         private void ProcessLevelLose()
         {
             _model.LoseLevel();
-            _walletModel.ResetCrystalsByLevel();
 
             _gameplayScreen.Hide();
             _cameraModel.FlyUpAsync().Forget();
-            
+
             _audioService.CallVibration();
         }
 
         private void ProcessLevelComplete()
         {
             _model.CompleteLevel();
-            _walletModel.GainCrystalsByLevel();
 
             ClearOldLevel();
 
@@ -216,13 +218,14 @@ namespace TapAndRun.MVP.Levels
             BuildNextLevel();
 
             _characterModel.CenteringAsync(_currentLevel.StartSegment.SegmentCenter.position).Forget();
+            _view.ChangeStyle();
             _audioService.PlaySound("Finish");
         }
 
         private void TakeCrystal()
         {
-            _audioService.PlaySound("TakeCrystal");
-            _walletModel.IncreaseCrystalsByLevel();
+            //TODO Может быть проигран SFX.
+            _model.AddCrystalByRun();
         }
 
         #region TUTORIALS
@@ -255,11 +258,11 @@ namespace TapAndRun.MVP.Levels
                 _currentLevel.Crystals[0].OnTaken -= StartCrystalsTutorial;
                 
                 _characterModel.StopMove();
-                _walletModel.IsTutorialDisplayed.Value = true;
+                _walletTutorial.IsTutorialDisplaying.Value = true;
                 
                 await _gameplayScreen.TapButton.OnClickAsync();
                 
-                _walletModel.IsTutorialDisplayed.Value = false;
+                _walletTutorial.IsTutorialDisplaying.Value = false;
                 _characterModel.StartMove();
             }
         }

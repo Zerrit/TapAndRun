@@ -5,9 +5,9 @@ namespace TapAndRun.MVP.Wallet.Model
 {
     public interface ISelfWalletModel
     {
-        ReactiveProperty<bool> IsTutorialDisplayed { get; }
+        public ReactiveProperty<bool> IsTutorialDisplaying { get; }
 
         ReactiveProperty<int> AvailableCrystals { get; }
-        ReactiveProperty<int> CrystalsByLevel { get; }
+        ReactiveProperty<int> CrystalsByRun { get; }
     }
 }

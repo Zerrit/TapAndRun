@@ -492,12 +492,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a236afd364f0388458a36862578fc29a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _runSound: {fileID: 8300000, guid: a73fae83c3e1bd642987adb309e5c417, type: 3}
+  _runSound: {fileID: 8300000, guid: 0676ab1e3c0ed0340b1323d241311cd1, type: 3}
   _turnSound: {fileID: 8300000, guid: 99119b4d39470d0489a875b1b0d73b88, type: 3}
-  _jumpSound: {fileID: 8300000, guid: bb88b86d3027b5e499b5e2d372291356, type: 3}
+  _jumpSound: {fileID: 8300000, guid: 24f6998da038e3c42933c63c43db9014, type: 3}
   _loseSound: {fileID: 8300000, guid: 48c79f71749a1894e95e6aadc783a8f2, type: 3}
-  _audioSource: {fileID: 6922010062234094946}
   _baseSpeedPitch: 1
+  _audioSource: {fileID: 6922010062234094946}
 --- !u!82 &6922010062234094946
 AudioSource:
   m_ObjectHideFlags: 0

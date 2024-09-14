@@ -139,6 +139,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4655305575552714139}
     m_Modifications:
+    - target: {fileID: 495226392682365216, guid: 4fa530bc7758fe54f9431b0b68f5090b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3650913546230331323, guid: 4fa530bc7758fe54f9431b0b68f5090b, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4387418454642966262, guid: 4fa530bc7758fe54f9431b0b68f5090b, type: 3}
       propertyPath: m_Name
       value: Crystal
@@ -193,7 +201,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7938763419615182713, guid: 4fa530bc7758fe54f9431b0b68f5090b, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

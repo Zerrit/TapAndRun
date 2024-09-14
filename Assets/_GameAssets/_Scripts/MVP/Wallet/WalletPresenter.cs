@@ -20,8 +20,8 @@ namespace TapAndRun.MVP.Wallet
         public UniTask InitializeAsync(CancellationToken token)
         {
             _walletModel.AvailableCrystals.Subscribe(_walletView.UpdateAvailableCrystals, true);
-            _walletModel.CrystalsByLevel.Subscribe(_walletView.UpdateCrystalsByLevel, true);
-            _walletModel.IsTutorialDisplayed.OnChanged += UpdateTutorialDisplaying;
+            _walletModel.CrystalsByRun.Subscribe(_walletView.UpdateCrystalsByLevel, true);
+            _walletModel.IsTutorialDisplaying.OnChanged += UpdateTutorialDisplaying;
 
             return UniTask.CompletedTask;
         }
@@ -41,8 +41,8 @@ namespace TapAndRun.MVP.Wallet
         public void Decompose()
         {
             _walletModel.AvailableCrystals.Unsubscribe(_walletView.UpdateAvailableCrystals);
-            _walletModel.CrystalsByLevel.Unsubscribe(_walletView.UpdateCrystalsByLevel);
-            _walletModel.IsTutorialDisplayed.OnChanged -= UpdateTutorialDisplaying;
+            _walletModel.CrystalsByRun.Unsubscribe(_walletView.UpdateCrystalsByLevel);
+            _walletModel.IsTutorialDisplaying.OnChanged -= UpdateTutorialDisplaying;
         }
     }
 }

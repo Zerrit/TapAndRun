@@ -8,7 +8,9 @@ namespace TapAndRun.Configs
     public class LevelConstructorToolConfig : ScriptableObject
     {
         [field:SerializeField] public StartSegmentView StartSegment { get; private set; }
-        [field:SerializeField] public RoadSegmentView RoadSegment { get; private set; }
+        [field:SerializeField] public RoadSegmentView ShortRoadSegment { get; private set; }
+        [field:SerializeField] public RoadSegmentView MiddleRoadSegment { get; private set; }
+        [field:SerializeField] public RoadSegmentView LongRoadSegment { get; private set; }
         [field:SerializeField] public InteractSegmentView LeftTurnSegment { get; private set; }
         [field:SerializeField] public InteractSegmentView RightTurnSegment { get; private set; }
         [field:SerializeField] public InteractSegmentView JumpStartSegment { get; private set; }

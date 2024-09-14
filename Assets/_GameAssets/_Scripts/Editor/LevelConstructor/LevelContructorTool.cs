@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
+using TapAndRun._GameAssets._Scripts.Editor.LevelConstructor.BuildCommands;
 using TapAndRun.Configs;
 using TapAndRun.Editor.LevelConstructor.BuildCommands;
 using TapAndRun.MVP.Levels.Views;
@@ -21,7 +22,7 @@ namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor
         private Stack<AbstractSegmentBuilder> _buildersStack;
         private LevelConstructorToolConfig _config;
 
-        [MenuItem("Tools/Show LevelConstructor")]
+        [MenuItem("Tools/LevelConstructor")]
         public static void ShowWindow()
         {
             GetWindow<LevelContructorTool>(true, "Level Constructor");
@@ -99,9 +100,23 @@ namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor
                 //-----------------------------------------------------------------------//  ROAD SEGMENTS
                 EditorGUILayout.BeginHorizontal();
 
-                if (GUILayout.Button("Small Road", GUILayout.Height(30)))
+                if (GUILayout.Button("Short Road", GUILayout.Height(30)))
                 {
-                    var builder = new RoadSegmentBuilder(_creatingLevel, _config.RoadSegment);
+                    var builder = new RoadSegmentBuilder(_creatingLevel, _config.ShortRoadSegment);
+
+                    ActivateBuilder(builder);
+                }
+                
+                if (GUILayout.Button("Middle Road", GUILayout.Height(30)))
+                {
+                    var builder = new RoadSegmentBuilder(_creatingLevel, _config.MiddleRoadSegment);
+
+                    ActivateBuilder(builder);
+                }
+                
+                if (GUILayout.Button("Long Road", GUILayout.Height(30)))
+                {
+                    var builder = new RoadSegmentBuilder(_creatingLevel, _config.LongRoadSegment);
 
                     ActivateBuilder(builder);
                 }

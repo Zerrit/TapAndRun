@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Audio;
 using TapAndRun.Configs;
+using TapAndRun.Interfaces;
 using TapAndRun.MVP.Settings.Model;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -11,7 +11,7 @@ using VContainer;
 
 namespace TapAndRun.Services.Audio
 {
-    public class AudioService : MonoBehaviour, IAudioService, IDisposable
+    public class AudioService : MonoBehaviour, IAudioService, IDecomposable
     {
         [SerializeField] private float _defaultVolume;
 
@@ -58,6 +58,19 @@ namespace TapAndRun.Services.Audio
             _source.PlayOneShot(_sounds[id].Clip, _sounds[id].Volume);
         }
 
+        public async UniTask PlaySoundAsync(string id, float delayTime, CancellationToken token)
+        {
+            if (!_sounds.ContainsKey(id))
+            {
+                Debug.Log("Запрашиваемый звук не найден");
+                return;
+            }
+
+            await UniTask.WaitForSeconds(delayTime, cancellationToken: token);
+            
+            _source.PlayOneShot(_sounds[id].Clip, _sounds[id].Volume);
+        }
+
         public void CallVibration()
         {
             if (!_isVibroActive)
@@ -94,8 +107,8 @@ namespace TapAndRun.Services.Audio
         {
             return Mathf.Log10(value) * 20;
         }
-        
-        public void Dispose()
+
+        public void Decompose()
         {
             _settingsModel.AudioStatus.Unsubscribe(SetAudioStatus);
             _settingsModel.VibroStatus.Unsubscribe(SetVibroStatus);

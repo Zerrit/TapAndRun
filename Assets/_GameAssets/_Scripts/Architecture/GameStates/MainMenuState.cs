@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.MainMenu.Model;
+using TapAndRun.PrallaxBackground;
 using TapAndRun.Services.Transition;
 using UnityEngine;
 
@@ -13,14 +14,16 @@ namespace TapAndRun.Architecture.GameStates
         private readonly IMainMenuModel _mainMenuModel;
         private readonly ILevelsModel _levelsModel;
         private readonly ITransitionService _transitionService;
+        private readonly IParallaxView _parallaxView;
 
         public MainMenuState(GameStateMachine gameStateMachine, IMainMenuModel mainMenuModel,
-            ILevelsModel levelsModel, ITransitionService transitionService)
+            ILevelsModel levelsModel, ITransitionService transitionService, IParallaxView parallaxView)
         {
             _gameStateMachine = gameStateMachine;
             _mainMenuModel = mainMenuModel;
             _levelsModel = levelsModel;
             _transitionService = transitionService;
+            _parallaxView = parallaxView;
         }
 
         public UniTask EnterAsync(CancellationToken token)
@@ -30,6 +33,7 @@ namespace TapAndRun.Architecture.GameStates
                 _levelsModel.IsDisplaying.Value = true;
             }
 
+            _parallaxView.SetDefault();
             _mainMenuModel.IsDisplaying.Value = true;
 
             _transitionService.TryEndTransition();
