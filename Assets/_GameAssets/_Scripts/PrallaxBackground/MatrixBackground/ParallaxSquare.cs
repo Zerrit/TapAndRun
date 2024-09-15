@@ -8,7 +8,7 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
 
         private static readonly int Speed = Animator.StringToHash("Speed");
 
-        public void Initialize(float squareSize)
+        public void Initialize(float squareSize, float symbolsSize)
         {
             foreach (var symbol in _symbols)
             {
@@ -19,6 +19,7 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
 
                 symbol.transform.localPosition = randomPosition;
                 symbol.transform.rotation = Quaternion.Euler(0f, 0f, randomAngle);
+                symbol.transform.localScale = new Vector3(symbolsSize, symbolsSize, 1);
 
                 var speed = Random.Range(-0.05f, 0.05f);
                 symbol.Animator.SetFloat(Speed, speed);

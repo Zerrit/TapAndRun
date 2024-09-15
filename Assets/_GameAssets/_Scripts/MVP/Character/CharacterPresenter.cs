@@ -40,7 +40,6 @@ namespace TapAndRun.MVP.Character
 
             _model.OnBeganTurning += _view.DisplayTurning;
             _model.OnBeganJumping += _view.DisplayJumping;
-            _model.OnFinishedJumping += _view.DisplayEndJumping;
         }
 
         private void SetSkin(string skinId)
@@ -73,7 +72,6 @@ namespace TapAndRun.MVP.Character
 
             _model.OnBeganTurning -= _view.DisplayTurning;
             _model.OnBeganJumping -= _view.DisplayJumping;
-            _model.OnFinishedJumping -= _view.DisplayEndJumping;
         }
     }
 }

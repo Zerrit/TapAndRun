@@ -7,27 +7,31 @@ using UnityEngine;
 
 namespace TapAndRun.MVP.Wallet.Model
 {
-    public class WalletModel : ISelfWalletModel, IWalletModel, IProgressable, IWalletTutorial
+    public class WalletModel : ISelfWalletModel, IWalletModel, IWalletTutorial, IProgressable
     {
         public string SaveKey => "Wallet";
 
-        public ReactiveProperty<bool> IsTutorialDisplaying { get; private set; }
-
         public ReactiveProperty<int> AvailableCrystals { get; private set; }
         public ReactiveProperty<int> CrystalsByRun { get; private set; }
+        
+        public ReactiveProperty<bool> IsTutorialDisplaying { get; private set; }
+        public TriggerReactiveProperty OnTutorialClickTrigger { get; private set; }
 
         private int _crystalsByLevel;
         private int _crystalsByCompletedLevels;
 
         public UniTask InitializeAsync(CancellationToken token)
         {
-            IsTutorialDisplaying = new ReactiveProperty<bool>();
             AvailableCrystals = new ReactiveProperty<int>(50);
             CrystalsByRun = new ReactiveProperty<int>(0);
+
+            IsTutorialDisplaying = new ReactiveProperty<bool>();
+            OnTutorialClickTrigger = new TriggerReactiveProperty();
 
             return UniTask.CompletedTask;
         }
 
+        #region SaveLoad
         SaveableData IProgressable.GetProgressData()
         {
             return new (SaveKey, new object[] {AvailableCrystals.Value + _crystalsByCompletedLevels});
@@ -43,6 +47,7 @@ namespace TapAndRun.MVP.Wallet.Model
 
             AvailableCrystals.Value = Convert.ToInt32(loadData.Data[0]);
         }
+        #endregion
 
         public bool IsEnough(int value)
         {
@@ -70,6 +75,7 @@ namespace TapAndRun.MVP.Wallet.Model
         public void SaveCrystals()
         {
             _crystalsByCompletedLevels += _crystalsByLevel;
+            _crystalsByLevel = 0;
         }
 
         public void GainCrystalsByRun()

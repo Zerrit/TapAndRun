@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TapAndRun.UI;
 using UnityEngine;
@@ -11,14 +10,12 @@ namespace TapAndRun.MVP.Levels.Views.Tutorial
     {
         [SerializeField] private Image _cursor;
 
-        private CancellationTokenSource _cts = new();
-
         public void PlayTapAnimAsync()
         {
             _cursor.transform.DOScale(new Vector3(0.8f, 0.8f, 1f), 0.5f)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(Ease.InOutSine)
-                .AwaitForComplete(TweenCancelBehaviour.KillAndCancelAwait, _cts.Token);
+                .AwaitForComplete(TweenCancelBehaviour.KillAndCancelAwait, destroyCancellationToken);
         }
 
         public override void Show()
@@ -26,14 +23,6 @@ namespace TapAndRun.MVP.Levels.Views.Tutorial
             base.Show();
 
             PlayTapAnimAsync();
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-
-            _cts?.Cancel();
-            _cts?.Dispose();
         }
     }
 }

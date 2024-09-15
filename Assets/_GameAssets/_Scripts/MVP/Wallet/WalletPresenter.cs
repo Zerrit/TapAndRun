@@ -31,9 +31,11 @@ namespace TapAndRun.MVP.Wallet
             if (isDislaying)
             {
                 _walletView.WalletTutorialView.Show();
+                _walletView.WalletTutorialView.BackgroundButton.onClick.AddListener(_walletModel.OnTutorialClickTrigger.Trigger);
             }
             else
             {
+                _walletView.WalletTutorialView.BackgroundButton.onClick.RemoveListener(_walletModel.OnTutorialClickTrigger.Trigger);
                 _walletView.WalletTutorialView.Hide();
             }
         }

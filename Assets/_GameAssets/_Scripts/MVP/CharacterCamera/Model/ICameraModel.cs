@@ -13,6 +13,5 @@ namespace TapAndRun.MVP.CharacterCamera.Model
         void ChangeDifficulty(int newDifficulty);
 
         UniTaskVoid TurnAsync(int direction);
-        UniTaskVoid FlyUpAsync();
     }
 }

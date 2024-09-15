@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TapAndRun.MVP.CharacterCamera.Model
 {
-    public class CameraModel : ISelfCameraModel, ICameraModel, ILateUpdatable, IDecomposable
+    public class CameraModel : ISelfCameraModel, ICameraModel, ILateUpdatable, IDecomposable, ICameraZoom
     {
         public ReactiveProperty<Vector3> Position { get; private set; }
         public ReactiveProperty<float> Rotation { get; private set; }
@@ -77,11 +77,6 @@ namespace TapAndRun.MVP.CharacterCamera.Model
             Rotation.Value = rotation;
         }
 
-        public async UniTaskVoid FlyUpAsync()
-        {
-            await ChangeDistanceAsync(_config.LoseHeight);
-        }
-
         public async UniTaskVoid TurnAsync(int direction)
         {
             var originRotation = Rotation.Value;
@@ -96,6 +91,16 @@ namespace TapAndRun.MVP.CharacterCamera.Model
 
                 await UniTask.NextFrame(_cts.Token);
             }
+        }
+
+        public async UniTaskVoid SetLoseZoomAsync()
+        {
+            await ChangeDistanceAsync(_config.LoseHeight);
+        }
+
+        public async UniTaskVoid SetFreeViewZoomAsync()
+        {
+            await ChangeDistanceAsync(_config.FreeViewHeight);
         }
 
         public async UniTask ChangeDistanceAsync(float targetHaight)
