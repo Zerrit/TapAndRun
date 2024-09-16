@@ -9,12 +9,12 @@ namespace TapAndRun.MVP.Wallet.View
 {
     public class WalletTutorialView : ScreenView
     {
+        [field:SerializeField] public Button BackgroundButton { get; private set; }
+
         [SerializeField] private Image _cursor;
         [SerializeField] private RectTransform _animTarget;
         [SerializeField] private Vector3 _targetffset;
         [SerializeField] private Vector3 _cursorOffset;
-
-        private CancellationTokenSource _cts = new();
 
         public void PlayCursorAnim()
         {
@@ -24,7 +24,7 @@ namespace TapAndRun.MVP.Wallet.View
             _cursor.transform.DOLocalMove(target, 0.5f)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(Ease.InOutSine)
-                .AwaitForComplete(TweenCancelBehaviour.KillAndCancelAwait, _cts.Token);
+                .AwaitForComplete(TweenCancelBehaviour.KillAndCancelAwait, destroyCancellationToken);
         }
 
         public override void Show()
@@ -32,14 +32,6 @@ namespace TapAndRun.MVP.Wallet.View
             base.Show();
 
             PlayCursorAnim();
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-
-            _cts?.Cancel();
-            _cts?.Dispose();
         }
     }
 }

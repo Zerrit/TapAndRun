@@ -1,7 +1,7 @@
 ﻿using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
-namespace TapAndRun.MVP.CharacterCamera
+namespace TapAndRun.MVP.CharacterCamera.Model
 {
     public interface ISelfCameraModel
     {

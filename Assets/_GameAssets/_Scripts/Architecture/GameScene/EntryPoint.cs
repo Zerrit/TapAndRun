@@ -23,6 +23,7 @@ using TapAndRun.Services.Audio;
 using TapAndRun.Services.Data;
 using TapAndRun.Services.Localization;
 using TapAndRun.Services.Transition;
+using TapAndRun.Tutorials;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -46,11 +47,11 @@ namespace TapAndRun.Architecture.GameScene
             ILoseModel loseModel, LosePresenter losePresenter,
             IWalletModel walletModel, WalletPresenter walletPresenter,
             ISkinShopModel skinShopModel, SkinShopPresenter skinShopPresenter,
+            TapTutorial tapTutorial, CrystalsTutorial crystalsTutorial,
             ITransitionService transitionService, IDataService dataService,
             GameStateMachine gameStateMachine)
         {
-            _initializationQueue = new List<IInitializableAsync> //TODO Рассмотреть вариант с добавлением в интерфейс свойства : "Приоритет"...
-                                                                 //TODO и обрабатывать их согласно приоритету. Это позволить упростить EntryPoint до перечисления с типом IInitializableAsync
+            _initializationQueue = new List<IInitializableAsync>
             {
                 settingsModel,
                 characterModel,
@@ -71,6 +72,9 @@ namespace TapAndRun.Architecture.GameScene
                 losePresenter,
                 walletPresenter,
                 skinShopPresenter,
+
+                tapTutorial,
+                crystalsTutorial,
                 
                 audioService,
                 localizationService,

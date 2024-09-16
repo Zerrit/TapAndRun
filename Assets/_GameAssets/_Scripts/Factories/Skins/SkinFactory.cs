@@ -15,6 +15,7 @@ namespace TapAndRun.Factories.Skins
         public SkinsConfig SkinsConfig { get; }
 
         private AsyncOperationHandle<GameObject> _usingSkinOperationHandle;
+        private AsyncOperationHandle<GameObject> _skinHolderOperationHandle;
 
         private readonly List<AsyncOperationHandle<GameObject>> _assortmentOperationHandles = new();
 
@@ -25,22 +26,27 @@ namespace TapAndRun.Factories.Skins
 
         public async UniTask<List<GameObject>> CreateAllSkinsAsync(Transform parent, CancellationToken token)
         {
-            var skins = new List<GameObject>();
+            var skinsHolders = new List<GameObject>();
+
+            _skinHolderOperationHandle = Addressables.LoadAssetAsync<GameObject>(SkinsConfig.SkinHolderRef);
+            await _skinHolderOperationHandle.WithCancellation(token);
 
             foreach (var skinData in SkinsConfig.SkinsData)
             {
-                var skinsOperationHandle = Addressables.InstantiateAsync(skinData.SkinPrefabRef, parent);
-                var instance = await skinsOperationHandle.WithCancellation(token);
+                var skinHolderInstance = await Addressables.InstantiateAsync(SkinsConfig.SkinHolderRef, parent).WithCancellation(token);
+                
+                var skinsOperationHandle = Addressables.InstantiateAsync(skinData.SkinPrefabRef, skinHolderInstance.transform);
+                await skinsOperationHandle.WithCancellation(token);
 
                 if (skinsOperationHandle.Status == AsyncOperationStatus.Succeeded)
                 {
                     _assortmentOperationHandles.Add(skinsOperationHandle);
-                    skins.Add(instance);
+                    skinsHolders.Add(skinHolderInstance);
                 }
                 else throw new Exception($"Skin asset loading was finished with {skinsOperationHandle.Status}");
             }
 
-            return skins;
+            return skinsHolders;
         }
 
         public async UniTask<GameObject> ChangeSkinTo(string name, Transform parent, CancellationToken token)
@@ -71,7 +77,7 @@ namespace TapAndRun.Factories.Skins
             throw new Exception("No skins found in the config ");
         }
 
-        public void ReleaseUnusedSkins()
+        public void ReleaseSkinShopAssortment()
         {
             foreach (var skin in _assortmentOperationHandles)
             {
@@ -84,7 +90,7 @@ namespace TapAndRun.Factories.Skins
         public void Decompose()
         {
             Addressables.Release(_usingSkinOperationHandle);
-            ReleaseUnusedSkins();
+            ReleaseSkinShopAssortment();
         }
     }
 }

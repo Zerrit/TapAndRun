@@ -43,6 +43,12 @@ namespace TapAndRun.Tools.Reactivity
                 OnChanged?.Invoke(_value);
             }
         }
+
+        public void Subscribe(Action trueMethod, Action falseMethod)
+        {
+            OnChangedToTrue += trueMethod;
+            OnChangedToFalse += falseMethod;
+        }
         
         public void Subscribe(Action method, bool triggerValue)
         {
@@ -71,6 +77,12 @@ namespace TapAndRun.Tools.Reactivity
             {
                 OnChangedToFalse -= method;
             }
+        }
+        
+        public void Unsubscribe(Action trueMethod, Action falseMethod)
+        {
+            OnChangedToTrue -= trueMethod;
+            OnChangedToFalse -= falseMethod;
         }
     }
 }

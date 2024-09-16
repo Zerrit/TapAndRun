@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using TapAndRun.Configs;
 using TapAndRun.Interfaces;
 using TapAndRun.MVP.Character.Model;
@@ -9,7 +10,7 @@ using UnityEngine;
 
 namespace TapAndRun.MVP.CharacterCamera.Model
 {
-    public class CameraModel : ISelfCameraModel, ICameraModel, ILateUpdatable, IDecomposable
+    public class CameraModel : ISelfCameraModel, ICameraModel, ICameraZoom, ILateUpdatable, IDecomposable
     {
         public ReactiveProperty<Vector3> Position { get; private set; }
         public ReactiveProperty<float> Rotation { get; private set; }
@@ -77,11 +78,6 @@ namespace TapAndRun.MVP.CharacterCamera.Model
             Rotation.Value = rotation;
         }
 
-        public async UniTaskVoid FlyUpAsync()
-        {
-            await ChangeDistanceAsync(_config.LoseHeight);
-        }
-
         public async UniTaskVoid TurnAsync(int direction)
         {
             var originRotation = Rotation.Value;
@@ -98,15 +94,34 @@ namespace TapAndRun.MVP.CharacterCamera.Model
             }
         }
 
+        public async UniTaskVoid SetLoseZoomAsync()
+        {
+            await ChangeDistanceAsync(_config.LoseHeight);
+        }
+
+        public async UniTaskVoid SetFreeViewZoomAsync()
+        {
+            await ChangeDistanceAsync(_config.FreeViewHeight);
+        }
+
+        public async UniTaskVoid SetShopZoomAsync()
+        {
+            await ChangeDistanceAsync(_config.ShopHeight);
+        }
+
         public async UniTask ChangeDistanceAsync(float targetHaight)
         {
             var originDistance = Height.Value;
+
+            float x = 0;
             float t = 0;
 
-            while (t < 1)
+            while (x < 1)
             {
-                t += 3 * Time.deltaTime;
-                Height.Value = Mathf.Lerp(originDistance, targetHaight, t);
+                t += _config.ZoomSpeed * Time.deltaTime;
+                x = 1 - Mathf.Pow(1 - t, 3);
+                
+                Height.Value = Mathf.Lerp(originDistance, targetHaight, x);
 
                 await UniTask.NextFrame(_cts.Token);
             }

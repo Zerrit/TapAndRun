@@ -8,14 +8,19 @@ namespace TapAndRun.MVP.Levels.Model
         event Action OnLevelChanged;
 
         BoolReactiveProperty IsDisplaying { get; }
+        BoolReactiveProperty IsTutorialDisplaying { get; }
 
         TriggerReactiveProperty StartupTrigger { get; }
         TriggerReactiveProperty ResetLevelTrigger { get; } 
+
+        TriggerReactiveProperty OnTapTrigger { get; }
+        TriggerReactiveProperty OnEnterToInteractPointTrigger { get; }
 
         int CurrentLevelId { get; }
         int LevelCount { get; set; }
         int CurrentDifficulty { get; }
 
+        bool IsTutorialLevel { get; set; }
         bool IsTutorialComplete { get; set; }
 
         void AddCrystalByRun();

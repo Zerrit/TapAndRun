@@ -14,7 +14,7 @@ namespace TapAndRun.MVP.Skins_Shop
     public class SkinShopPresenter : IInitializableAsync, IDecomposable
     {
         private readonly ISelfSkinShopModel _selfModel;
-        private readonly ICameraModel _cameraModel;
+        private readonly ICameraZoom _cameraZoom;
         private readonly IAudioService _audioService;
         private readonly ISkinFactory _skinFactory;
         private readonly SkinShopView _shopScreenView;
@@ -22,11 +22,11 @@ namespace TapAndRun.MVP.Skins_Shop
 
         private CancellationTokenSource _cts;
 
-        public SkinShopPresenter(ISelfSkinShopModel selfModel, ICameraModel cameraModel, IAudioService audioService,
+        public SkinShopPresenter(ISelfSkinShopModel selfModel, ICameraZoom cameraZoom, IAudioService audioService,
             ISkinFactory skinFactory, SkinShopView shopScreenView, SkinShopSliderView sliderView)
         {
             _selfModel = selfModel;
-            _cameraModel = cameraModel;
+            _cameraZoom = cameraZoom;
             _audioService = audioService;
             _skinFactory = skinFactory;
             _shopScreenView = shopScreenView;
@@ -52,7 +52,8 @@ namespace TapAndRun.MVP.Skins_Shop
             if (isDisplaying)
             {
                 _shopScreenView.Show();
-                _cameraModel.SetSpecialView(Vector2.zero, 0f, 3f);
+                _sliderView.Place(_cameraZoom.Position.Value, _cameraZoom.Rotation.Value);
+                _cameraZoom.SetShopZoomAsync();
                 FillAssortment();
             }
             else
@@ -167,7 +168,7 @@ namespace TapAndRun.MVP.Skins_Shop
             _selfModel.IsAssortmentPrepeared = false;
             
             _sliderView.SkinsList.Clear();
-            _skinFactory.ReleaseUnusedSkins();
+            _skinFactory.ReleaseSkinShopAssortment();
         }
 
         public void Decompose()

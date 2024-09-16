@@ -5,8 +5,6 @@ namespace TapAndRun.MVP.Wallet.Model
 {
     public interface IWalletModel : IInitializableAsync
     {
-        public ReactiveProperty<bool> IsTutorialDisplaying { get; }
-
         void IncreaseCrystalsByRun(int levelsCombo = 1);
         void SaveCrystals();
         void GainCrystalsByRun();

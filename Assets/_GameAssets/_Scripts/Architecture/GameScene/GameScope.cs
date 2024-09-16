@@ -36,6 +36,7 @@ using TapAndRun.Services.Data;
 using TapAndRun.Services.Localization;
 using TapAndRun.Services.Transition;
 using TapAndRun.Services.Update;
+using TapAndRun.Tutorials;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using VContainer;
@@ -95,6 +96,8 @@ namespace TapAndRun.Architecture.GameScene
             RegisterLoseScreen(builder);
             RegisterMainMenu(builder);
 
+            RegisterTutorials(builder);
+            
             RegisterGameStates(builder);
 
             builder.Register<GameStateMachine>(Lifetime.Singleton);
@@ -196,6 +199,12 @@ namespace TapAndRun.Architecture.GameScene
             builder.Register<MainMenuPresenter>(Lifetime.Singleton)
                 .WithParameter(_mainMenu)
                 .WithParameter(_levelSelectView);
+        }
+        
+        private void RegisterTutorials(IContainerBuilder builder) //TODO Подумать над резолвом
+        {
+            builder.Register<TapTutorial>(Lifetime.Singleton).AsSelf();
+            builder.Register<CrystalsTutorial>(Lifetime.Singleton).AsSelf();
         }
 
         private void RegisterGameStates(IContainerBuilder builder)

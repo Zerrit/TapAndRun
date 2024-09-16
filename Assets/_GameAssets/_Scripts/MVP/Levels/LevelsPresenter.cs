@@ -9,7 +9,6 @@ using TapAndRun.MVP.Levels.Views;
 using TapAndRun.MVP.Levels.Views.Tutorial;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.PrallaxBackground;
-using TapAndRun.PrallaxBackground.OffsetBackground;
 using TapAndRun.Services.Audio;
 using TapAndRun.TapSystem;
 using UnityEngine;
@@ -30,21 +29,18 @@ namespace TapAndRun.MVP.Levels
 
         private readonly ICharacterModel _characterModel;
         private readonly ICameraModel _cameraModel;
-        private readonly IWalletTutorial _walletTutorial;
         private readonly ISelfLevelsModel _model;
         private readonly ILevelFactory _levelFactory;
         private readonly IAudioService _audioService;
 
         public LevelsPresenter(ISelfLevelsModel model, ILevelFactory levelFactory, IAudioService audioService,
-            ICharacterModel characterModel, ICameraModel cameraModel, IWalletTutorial walletTutorial,
-            IParallaxView view, GameplayScreenView gameplayScreen)
+            ICharacterModel characterModel, ICameraModel cameraModel, IParallaxView view, GameplayScreenView gameplayScreen)
         {
             _model = model;
             _levelFactory = levelFactory;
             _audioService = audioService;
             _characterModel = characterModel;
             _cameraModel = cameraModel;
-            _walletTutorial = walletTutorial;
             _view = view;
             _gameplayScreen = gameplayScreen;
         }
@@ -55,9 +51,9 @@ namespace TapAndRun.MVP.Levels
             _commandHandler = new TapCommandHandler(_characterModel, _cameraModel);
             _model.LevelCount = _levelFactory.GetLevelCount();
 
-            _model.IsDisplaying.Subscribe(BuildLevel, true);
-            _model.IsDisplaying.Subscribe(HideLevels, false);
-            
+            _model.IsDisplaying.Subscribe(BuildLevel, HideLevels);
+            _model.IsTutorialDisplaying.Subscribe(_gameplayScreen.TutorialView.Show, _gameplayScreen.TutorialView.Hide);
+
             _model.StartupTrigger.Subscribe(StartGameplay);
             _model.ResetLevelTrigger.Subscribe(ResetLevel);
 
@@ -71,7 +67,7 @@ namespace TapAndRun.MVP.Levels
 
         private void StartGameplay()
         {
-            CheckForTutorials();
+            CheckLevelForTutorial();
             
             _gameplayScreen.Show();
             _characterModel.StartMove();
@@ -187,6 +183,8 @@ namespace TapAndRun.MVP.Levels
 
         private void ProcessClick()
         {
+            _model.OnTapTrigger.Trigger();
+
             if (!_commandHandler.CheckAvailability())
             {
                 return;
@@ -199,11 +197,8 @@ namespace TapAndRun.MVP.Levels
         private void ProcessLevelLose()
         {
             _model.LoseLevel();
-
-            _gameplayScreen.Hide();
-            _cameraModel.FlyUpAsync().Forget();
-
             _audioService.CallVibration();
+            _gameplayScreen.Hide();
         }
 
         private void ProcessLevelComplete()
@@ -228,8 +223,7 @@ namespace TapAndRun.MVP.Levels
             _model.AddCrystalByRun();
         }
 
-        #region TUTORIALS
-        private void CheckForTutorials()
+        private void CheckLevelForTutorial()
         {
             if (_model.IsTutorialComplete)
             {
@@ -241,55 +235,12 @@ namespace TapAndRun.MVP.Levels
                 var tutorLevel = _currentLevel as TutorialLevelView;
                 if (tutorLevel)
                 {
-                    tutorLevel.TutorialInteractPoint.OnPlayerEntered += StartTapTutorial;
-                    _gameplayScreen.TapButton.onClick.RemoveListener(ProcessClick);
+                    _model.IsTutorialLevel = true;
 
-                    _currentLevel.Crystals[0].OnTaken += StartCrystalsTutorial;
+                    tutorLevel.TutorialInteractPoint.OnPlayerEntered += _model.OnEnterToInteractPointTrigger.Trigger;
                 }
             }
         }
-
-        private void StartCrystalsTutorial()
-        {
-            StartCrystalsTutorialAsync().Forget();
-            
-            async UniTaskVoid StartCrystalsTutorialAsync()
-            {
-                _currentLevel.Crystals[0].OnTaken -= StartCrystalsTutorial;
-                
-                _characterModel.StopMove();
-                _walletTutorial.IsTutorialDisplaying.Value = true;
-                
-                await _gameplayScreen.TapButton.OnClickAsync();
-                
-                _walletTutorial.IsTutorialDisplaying.Value = false;
-                _characterModel.StartMove();
-            }
-        }
-
-        private void StartTapTutorial()
-        {
-            StartTapTutorialAsync().Forget();
-
-            async UniTaskVoid StartTapTutorialAsync()
-            {
-                var tutorLevel = _currentLevel as TutorialLevelView;
-                tutorLevel.TutorialInteractPoint.OnPlayerEntered -= StartTapTutorial;
-
-                _characterModel.StopMove();
-                _gameplayScreen.TutorialView.Show();
-
-                await _gameplayScreen.TapButton.OnClickAsync();
-
-                _gameplayScreen.TutorialView.Hide();
-                _characterModel.StartMove();
-                ProcessClick();
-
-                _gameplayScreen.TapButton.onClick.AddListener(ProcessClick);
-                _model.IsTutorialComplete = true;
-            }
-        }
-        #endregion
 
         private void HideLevels() //TODO нейминг
         {
@@ -332,8 +283,8 @@ namespace TapAndRun.MVP.Levels
             _cts?.Cancel();
             _cts?.Dispose();
 
-            _model.IsDisplaying.Unsubscribe(BuildLevel, true);
-            _model.IsDisplaying.Unsubscribe(HideLevels, false);
+            _model.IsDisplaying.Unsubscribe(BuildLevel, HideLevels);
+            _model.IsTutorialDisplaying.Unsubscribe(_gameplayScreen.TutorialView.Show, _gameplayScreen.TutorialView.Hide);
 
             _model.StartupTrigger.Unsubscribe(StartGameplay);
             _model.ResetLevelTrigger.Unsubscribe(ResetLevel);

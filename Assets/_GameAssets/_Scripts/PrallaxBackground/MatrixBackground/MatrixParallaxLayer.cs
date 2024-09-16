@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace TapAndRun.PrallaxBackground.MatrixBackground
 {
@@ -13,6 +12,7 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
         [SerializeField,Header("Размер стороны ячейки")] 
         private int _squareSize;
 
+        [SerializeField, Range(0, 1)] private float _symbolsSize;
         [SerializeField] private int _saturationOffset;
         [SerializeField] private int _brithnessOffset;
         [SerializeField] private float _parallaxSpeed;
@@ -47,7 +47,7 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
 
             foreach (var square in _parallaxSquares)
             {
-                square.Initialize(_squareSize);
+                square.Initialize(_squareSize, _symbolsSize);
             }
         }
 

@@ -6,8 +6,6 @@ namespace TapAndRun.MVP.Character.View
     public class CharacterView : MonoBehaviour
     {
         [field:SerializeField] public Transform Transform { get; private set; }
-        //[field:SerializeField] public Transform RoadChecker{ get; private set; }
-
         [field:SerializeField] public Transform SkinHandler { get; private set; }
         [field:SerializeField] public Animator Animator { get; private set; }
         [field:SerializeField] public CharacterSfx Sfx { get; private set; }
@@ -37,8 +35,6 @@ namespace TapAndRun.MVP.Character.View
         public void UpdateMoving(bool isMoving)
         {
             Animator.SetBool(_isMoving, isMoving);
-
-            Sfx.SwitchRunSfx(isMoving);
         }
 
         public void UpdateFalling(bool isFall)
@@ -63,24 +59,13 @@ namespace TapAndRun.MVP.Character.View
 
         public void DisplayJumping()
         {
-            ActivateAnimation(_jump);
-            Sfx.StopRunSfx();
+            Animator.SetTrigger(_jump);
             Sfx.PlayJumpSfx();
-        }
-
-        public void DisplayEndJumping()
-        {
-            Sfx.PlayRunSfx();
         }
 
         public void DisplayTurning()
         {
             Sfx.PlayTurnSfx();
-        }
-        
-        public void ActivateAnimation(int animHash)
-        {
-            Animator.SetTrigger(animHash);
         }
     }
 }

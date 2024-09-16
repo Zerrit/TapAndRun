@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Offset>k__BackingField: {x: 0, y: 0, z: -5}
   <TurnSpeed>k__BackingField: 5
+  <ZoomSpeed>k__BackingField: 3
   <Height>k__BackingField: 5
   <HeightStep>k__BackingField: 0.5
   <LoseHeight>k__BackingField: 8
+  <FreeViewHeight>k__BackingField: 15
+  <ShopHeight>k__BackingField: 3.5
   <RotationDifficulties>k__BackingField: 000000001e0000003c000000
