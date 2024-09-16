@@ -30,7 +30,12 @@ namespace TapAndRun.MVP.Skins_Shop.Views
             _screenWidth = Screen.width;
         }
 
-        [ContextMenu("Align")]
+        public void Place(Vector3 cameraPosition, float cameraRotation)
+        {
+            transform.position = new Vector3(cameraPosition.x, cameraPosition.y, 0f);
+            transform.eulerAngles = new Vector3(0f, 0f, cameraRotation);
+        }
+
         public void Align()
         {
             for (int i = 0; i < SkinsCount; i++)
@@ -52,7 +57,7 @@ namespace TapAndRun.MVP.Skins_Shop.Views
                 RescaleSkin(i, CurrentSkinIndex ,token).Forget();
             }
 
-            await SliderContent.DOMoveX(sliderOffset, _scrollDuration)
+            await SliderContent.DOLocalMoveX(sliderOffset, _scrollDuration)
                 .SetEase(Ease.InOutCubic)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
         }

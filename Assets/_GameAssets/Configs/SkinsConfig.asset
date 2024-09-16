@@ -12,25 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4a9d11e53dc4239958d3aa76c5eff85, type: 3}
   m_Name: SkinsConfig
   m_EditorClassIdentifier: 
+  <SkinHolderRef>k__BackingField:
+    m_AssetGUID: 72f2ca4e1779f5846b42a5ce8677231e
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1
   <SkinsData>k__BackingField:
-  - <Name>k__BackingField: Chinchilla
+  - <Name>k__BackingField: Red Bird
     <Price>k__BackingField: 0
     <SkinPrefabRef>k__BackingField:
-      m_AssetGUID: 82641d57d01ba5b4696a0cb43375339c
+      m_AssetGUID: 72a12ccdf0d99074793b648f662b859d
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - <Name>k__BackingField: Blue Chinchilla
+  - <Name>k__BackingField: Orange Cat
     <Price>k__BackingField: 25
     <SkinPrefabRef>k__BackingField:
-      m_AssetGUID: 7f152d91da7e9a84793291b3a7b77fe7
+      m_AssetGUID: 0c560255bc45c4f449d532680a9b8a0d
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - <Name>k__BackingField: Red Chinchilla
+  - <Name>k__BackingField: Yellow Duck
     <Price>k__BackingField: 65
     <SkinPrefabRef>k__BackingField:
-      m_AssetGUID: 6fabca6fd2b76a4469ad903b832d32a0
+      m_AssetGUID: 532b074e1a6c16646989ad1c306c3a09
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0

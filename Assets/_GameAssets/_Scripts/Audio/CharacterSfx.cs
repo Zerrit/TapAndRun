@@ -5,7 +5,6 @@ namespace TapAndRun.Audio
     public class CharacterSfx : MonoBehaviour
     {
         [SerializeField] private AudioClip _firstStepSound;
-        [SerializeField] private AudioClip _secondStepSound;
         [SerializeField] private AudioClip _turnSound;
         [SerializeField] private AudioClip _jumpSound;
         [SerializeField] private AudioClip _loseSound;
@@ -20,16 +19,10 @@ namespace TapAndRun.Audio
             _audioSource.pitch = _baseSpeedPitch + acceleration;
         }
 
-        public void PlayFirstStepSfx()
+        public void PlayStepSfx()
         {
             _runAudioSource.pitch = Random.Range(0.95f, 1.2f);
             _runAudioSource.PlayOneShot(_firstStepSound);
-        }
-
-        public void PlaySecondStepSfx()
-        {
-            _runAudioSource.pitch = Random.Range(0.95f, 1.2f);
-            _runAudioSource.PlayOneShot(_secondStepSound);
         }
 
         public void PlayTurnSfx()

@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using TapAndRun.Interfaces;
+using TapAndRun.Tools.Reactivity;
 using UnityEngine;
 
 namespace TapAndRun.MVP.CharacterCamera.Model
@@ -8,7 +9,6 @@ namespace TapAndRun.MVP.CharacterCamera.Model
     {
         int Difficulty { get; }
 
-        void SetSpecialView(Vector3 position, float rotation, float height);
         void SetRotation(float rotation = 0);
         void ChangeDifficulty(int newDifficulty);
 
