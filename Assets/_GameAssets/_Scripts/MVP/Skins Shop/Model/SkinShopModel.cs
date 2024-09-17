@@ -64,7 +64,7 @@ namespace TapAndRun.MVP.Skins_Shop.Model
 
         public void SelectCurrentSkin()
         {
-            _characterModel.SelectedSkin.Value = CurrentSkinsData.Name;
+            _characterModel.SelectedSkin.Value = CurrentSkinsData.Id;
         }
         
         public bool TryBuyCurrentSkin()
@@ -72,7 +72,7 @@ namespace TapAndRun.MVP.Skins_Shop.Model
             if (IsCanPurchase())
             {
                 _walletModel.TrySpend(CurrentSkinsData.Price);
-                UnlockedSkins.Add(CurrentSkinsData.Name);
+                UnlockedSkins.Add(CurrentSkinsData.Id);
                 return true;
             }
 
@@ -81,12 +81,12 @@ namespace TapAndRun.MVP.Skins_Shop.Model
 
         public bool IsSkinSelected()
         {
-            return _characterModel.SelectedSkin.Value == CurrentSkinsData.Name;
+            return _characterModel.SelectedSkin.Value == CurrentSkinsData.Id;
         }
 
         public bool IsUnlocked()
         {
-            return UnlockedSkins.Contains(CurrentSkinsData.Name);
+            return UnlockedSkins.Contains(CurrentSkinsData.Id);
         }
 
         public bool IsCanPurchase()

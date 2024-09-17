@@ -17,21 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: daddb163d96e3134ba47d35bb6f566ec
   m_SerializeEntries:
-  - m_GUID: 8826045a70d51194697dde0433efc129
-    m_Address: 3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b394e5c729121c340a0200e99848746e
-    m_Address: 2
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 67c99935cb24c404291e0802765098af
-    m_Address: 1
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c451b03f99dcb4241ae01cf78a9598f5
     m_Address: Level Button
     m_ReadOnly: 0
@@ -42,23 +27,43 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 414d213bcb5d5884aa8de836528136c2
-    m_Address: Black Chinchilla Skin
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 82641d57d01ba5b4696a0cb43375339c
     m_Address: Chinchilla Skin
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7f152d91da7e9a84793291b3a7b77fe7
-    m_Address: Blue Chinchilla Skin
+  - m_GUID: 72a12ccdf0d99074793b648f662b859d
+    m_Address: Red Bird Skin
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6fabca6fd2b76a4469ad903b832d32a0
-    m_Address: Red Chinchilla Skin
+  - m_GUID: 0c560255bc45c4f449d532680a9b8a0d
+    m_Address: Orange Cat Skin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 72f2ca4e1779f5846b42a5ce8677231e
+    m_Address: Skin Holder
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 532b074e1a6c16646989ad1c306c3a09
+    m_Address: Yellow Duck Skin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67c99935cb24c404291e0802765098af
+    m_Address: 1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b394e5c729121c340a0200e99848746e
+    m_Address: 2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8826045a70d51194697dde0433efc129
+    m_Address: 3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -104,31 +109,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fd1ee17b111aab7449ffb16d0ef70bdb
     m_Address: 12
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 39acdbdec72762b40a2f842e857c0a32
-    m_Address: 13
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 72a12ccdf0d99074793b648f662b859d
-    m_Address: Red Bird Skin
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0c560255bc45c4f449d532680a9b8a0d
-    m_Address: Orange Cat Skin
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 72f2ca4e1779f5846b42a5ce8677231e
-    m_Address: Skin Holder
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 532b074e1a6c16646989ad1c306c3a09
-    m_Address: Yellow Duck Skin
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

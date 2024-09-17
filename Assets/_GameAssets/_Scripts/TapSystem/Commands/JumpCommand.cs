@@ -1,7 +1,8 @@
 ﻿using Cysharp.Threading.Tasks;
+using TapAndRun.Configs;
 using TapAndRun.MVP.Character.Model;
-using TapAndRun.MVP.CharacterCamera;
 using TapAndRun.MVP.CharacterCamera.Model;
+using UnityEngine;
 
 namespace TapAndRun.TapSystem.Commands
 {
@@ -18,7 +19,7 @@ namespace TapAndRun.TapSystem.Commands
 
         public async UniTask ExecuteAsync()
         {
-            if (_cameraModel.Difficulty >= 3)
+            if (_cameraModel.CurrentMode == CameraMode.Random)
             {
                 _cameraModel.TurnAsync(1).Forget();
             }

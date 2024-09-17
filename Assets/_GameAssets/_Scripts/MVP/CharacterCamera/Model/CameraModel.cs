@@ -1,6 +1,7 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using TapAndRun.Configs;
 using TapAndRun.Interfaces;
 using TapAndRun.MVP.Character.Model;
@@ -16,14 +17,11 @@ namespace TapAndRun.MVP.CharacterCamera.Model
         public ReactiveProperty<float> Rotation { get; private set; }
         public ReactiveProperty<float> Height { get; private set; }
 
-        public int Difficulty { get; private set; }
-
-        private int _maxDifficultyLevel;
-        private bool _isFollowActive;
+        public CameraMode CurrentMode { get; private set; }
 
         private CancellationTokenSource _cts;
 
-        private const int MinDifficultyLevel = 1;
+        private Dictionary<CameraMode, int> _cameraModes = new ();
 
         private readonly CameraConfig _config;
         private readonly ILateUpdateService _updateService;
@@ -42,8 +40,7 @@ namespace TapAndRun.MVP.CharacterCamera.Model
             Position = new ReactiveProperty<Vector3>();
             Rotation = new ReactiveProperty<float>();
             Height = new ReactiveProperty<float>(_config.Height + _config.HeightStep);
-
-            _maxDifficultyLevel = _config.RotationDifficulties.Length;
+            _cameraModes = _config.CameraModes.ToDictionary(x => x.Mode, x => x.Angle);
 
             _updateService.Subscribe(this);
 
@@ -55,22 +52,12 @@ namespace TapAndRun.MVP.CharacterCamera.Model
             FollowCharacter();
         }
 
-        public void ChangeDifficulty(int newDifficulty)
+        public void ChangeMode(int characterSpeedLevel, CameraMode mode)
         {
-            _isFollowActive = true;
-
-            Difficulty = Mathf.Clamp(newDifficulty, MinDifficultyLevel, _maxDifficultyLevel);
-            var targetHeight = Difficulty * _config.HeightStep + _config.Height;
-
+            var targetHeight = characterSpeedLevel * _config.HeightStep + _config.Height;
+            CurrentMode = mode;
+            
             ChangeDistanceAsync(targetHeight).Forget();
-        }
-
-        public void SetSpecialView(Vector3 position, float rotation, float height)
-        {
-            _isFollowActive = false;
-            Position.Value = position + _config.Offset;
-            Rotation.Value = rotation;
-            ChangeDistanceAsync(height).Forget();
         }
 
         public void SetRotation(float rotation = 0)
@@ -81,7 +68,12 @@ namespace TapAndRun.MVP.CharacterCamera.Model
         public async UniTaskVoid TurnAsync(int direction)
         {
             var originRotation = Rotation.Value;
-            var angle = _config.RotationDifficulties[Difficulty - 1] * direction;
+            var angle = _cameraModes[CurrentMode] * direction;
+
+            if (CurrentMode == CameraMode.Random)
+            {
+                angle *= (Random.value > 0.5f) ? -1 : 1;
+            }
 
             float t = 0;
 
@@ -129,11 +121,6 @@ namespace TapAndRun.MVP.CharacterCamera.Model
 
         private void FollowCharacter()
         {
-            if (!_isFollowActive)
-            {
-                return;
-            }
-
             var targetPosition = _characterModel.Position.Value + _config.Offset;
             Position.Value = targetPosition;
         }

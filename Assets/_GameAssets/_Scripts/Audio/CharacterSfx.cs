@@ -21,7 +21,7 @@ namespace TapAndRun.Audio
 
         public void PlayStepSfx()
         {
-            _runAudioSource.pitch = Random.Range(0.95f, 1.2f);
+            _runAudioSource.pitch = Random.Range(0.9f, 1.25f);
             _runAudioSource.PlayOneShot(_firstStepSound);
         }
 

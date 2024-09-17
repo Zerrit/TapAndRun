@@ -18,31 +18,35 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 1
   <SkinsData>k__BackingField:
-  - <Name>k__BackingField: Red Bird
+  - <Id>k__BackingField: Bird
+    <Name>k__BackingField: BirdSkin
     <Price>k__BackingField: 0
     <SkinPrefabRef>k__BackingField:
       m_AssetGUID: 72a12ccdf0d99074793b648f662b859d
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - <Name>k__BackingField: Orange Cat
+  - <Id>k__BackingField: Cat
+    <Name>k__BackingField: CatSkin
     <Price>k__BackingField: 25
     <SkinPrefabRef>k__BackingField:
       m_AssetGUID: 0c560255bc45c4f449d532680a9b8a0d
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - <Name>k__BackingField: Yellow Duck
+  - <Id>k__BackingField: Duck
+    <Name>k__BackingField: DuckSkin
     <Price>k__BackingField: 65
     <SkinPrefabRef>k__BackingField:
       m_AssetGUID: 532b074e1a6c16646989ad1c306c3a09
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - <Name>k__BackingField: Black Chinchilla
+  - <Id>k__BackingField: Chilla
+    <Name>k__BackingField: ChillaSkin
     <Price>k__BackingField: 125
     <SkinPrefabRef>k__BackingField:
-      m_AssetGUID: 414d213bcb5d5884aa8de836528136c2
+      m_AssetGUID: 82641d57d01ba5b4696a0cb43375339c
       m_SubObjectName: 
       m_SubObjectType: 
-      m_EditorAssetChanged: 1
+      m_EditorAssetChanged: 0

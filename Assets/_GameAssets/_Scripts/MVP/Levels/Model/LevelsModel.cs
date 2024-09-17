@@ -23,7 +23,7 @@ namespace TapAndRun.MVP.Levels.Model
         public TriggerReactiveProperty ResetLevelTrigger { get; private set; }
         
         public TriggerReactiveProperty OnTapTrigger { get; private set; }
-        public TriggerReactiveProperty OnEnterToInteractPointTrigger { get; private set; } // Вход в зону взаимодействия в обучении
+        public TriggerReactiveProperty OnEnterToInteractPointTrigger { get; private set; }
         
         public int CurrentLevelId
         {
@@ -42,7 +42,7 @@ namespace TapAndRun.MVP.Levels.Model
         public int LastUnlockedLevelId { get; private set; }
         public int LevelCount { get; set; }
 
-        public int CurrentDifficulty { get; private set; }
+        public int CurrentDifficulty { get; set; }
         public int MaxDifficulty { get; } = 3; //TODO Вынести в конфиг
 
         public int CrystalsByRun { get; private set; } // TODO Для возможной статистики
@@ -129,7 +129,7 @@ namespace TapAndRun.MVP.Levels.Model
         public void AddCrystalByRun()
         {
             CrystalsByRun++;
-            _walletModel.IncreaseCrystalsByRun();
+            _walletModel.IncreaseCrystalsByRun(CurrentDifficulty);
 
             OnCrystalTaken?.Invoke();
         }

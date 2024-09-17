@@ -20,4 +20,16 @@ MonoBehaviour:
   <LoseHeight>k__BackingField: 8
   <FreeViewHeight>k__BackingField: 15
   <ShopHeight>k__BackingField: 3.5
-  <RotationDifficulties>k__BackingField: 000000001e0000003c000000
+  <CameraModes>k__BackingField:
+  - <Mode>k__BackingField: 0
+    <Angle>k__BackingField: 0
+  - <Mode>k__BackingField: 1
+    <Angle>k__BackingField: 30
+  - <Mode>k__BackingField: 2
+    <Angle>k__BackingField: -30
+  - <Mode>k__BackingField: 3
+    <Angle>k__BackingField: 60
+  - <Mode>k__BackingField: 4
+    <Angle>k__BackingField: -60
+  - <Mode>k__BackingField: 5
+    <Angle>k__BackingField: 100

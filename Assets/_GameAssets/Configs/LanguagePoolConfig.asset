@@ -15,3 +15,4 @@ MonoBehaviour:
   _langPool:
   - {fileID: 11400000, guid: f5f0d8b7bd6493349a60b942fc1066e0, type: 2}
   - {fileID: 11400000, guid: c21fbecb073c8284bb9c3bc38a17d804, type: 2}
+  - {fileID: 11400000, guid: 70a74c213cb634f4583c03595e7b1ccc, type: 2}

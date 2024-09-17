@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 7740759993137348088}
   - component: {fileID: 7296593574980178142}
   m_Layer: 0
-  m_Name: Yellow Duck Skin
+  m_Name: Duck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
