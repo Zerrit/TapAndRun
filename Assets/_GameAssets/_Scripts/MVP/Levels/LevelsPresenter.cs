@@ -67,8 +67,6 @@ namespace TapAndRun.MVP.Levels
 
         private void StartGameplay()
         {
-            CheckLevelForTutorial();
-            
             _gameplayScreen.Show();
             _characterModel.StartMove();
         }
@@ -158,27 +156,16 @@ namespace TapAndRun.MVP.Levels
             }
 
             _currentLevel.FinishSegment.OnPlayerEntered += ProcessLevelComplete;
+
+            CheckLevelForTutorial();
         }
 
         private void UpdateDifficulty()
         {
-            if (_model.CurrentDifficulty < _currentLevel.SpeedDifficulty)
-            {
-                _characterModel.ChangeSpeed(_currentLevel.SpeedDifficulty);
-            }
-            else
-            {
-                _characterModel.ChangeSpeed(_model.CurrentDifficulty);
-            }
+            _model.CurrentDifficulty = Mathf.Max(_model.CurrentDifficulty, _currentLevel.SpeedDifficulty);
 
-            if (_model.CurrentDifficulty < _currentLevel.CameraDifficulty)
-            {
-                _cameraModel.ChangeDifficulty(_currentLevel.CameraDifficulty);
-            }
-            else
-            {
-                _cameraModel.ChangeDifficulty(_model.CurrentDifficulty);
-            }
+            _characterModel.ChangeSpeed(_model.CurrentDifficulty);
+            _cameraModel.ChangeMode(_model.CurrentDifficulty, _currentLevel.CameraMode);
         }
 
         private void ProcessClick()
@@ -225,21 +212,21 @@ namespace TapAndRun.MVP.Levels
 
         private void CheckLevelForTutorial()
         {
-            if (_model.IsTutorialComplete)
+            if (_model.IsTutorialComplete || _model.CurrentLevelId != 0)
             {
                 return;
             }
 
-            if (_model.CurrentLevelId == 0 & _currentLevel is TutorialLevelView)
+            //if (_currentLevel is TutorialLevelView)
+            //{
+            var tutorLevel = _currentLevel as TutorialLevelView;
+            if (tutorLevel)
             {
-                var tutorLevel = _currentLevel as TutorialLevelView;
-                if (tutorLevel)
-                {
-                    _model.IsTutorialLevel = true;
+                _model.IsTutorialLevel = true;
 
-                    tutorLevel.TutorialInteractPoint.OnPlayerEntered += _model.OnEnterToInteractPointTrigger.Trigger;
-                }
+                tutorLevel.OnPlayerEnterToTutorial += _model.OnEnterToInteractPointTrigger.Trigger;
             }
+            //}
         }
 
         private void HideLevels() //TODO нейминг

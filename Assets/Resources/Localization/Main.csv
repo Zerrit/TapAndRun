@@ -1,13 +1,17 @@
-Key,en,ru
-Settings.Title,SETTINGS,НАСТРОЙКИ
-Settings.Audio,Sound,Звуки
-Settings.Vibro,Vibration,Вибрация
-Settings.Language,Language,Язык
-LevelSelect.Title,Select level,Выберите уровень
-Lose.Title,You Fell,Вы Упали
-Tutorial.Tap,Tap to perform an action on the pointer,Кликните для выполнения команды на указателе
-Tutorial.Crystals,Here are your crystals. Available and potential,Тут ваши кристалы. Имеющиеся и потенциальные.
-SkinShop.Select,SELECT,ВЫБРАТЬ
-SkinShop.Selected,SELECTED,ВЫБРАНО
-SkinShop.SelectSkin,Choose your skin,Выбретие ваш скин
-Skins.Chinchilla,CHINCHILLA,ШИНШИЛЛА
+Key,en,ru,de
+Settings.Title,SETTINGS,НАСТРОЙКИ,EINSTELLUNGEN
+Settings.Audio,Sound,Звуки,Klang
+Settings.Vibro,Vibration,Вибрация,Vibration
+Settings.Language,Language,Язык,Sprache
+LevelSelect.Title,Select level,Выберите уровень,Wählen Sie eine Ebene aus
+Lose.Title,You Fell,Вы Упали,Sie Sind Gefallen
+Tutorial.Tap,Tap on the screen,Тапните по экрану,Tippen Sie auf den Bildschirm
+Tutorial.Crystals,Earned crystals on the left. The current jackpot is on the right.,Слева заработанные кристалы. Справа текущий куш.,Links verdiente Kristalle. Rechts der aktuelle Jackpot.
+SkinShop.Select,SELECT,ВЫБРАТЬ,WÄHLEN
+SkinShop.Selected,SELECTED,ВЫБРАНО,AKTIVIERT
+SkinShop.SelectSkin,Choose your skin,Выбретие ваш скин,Wählen Sie Ihre Haut
+OldChillaSkin,LUTIK,ЛЮТИК,BUTTERBLUME
+ChillaSkin,ROCKY,РОККИ,ROCKY
+CatSkin,JACKIE,ДЖЕКИ,JACKIE
+BirdSkin,ANGRY,ЭНГРИ,INGRY
+DuckSkin,CRACK,КРЯК,RISS

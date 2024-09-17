@@ -53,7 +53,7 @@ namespace TapAndRun.Factories.Skins
         {
             foreach (var skinData in SkinsConfig.SkinsData)
             {
-                if (skinData.Name.Equals(name))
+                if (skinData.Id.Equals(name))
                 {
                     var skinsOperationHandle = Addressables.InstantiateAsync(skinData.SkinPrefabRef, parent);
                     var instance = await skinsOperationHandle.WithCancellation(token);

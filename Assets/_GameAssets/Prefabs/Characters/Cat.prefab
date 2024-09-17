@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6201032949845602578}
   - component: {fileID: 1431611952876592963}
   m_Layer: 0
-  m_Name: Orange Cat Skin
+  m_Name: Cat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,7 +117,7 @@ AudioSource:
   m_GameObject: {fileID: 2127803285106208489}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 811294537235719009, guid: 00cfbbb2df5560b42b430e8abca1ec47, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -245,7 +245,7 @@ AudioSource:
   m_GameObject: {fileID: 2750992745185618358}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 811294537235719009, guid: 00cfbbb2df5560b42b430e8abca1ec47, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1

@@ -17,7 +17,10 @@ namespace TapAndRun.Tutorials
         
         public UniTask InitializeAsync(CancellationToken token)
         {
-            _levelsModel.OnEnterToInteractPointTrigger.OnTriggered += ShowTutorial;
+            if (!_levelsModel.IsTutorialComplete)
+            {
+                _levelsModel.OnEnterToInteractPointTrigger.OnTriggered += ShowTutorial;
+            }
 
             return UniTask.CompletedTask;
         }

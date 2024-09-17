@@ -1,4 +1,7 @@
+using System;
 using UnityEngine;
+using UnityEngine.Audio;
+using Random = UnityEngine.Random;
 
 namespace TapAndRun.Audio
 {
@@ -10,10 +13,16 @@ namespace TapAndRun.Audio
         [SerializeField] private AudioClip _loseSound;
 
         [SerializeField] private float _baseSpeedPitch;
-        
+
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private AudioSource _runAudioSource;
 
+        public void SetMixer(AudioMixerGroup mixerGroup)
+        {
+            _audioSource.outputAudioMixerGroup = mixerGroup;
+            _runAudioSource.outputAudioMixerGroup = mixerGroup;
+        }
+        
         public void ChangeSpeed(float acceleration)
         {
             _audioSource.pitch = _baseSpeedPitch + acceleration;
@@ -21,7 +30,7 @@ namespace TapAndRun.Audio
 
         public void PlayStepSfx()
         {
-            _runAudioSource.pitch = Random.Range(0.95f, 1.2f);
+            _runAudioSource.pitch = Random.Range(0.9f, 1.25f);
             _runAudioSource.PlayOneShot(_firstStepSound);
         }
 

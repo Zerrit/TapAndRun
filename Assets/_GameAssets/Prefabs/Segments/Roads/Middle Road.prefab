@@ -52,7 +52,6 @@ MonoBehaviour:
   <Crystals>k__BackingField:
   - {fileID: 1208669196396678573}
   - {fileID: 7261251493739777255}
-  - {fileID: 0}
 --- !u!1 &7074774259309712664
 GameObject:
   m_ObjectHideFlags: 0

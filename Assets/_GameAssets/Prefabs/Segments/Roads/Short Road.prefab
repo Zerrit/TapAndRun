@@ -50,8 +50,6 @@ MonoBehaviour:
   <SnapPoint>k__BackingField: {fileID: 3544888585736911912}
   <Crystals>k__BackingField:
   - {fileID: 1208669196396678573}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &7074774259309712664
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,8 +24,6 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
                     _indexGrid[j, i] = new Vector2Int(j, i);
                 }
             }
-            
-            Debug.Log(_indexGrid[_midIndex, _midIndex].x);
         }
 
         public int GetOrderNumber(int y, int x)

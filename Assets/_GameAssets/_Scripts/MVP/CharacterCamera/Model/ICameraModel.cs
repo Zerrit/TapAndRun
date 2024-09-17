@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using TapAndRun.Configs;
 using TapAndRun.Interfaces;
 using TapAndRun.Tools.Reactivity;
 using UnityEngine;
@@ -7,10 +8,10 @@ namespace TapAndRun.MVP.CharacterCamera.Model
 {
     public interface ICameraModel : IInitializableAsync
     {
-        int Difficulty { get; }
-
         void SetRotation(float rotation = 0);
-        void ChangeDifficulty(int newDifficulty);
+        void ChangeMode(int characterSpeedLevel, CameraMode mode);
+
+        CameraMode CurrentMode { get; }
 
         UniTaskVoid TurnAsync(int direction);
     }

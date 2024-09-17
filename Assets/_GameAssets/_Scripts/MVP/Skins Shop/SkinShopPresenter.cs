@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Assets.SimpleLocalization.Scripts;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Factories.Skins;
 using TapAndRun.Interfaces;
@@ -111,7 +112,7 @@ namespace TapAndRun.MVP.Skins_Shop
             
             await _sliderView.ScrollContentAsync(token);
 
-            _shopScreenView.SkinName.text = _selfModel.CurrentSkinsData.Name;
+            _shopScreenView.SkinName.text = LocalizationManager.Localize(_selfModel.CurrentSkinsData.Name);
             UpdateShopButton();
         }
 

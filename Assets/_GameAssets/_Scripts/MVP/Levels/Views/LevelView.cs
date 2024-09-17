@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TapAndRun.Configs;
 using TapAndRun.MVP.Levels.Views.SegmentViews;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace TapAndRun.MVP.Levels.Views
         public event Action OnFinishReached;
 
         [field: SerializeField] public int SpeedDifficulty { get; set; }
-        [field: SerializeField] public int CameraDifficulty { get; set; }
+        [field: SerializeField] public CameraMode CameraMode { get; set; }
 
         [field: SerializeField] public StartSegmentView StartSegment { get; set; }
         [field: SerializeField] public FinishSegmentView FinishSegment { get; set; }
@@ -19,7 +20,7 @@ namespace TapAndRun.MVP.Levels.Views
         [field: SerializeField] public List<InteractionPoint> InteractionPoints { get; private set; } = new();
         [field: SerializeField] public List<CrystalView> Crystals { get; private set; } = new();
 
-        public void Configure(int level)
+        public virtual void Configure(int level)
         {
             StartSegment.LevelNumberText.text = (level + 1).ToString();
 

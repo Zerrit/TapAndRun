@@ -13,7 +13,7 @@ namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor
     {
         private string _levelName;
         private int _speedDifficulty;
-        private int _cameraDifficulty;
+        private CameraMode _cameraMode;
 
         private float _fadePanel;
 
@@ -192,7 +192,7 @@ namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.BeginHorizontal();
 
-                _cameraDifficulty = EditorGUILayout.IntSlider(_cameraDifficulty, 1, 3);
+                _cameraMode = (CameraMode) EditorGUILayout.EnumPopup(_cameraMode);
                 EditorGUILayout.LabelField("Camera Difficulty");
 
                 EditorGUILayout.EndHorizontal();
@@ -203,7 +203,7 @@ namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor
                 EditorGUILayout.BeginHorizontal();
 
                 _levelName = EditorGUILayout.TextField(_levelName);
-                EditorGUILayout.LabelField("Write level name");
+                EditorGUILayout.LabelField("Level Name");
 
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.Space(15);
@@ -213,7 +213,7 @@ namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor
                 {
                     CreateFinishLevel();
                     _creatingLevel.SpeedDifficulty = _speedDifficulty;
-                    _creatingLevel.CameraDifficulty = _cameraDifficulty;
+                    _creatingLevel.CameraMode = _cameraMode;
 
                     SaveLevelToPrefab();
 
