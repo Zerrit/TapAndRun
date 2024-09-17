@@ -13,6 +13,8 @@ namespace TapAndRun.Services.Audio
 {
     public class AudioService : MonoBehaviour, IAudioService, IDecomposable
     {
+        public AudioMixerGroup MixerGroup => _source.outputAudioMixerGroup;
+        
         [SerializeField] private float _defaultVolume;
 
         [SerializeField] private SoundConfig _soundConfig;

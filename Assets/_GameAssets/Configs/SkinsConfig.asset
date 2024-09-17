@@ -36,7 +36,7 @@ MonoBehaviour:
       m_EditorAssetChanged: 0
   - <Id>k__BackingField: Duck
     <Name>k__BackingField: DuckSkin
-    <Price>k__BackingField: 65
+    <Price>k__BackingField: 50
     <SkinPrefabRef>k__BackingField:
       m_AssetGUID: 532b074e1a6c16646989ad1c306c3a09
       m_SubObjectName: 
@@ -44,7 +44,15 @@ MonoBehaviour:
       m_EditorAssetChanged: 0
   - <Id>k__BackingField: Chilla
     <Name>k__BackingField: ChillaSkin
-    <Price>k__BackingField: 125
+    <Price>k__BackingField: 75
+    <SkinPrefabRef>k__BackingField:
+      m_AssetGUID: 933e5845a9cb6eb40a06ffd4bbac3697
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - <Id>k__BackingField: OldChilla
+    <Name>k__BackingField: OldChillaSkin
+    <Price>k__BackingField: 100
     <SkinPrefabRef>k__BackingField:
       m_AssetGUID: 82641d57d01ba5b4696a0cb43375339c
       m_SubObjectName: 

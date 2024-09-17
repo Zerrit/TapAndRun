@@ -4,6 +4,7 @@ using TapAndRun.Factories.Skins;
 using TapAndRun.Interfaces;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Character.View;
+using TapAndRun.Services.Audio;
 using UnityEngine;
 
 namespace TapAndRun.MVP.Character
@@ -12,14 +13,16 @@ namespace TapAndRun.MVP.Character
     {
         private readonly ISelfCharacterModel _model;
         private readonly ISkinFactory _skinFactory;
+        private readonly IAudioService _audioService;
         private readonly CharacterView _view;
 
         private CancellationTokenSource _cts;
 
-        public CharacterPresenter(ISelfCharacterModel model, ISkinFactory skinFactory, CharacterView view)
+        public CharacterPresenter(ISelfCharacterModel model, ISkinFactory skinFactory, IAudioService audioService, CharacterView view)
         {
             _model = model;
             _skinFactory = skinFactory;
+            _audioService = audioService;
             _view = view;
         }
 
@@ -53,6 +56,7 @@ namespace TapAndRun.MVP.Character
 
             _view.InitSkin(skin);
 
+            _view.Sfx.SetMixer(_audioService.MixerGroup);
             _view.UpdateAnimMultiplier(_model.AnimMultiplier.Value);
         }
 
