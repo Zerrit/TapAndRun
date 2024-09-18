@@ -12,10 +12,6 @@ namespace TapAndRun.MVP.Lose.Model
         public TriggerReactiveProperty HomeTrigger { get; private set; }
         public TriggerReactiveProperty RestartTrigger { get; private set; }
 
-        public int _loseBeforeAds;
-
-        private int _adsInterval = 3;
-
         private readonly IAdsService _adsService;
 
         public LoseModel(IAdsService adsService)
@@ -29,30 +25,12 @@ namespace TapAndRun.MVP.Lose.Model
             HomeTrigger = new TriggerReactiveProperty();
             RestartTrigger = new TriggerReactiveProperty();
 
-            _loseBeforeAds = _adsInterval;
-            
             return UniTask.CompletedTask;
         }
 
-        public void IncreaseLoseCount()
+        public void ProcessLose()
         {
-            _loseBeforeAds--;
-
-            if (_loseBeforeAds == 1)
-            {
-                _adsService.LoadInterstitialAd();
-            }
-            else if (_loseBeforeAds == 0)
-            {
-                _loseBeforeAds = _adsInterval;
-
-                ShowAds();
-            }
-        }
-        
-        public void ShowAds()
-        {
-            _adsService.ShowInterstitial(); //TODO Доработать систему показа рекламы при череде поражений
+            _adsService.ReduceInterstitialAdCounter();
         }
     }
 }

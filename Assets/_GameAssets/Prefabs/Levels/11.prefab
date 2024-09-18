@@ -2779,7 +2779,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e754b7f0159d458e811363886aa38caf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <SpeedDifficulty>k__BackingField: 2
+  <SpeedDifficulty>k__BackingField: 1
   <CameraMode>k__BackingField: 1
   <StartSegment>k__BackingField: {fileID: 868068436622425157}
   <FinishSegment>k__BackingField: {fileID: 8631999487547802456}

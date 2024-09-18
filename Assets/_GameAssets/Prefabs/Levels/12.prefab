@@ -5679,7 +5679,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <SpeedDifficulty>k__BackingField: 2
-  <CameraMode>k__BackingField: 5
+  <CameraMode>k__BackingField: 0
   <StartSegment>k__BackingField: {fileID: 2585053043683903225}
   <FinishSegment>k__BackingField: {fileID: 7647033114807194395}
   <Segments>k__BackingField:

@@ -16,10 +16,10 @@ namespace TapAndRun.MVP.Levels.Model
         TriggerReactiveProperty OnTapTrigger { get; }
         TriggerReactiveProperty OnEnterToInteractPointTrigger { get; }
 
+        ReactiveProperty<int> CurrentDifficulty { get; }
+
         int CurrentLevelId { get; }
         int LevelCount { get; set; }
-
-        int CurrentDifficulty { get; set; }
 
         bool IsTutorialLevel { get; set; }
         bool IsTutorialComplete { get; set; }

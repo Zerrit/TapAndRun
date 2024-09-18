@@ -201,7 +201,7 @@ namespace TapAndRun.Architecture.GameScene
                 .WithParameter(_levelSelectView);
         }
         
-        private void RegisterTutorials(IContainerBuilder builder) //TODO Подумать над резолвом
+        private void RegisterTutorials(IContainerBuilder builder)
         {
             builder.Register<TapTutorial>(Lifetime.Singleton).AsSelf();
             builder.Register<CrystalsTutorial>(Lifetime.Singleton).AsSelf();

@@ -24,7 +24,9 @@ namespace TapAndRun.MVP.Levels.Model
         
         public TriggerReactiveProperty OnTapTrigger { get; private set; }
         public TriggerReactiveProperty OnEnterToInteractPointTrigger { get; private set; }
-        
+
+        public ReactiveProperty<int> CurrentDifficulty { get; private set; }
+
         public int CurrentLevelId
         {
             get
@@ -42,10 +44,9 @@ namespace TapAndRun.MVP.Levels.Model
         public int LastUnlockedLevelId { get; private set; }
         public int LevelCount { get; set; }
 
-        public int CurrentDifficulty { get; set; }
-        public int MaxDifficulty { get; } = 3; //TODO Вынести в конфиг
+        public int MaxDifficulty { get; } = 3;
 
-        public int CrystalsByRun { get; private set; } // TODO Для возможной статистики
+        public int CrystalsByRun { get; private set; }
 
         public bool IsTutorialLevel { get; set; }
         public bool IsTutorialComplete { get; set; }
@@ -69,12 +70,12 @@ namespace TapAndRun.MVP.Levels.Model
 
             StartupTrigger = new TriggerReactiveProperty();
             ResetLevelTrigger = new TriggerReactiveProperty();
-
             OnTapTrigger = new TriggerReactiveProperty();
             OnEnterToInteractPointTrigger = new TriggerReactiveProperty();
 
+            CurrentDifficulty = new ReactiveProperty<int>(MinDifficulty);
+
             _currentLevel = NonSelectedLevelId;
-            CurrentDifficulty = MinDifficulty;
 
             return UniTask.CompletedTask;
         }
@@ -115,6 +116,8 @@ namespace TapAndRun.MVP.Levels.Model
 
         public void SelectLevel(int levelId) //TODO Проверка доступности уровня (изменить тип на bool)
         {
+            ResetDifficulty();
+
             if (levelId == CurrentLevelId)
             {
                 ResetLevelTrigger.Trigger();
@@ -129,15 +132,15 @@ namespace TapAndRun.MVP.Levels.Model
         public void AddCrystalByRun()
         {
             CrystalsByRun++;
-            _walletModel.IncreaseCrystalsByRun(CurrentDifficulty);
+            _walletModel.IncreaseCrystalsByRun(CurrentDifficulty.Value);
 
             OnCrystalTaken?.Invoke();
         }
         
         public void LoseLevel()
         {
+            ResetDifficulty();
             _walletModel.GainCrystalsByRun();
-            CurrentDifficulty = MinDifficulty;
 
             OnLevelFailed?.Invoke();
         }
@@ -160,10 +163,15 @@ namespace TapAndRun.MVP.Levels.Model
                 LastUnlockedLevelId++;
             }
 
-            CurrentDifficulty = Mathf.Clamp(++CurrentDifficulty, MinDifficulty, MaxDifficulty);
+            CurrentDifficulty.Value = Mathf.Clamp(++CurrentDifficulty.Value, MinDifficulty, MaxDifficulty);
             CurrentLevelId++;
-            
+            Debug.Log("Увеличена сложность");
             _walletModel.SaveCrystals();
+        }
+
+        private void ResetDifficulty()
+        {
+            CurrentDifficulty.Value = MinDifficulty;
         }
 
         public bool CheckLevelExist(int levelId)

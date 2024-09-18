@@ -41,7 +41,7 @@ namespace TapAndRun.MVP.Lose
         {
             if (status)
             {
-                _model.IncreaseLoseCount();
+                _model.ProcessLose();
                 _view.Show();
                 _cameraZoom.SetLoseZoomAsync().Forget();
             }

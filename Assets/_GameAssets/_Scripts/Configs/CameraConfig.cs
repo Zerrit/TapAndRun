@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace TapAndRun.Configs
 {
@@ -17,22 +16,5 @@ namespace TapAndRun.Configs
         [field:SerializeField] public float ShopHeight { get; private set; }
 
         [field:SerializeField] public CameraModeData[] CameraModes { get; private set; }
-    }
-
-    [Serializable]
-    public class CameraModeData
-    {
-        [field:SerializeField] public CameraMode Mode { get; private set; }
-        [field:SerializeField] public int Angle { get; private set; }
-    }
-
-    public enum CameraMode
-    {
-        Static = 0,
-        PositiveLowAngle = 1,
-        NegativeLowAngle = 2,
-        PositiveAngle = 3,
-        NegativeAngle = 4,
-        Random = 5
     }
 }

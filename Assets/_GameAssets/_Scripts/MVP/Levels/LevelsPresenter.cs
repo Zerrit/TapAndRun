@@ -56,10 +56,10 @@ namespace TapAndRun.MVP.Levels
 
             _model.StartupTrigger.Subscribe(StartGameplay);
             _model.ResetLevelTrigger.Subscribe(ResetLevel);
+            _model.CurrentDifficulty.Subscribe(_gameplayScreen.UpdateSpeedText);
+            _characterModel.IsFall.Subscribe(ProcessLevelLose, true);
 
             _model.OnLevelChanged += BuildLevel;
-
-            _characterModel.IsFall.OnChangedToTrue += ProcessLevelLose;
             _gameplayScreen.TapButton.onClick.AddListener(ProcessClick);
             
             return UniTask.CompletedTask;
@@ -78,13 +78,14 @@ namespace TapAndRun.MVP.Levels
             async UniTask BuildLevelAsync(CancellationToken token)
             {
                 ClearLevels();
+                //_model.ResetDifficulty();
 
                 _nextLevel = await _levelFactory.CreateLevelViewAsync(_model.CurrentLevelId, Vector2.zero, Quaternion.identity, token);
 
                 _nextLevel.Configure(_model.CurrentLevelId);
                 _characterModel.MoveTo(_nextLevel.StartSegment.SegmentCenter.position);
                 _cameraModel.SetRotation();
-                
+
                 ActivateNextLevel();
                 BuildNextLevel();
             }
@@ -148,6 +149,7 @@ namespace TapAndRun.MVP.Levels
             _commandHandler.GenerateCommand(_currentLevel.InteractionPoints);
             UpdateDifficulty();
 
+            _gameplayScreen.UpdateLevelText(_model.CurrentLevelId);
             _currentLevel.ActivateArrow();
 
             foreach (var crystal in _currentLevel.Crystals)
@@ -162,10 +164,10 @@ namespace TapAndRun.MVP.Levels
 
         private void UpdateDifficulty()
         {
-            _model.CurrentDifficulty = Mathf.Max(_model.CurrentDifficulty, _currentLevel.SpeedDifficulty);
+            _model.CurrentDifficulty.Value = Mathf.Max(_model.CurrentDifficulty.Value, _currentLevel.SpeedDifficulty);
 
-            _characterModel.ChangeSpeed(_model.CurrentDifficulty);
-            _cameraModel.ChangeMode(_model.CurrentDifficulty, _currentLevel.CameraMode);
+            _characterModel.ChangeSpeed(_model.CurrentDifficulty.Value);
+            _cameraModel.ChangeMode(_model.CurrentDifficulty.Value, _currentLevel.CameraMode);
         }
 
         private void ProcessClick()
@@ -217,8 +219,6 @@ namespace TapAndRun.MVP.Levels
                 return;
             }
 
-            //if (_currentLevel is TutorialLevelView)
-            //{
             var tutorLevel = _currentLevel as TutorialLevelView;
             if (tutorLevel)
             {
@@ -226,7 +226,6 @@ namespace TapAndRun.MVP.Levels
 
                 tutorLevel.OnPlayerEnterToTutorial += _model.OnEnterToInteractPointTrigger.Trigger;
             }
-            //}
         }
 
         private void HideLevels() //TODO нейминг
@@ -275,10 +274,10 @@ namespace TapAndRun.MVP.Levels
 
             _model.StartupTrigger.Unsubscribe(StartGameplay);
             _model.ResetLevelTrigger.Unsubscribe(ResetLevel);
+            _model.CurrentDifficulty.Unsubscribe(_gameplayScreen.UpdateSpeedText);
+            _characterModel.IsFall.Unsubscribe(ProcessLevelLose, true);
 
             _model.OnLevelChanged -= BuildLevel;
-
-            _characterModel.IsFall.OnChangedToTrue -= ProcessLevelLose;
             _gameplayScreen.TapButton.onClick.RemoveListener(ProcessClick);
         }
     }

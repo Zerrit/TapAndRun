@@ -32,7 +32,7 @@ SpriteAtlas:
     secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
-    - {fileID: 2800000, guid: 70516f157cb2123409da2f47b44e3150, type: 3}
+    - {fileID: 2800000, guid: 62f318b46d9f0f24fa65527c5fbdaea3, type: 3}
     - {fileID: 2800000, guid: 43be896ca1a54e548aa65765e21bfe3b, type: 3}
     - {fileID: 2800000, guid: cb8d0af83256b874589d2fccb1fc10a7, type: 3}
     - {fileID: 2800000, guid: 2f044b35026d6ba4e830fcfc337f738a, type: 3}
@@ -57,7 +57,7 @@ SpriteAtlas:
     packedSpriteRenderDataKeys:
     - 8d9aa2e0572d22c47b7a1d2823ad80eb: 21300000
     - d61c8de01ebb1384db924ee15d9c698b: 21300000
-    - 70516f157cb2123409da2f47b44e3150: 21300000
+    - 62f318b46d9f0f24fa65527c5fbdaea3: 21300000
     - 2f044b35026d6ba4e830fcfc337f738a: 21300000
     - 4eae66e6201c1c847b00271a8f86b615: 21300000
     - a1d46ee6e3095964993e1903750f56f4: 21300000
@@ -78,7 +78,7 @@ SpriteAtlas:
   m_PackedSprites:
   - {fileID: 21300000, guid: 8d9aa2e0572d22c47b7a1d2823ad80eb, type: 3}
   - {fileID: 21300000, guid: d61c8de01ebb1384db924ee15d9c698b, type: 3}
-  - {fileID: 21300000, guid: 70516f157cb2123409da2f47b44e3150, type: 3}
+  - {fileID: 21300000, guid: 62f318b46d9f0f24fa65527c5fbdaea3, type: 3}
   - {fileID: 21300000, guid: 2f044b35026d6ba4e830fcfc337f738a, type: 3}
   - {fileID: 21300000, guid: 4eae66e6201c1c847b00271a8f86b615, type: 3}
   - {fileID: 21300000, guid: a1d46ee6e3095964993e1903750f56f4, type: 3}
@@ -98,7 +98,7 @@ SpriteAtlas:
   m_PackedSpriteNamesToIndex:
   - speaker
   - play
-  - arrow
+  - Arrow
   - Elipse
   - vibratsiya_mobilnogo_telefona_4d192485lrwx_256
   - shop

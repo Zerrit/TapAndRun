@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TapAndRun.Configs;
+using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Levels.Views.SegmentViews;
 using UnityEngine;
 

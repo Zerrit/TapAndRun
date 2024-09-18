@@ -1,22 +1,30 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using TapAndRun.Configs;
 using TapAndRun.Interfaces;
 using UnityEngine;
+using VContainer;
 
 namespace TapAndRun.Services.Ads
 {
     public class AdsService : MonoBehaviour, IAdsService, IDecomposable
     {
-#if UNITY_ANDROID
-        private string _appKey = "1f56a1b65";
-#elif UNITY_IPHONE
-        private string _appKey = "";
-#else
-        private string _appKey = "unexpected_platform";
-#endif
+        [SerializeField] private AdsServiceConfig _config;
+        
+        private float _lastAdsTime;
+        private int _currentAdsCounter;
+        private string _appKey;
 
         public UniTask InitializeAsync(CancellationToken token)
         {
+#if UNITY_ANDROID
+            _appKey = _config.AndroidAppKey;
+#elif UNITY_IPHONE
+            _appKey = _config.IOSAppKey;
+#else
+            _appKey = "unexpected_platform";
+#endif
+            
             IronSource.Agent.validateIntegration();
             IronSource.Agent.init(_appKey);
 
@@ -60,6 +68,21 @@ namespace TapAndRun.Services.Ads
             Debug.Log("SDK is initialized!");
         }
 
+        public void ReduceInterstitialAdCounter(int count = 1)
+        {
+            _currentAdsCounter -= count;
+
+            if (_currentAdsCounter < 2 & !IsInterstitialReady())
+            {
+                IronSource.Agent.loadInterstitial();
+            }
+
+            if (_currentAdsCounter < 1 & IsInterstitialReady() & IsInterstitialCooldownOver())
+            {
+                IronSource.Agent.showInterstitial();
+            }
+        }
+        
         #region Banner
 
         public void LoadBanner()
@@ -102,19 +125,14 @@ namespace TapAndRun.Services.Ads
 
         #region Interstitial
 
-        public void LoadInterstitialAd()
-        {
-            IronSource.Agent.loadInterstitial();
-        }
-
         public bool IsInterstitialReady()
         {
             return IronSource.Agent.isInterstitialReady();
         }
 
-        public void ShowInterstitial()
+        public bool IsInterstitialCooldownOver()
         {
-            IronSource.Agent.showInterstitial();
+            return (Time.time - _lastAdsTime) > _config.AdsCooldownTime;
         }
 
         /************* Interstitial AdInfo Delegates *************/
@@ -139,9 +157,12 @@ namespace TapAndRun.Services.Ads
         // Invoked before the interstitial ad was opened, and before the InterstitialOnAdOpenedEvent is reported.
         // This callback is not supported by all networks, and we recommend using it only if  
         // it's supported by all networks you included in your build. 
-        void InterstitialOnAdShowSucceededEvent(IronSourceAdInfo adInfo) {
+        void InterstitialOnAdShowSucceededEvent(IronSourceAdInfo adInfo)
+        {
+            _currentAdsCounter = _config.AdsIntervalCount;
+            _lastAdsTime = Time.time;
         }
-        
+
         #endregion
         
         #region Rewardable

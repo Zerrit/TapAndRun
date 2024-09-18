@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TapAndRun._GameAssets._Scripts.Editor.LevelConstructor.BuildCommands;
 using TapAndRun.Configs;
 using TapAndRun.Editor.LevelConstructor.BuildCommands;
+using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Levels.Views;
 using UnityEditor;
 using UnityEngine;
