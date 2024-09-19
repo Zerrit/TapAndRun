@@ -18,18 +18,18 @@ namespace TapAndRun.MVP.CharacterCamera
 
         public UniTask InitializeAsync(CancellationToken token)
         {
-            _model.Position.OnChanged += _view.UpdatePosition;
-            _model.Rotation.OnChanged += _view.UpdateRotation;
-            _model.Height.OnChanged += _view.UpdateHeight;
-            
+            _model.Position.Subscribe(_view.UpdatePosition);
+            _model.Rotation.Subscribe(_view.UpdateRotation);
+            _model.Height.Subscribe(_view.UpdateHeight);
+
             return UniTask.CompletedTask;
         }
 
         public void Decompose()
         {
-            _model.Position.OnChanged -= _view.UpdatePosition;
-            _model.Rotation.OnChanged -= _view.UpdateRotation;
-            _model.Height.OnChanged -= _view.UpdateHeight;
+            _model.Position.Unsubscribe(_view.UpdatePosition);
+            _model.Rotation.Unsubscribe(_view.UpdateRotation);
+            _model.Height.Unsubscribe(_view.UpdateHeight);
         }
     }
 }

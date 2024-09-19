@@ -21,7 +21,7 @@ namespace TapAndRun.MVP.Wallet
         {
             _walletModel.AvailableCrystals.Subscribe(_walletView.UpdateAvailableCrystals, true);
             _walletModel.CrystalsByRun.Subscribe(_walletView.UpdateCrystalsByLevel, true);
-            _walletModel.IsTutorialDisplaying.OnChanged += UpdateTutorialDisplaying;
+            _walletModel.IsTutorialDisplaying.Subscribe(UpdateTutorialDisplaying);
 
             return UniTask.CompletedTask;
         }
@@ -44,7 +44,7 @@ namespace TapAndRun.MVP.Wallet
         {
             _walletModel.AvailableCrystals.Unsubscribe(_walletView.UpdateAvailableCrystals);
             _walletModel.CrystalsByRun.Unsubscribe(_walletView.UpdateCrystalsByLevel);
-            _walletModel.IsTutorialDisplaying.OnChanged -= UpdateTutorialDisplaying;
+            _walletModel.IsTutorialDisplaying.Unsubscribe(UpdateTutorialDisplaying);
         }
     }
 }

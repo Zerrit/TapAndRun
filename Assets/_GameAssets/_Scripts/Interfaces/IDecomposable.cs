@@ -2,6 +2,9 @@
 {
     public interface IDecomposable
     {
+        /// <summary>
+        /// Деконструировать объект.
+        /// </summary>
         void Decompose();
     }
 }

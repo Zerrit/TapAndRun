@@ -4,7 +4,7 @@ namespace TapAndRun.MVP.Wallet.Model
 {
     public interface IWalletTutorial
     {
-        ReactiveProperty<bool> IsTutorialDisplaying { get; }
+        BoolReactiveProperty IsTutorialDisplaying { get; }
         TriggerReactiveProperty OnTutorialClickTrigger { get; }
     }
 }

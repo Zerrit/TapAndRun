@@ -22,7 +22,7 @@ namespace TapAndRun.Tools.Reactivity
         {
             _value = startValue;
         }
-        
+
         public void Subscribe(Action<T> method, bool isNeedUpdate = false)
         {
             OnChanged += method;

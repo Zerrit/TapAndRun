@@ -1,5 +1,4 @@
 ﻿using TapAndRun.UI;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +10,5 @@ namespace TapAndRun.MVP.MainMenu.Views
         [field:SerializeField] public Button PlayButton { get; private set; }
         [field:SerializeField] public Button SkinsShopButton { get; private set; }
         [field:SerializeField] public Button LevelSelectButton { get; private set; }
-
     }
 }

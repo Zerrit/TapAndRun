@@ -16,17 +16,15 @@ namespace TapAndRun.Services.Audio
         public AudioMixerGroup MixerGroup => _source.outputAudioMixerGroup;
         
         [SerializeField] private float _defaultVolume;
-
         [SerializeField] private SoundConfig _soundConfig;
         [SerializeField] private AudioSource _source;
         [SerializeField] private AudioMixer _mixer;
 
         private bool _isVibroActive;
         private Dictionary<string, Sound> _sounds;
-        
-        private const float MuteVolume = 0.0001f;
-
         private ISettingsModel _settingsModel;
+
+        private const float MuteVolume = 0.0001f;
 
         [Inject]
         public void Construct(ISettingsModel settingsModel)
@@ -43,9 +41,9 @@ namespace TapAndRun.Services.Audio
                 _sounds[sound.SoundId] = sound;
             }
 
-            _settingsModel.AudioStatus.Subscribe(SetAudioStatus, true);
-            _settingsModel.VibroStatus.Subscribe(SetVibroStatus, true);
-            
+            _settingsModel.AudioStatus.Subscribe(SetAudioState, true);
+            _settingsModel.VibroStatus.Subscribe(SetVibroState, true);
+
             return UniTask.CompletedTask;
         }
 
@@ -53,10 +51,10 @@ namespace TapAndRun.Services.Audio
         {
             if (!_sounds.ContainsKey(id))
             {
-                Debug.Log("Запрашиваемый звук не найден");
+                Debug.Log("Requested sound was not found");
                 return;
             }
-            
+
             _source.PlayOneShot(_sounds[id].Clip, _sounds[id].Volume);
         }
 
@@ -64,7 +62,7 @@ namespace TapAndRun.Services.Audio
         {
             if (!_sounds.ContainsKey(id))
             {
-                Debug.Log("Запрашиваемый звук не найден");
+                Debug.Log("Requested sound was not found");
                 return;
             }
 
@@ -83,9 +81,9 @@ namespace TapAndRun.Services.Audio
             Handheld.Vibrate();
         }
 
-        private void SetAudioStatus(bool status)
+        private void SetAudioState(bool state)
         {
-            if (status)
+            if (state)
             {
                 _mixer.SetFloat("Volume", CalculateVolume(_defaultVolume));
             }
@@ -95,11 +93,11 @@ namespace TapAndRun.Services.Audio
             }
         }
 
-        private void SetVibroStatus(bool status)
+        private void SetVibroState(bool state)
         {
-            _isVibroActive = status;
+            _isVibroActive = state;
 
-            if (status)
+            if (state)
             {
                 CallVibration();
             }
@@ -112,8 +110,8 @@ namespace TapAndRun.Services.Audio
 
         public void Decompose()
         {
-            _settingsModel.AudioStatus.Unsubscribe(SetAudioStatus);
-            _settingsModel.VibroStatus.Unsubscribe(SetVibroStatus);
+            _settingsModel.AudioStatus.Unsubscribe(SetAudioState);
+            _settingsModel.VibroStatus.Unsubscribe(SetVibroState);
         }
     }
 }

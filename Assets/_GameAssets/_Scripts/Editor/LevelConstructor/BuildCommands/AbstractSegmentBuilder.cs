@@ -1,7 +1,7 @@
 ﻿using TapAndRun.MVP.Levels.Views;
 using UnityEngine;
 
-namespace TapAndRun.Editor.LevelConstructor.BuildCommands
+namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor.BuildCommands
 {
     public abstract class AbstractSegmentBuilder
     {
@@ -18,9 +18,9 @@ namespace TapAndRun.Editor.LevelConstructor.BuildCommands
         {
             var segmentsCount = _level.Segments.Count;
             var lastSegment = _level.Segments[segmentsCount - 1];
-            
+
             _level.Segments.RemoveAt(segmentsCount - 1);
-            
+
             Object.DestroyImmediate(lastSegment.gameObject);
         }
     }

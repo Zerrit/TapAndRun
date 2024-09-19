@@ -22,14 +22,14 @@ namespace TapAndRun.Architecture.GameStates
             _levelsModel.StartupTrigger.Trigger();
 
             _levelsModel.OnLevelFailed += ToLose;
-            
+
             return UniTask.CompletedTask;
         }
 
         public UniTask ExitAsync(CancellationToken token)
         {
             _levelsModel.OnLevelFailed -= ToLose;
-            
+
             return UniTask.CompletedTask;
         }
 

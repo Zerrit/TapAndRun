@@ -34,7 +34,7 @@ namespace TapAndRun.Factories.Skins
             foreach (var skinData in SkinsConfig.SkinsData)
             {
                 var skinHolderInstance = await Addressables.InstantiateAsync(SkinsConfig.SkinHolderRef, parent).WithCancellation(token);
-                
+
                 var skinsOperationHandle = Addressables.InstantiateAsync(skinData.SkinPrefabRef, skinHolderInstance.transform);
                 await skinsOperationHandle.WithCancellation(token);
 
@@ -49,11 +49,11 @@ namespace TapAndRun.Factories.Skins
             return skinsHolders;
         }
 
-        public async UniTask<GameObject> ChangeSkinTo(string name, Transform parent, CancellationToken token)
+        public async UniTask<GameObject> ChangeSkinTo(string id, Transform parent, CancellationToken token)
         {
             foreach (var skinData in SkinsConfig.SkinsData)
             {
-                if (skinData.Id.Equals(name))
+                if (skinData.Id.Equals(id))
                 {
                     var skinsOperationHandle = Addressables.InstantiateAsync(skinData.SkinPrefabRef, parent);
                     var instance = await skinsOperationHandle.WithCancellation(token);

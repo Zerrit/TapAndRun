@@ -7,7 +7,7 @@ namespace TapAndRun.PlayerData.SaveLoad
     public class PrefsDataStorage : IDataStorage
     {
         private const string SettingsFileKey = "Tap&RunPlayerSettings";
-        
+
         public void Write(string data)
         {
             PlayerPrefs.SetString(SettingsFileKey, data);

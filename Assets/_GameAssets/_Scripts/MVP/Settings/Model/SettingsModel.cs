@@ -7,10 +7,10 @@ using UnityEngine;
 
 namespace TapAndRun.MVP.Settings.Model
 {
-    public class SettingsModel : ISelfSettingsModel, ISettingsModel, ISettingsUser
+    public class SettingsModel : ISelfSettingsModel, ISettingsModel, ISettingable
     {
         public string SaveKey => "Settings";
-        
+
         public ReactiveProperty<bool> IsDisplaying { get; set; }
 
         public ReactiveProperty<bool> AudioStatus { get; private set; }
@@ -28,15 +28,16 @@ namespace TapAndRun.MVP.Settings.Model
             return UniTask.CompletedTask;
         }
 
+        #region SaveLoad
+
         public SaveableData GetSettingsData()
         {
             return new (SaveKey, new object[] 
-                {
-                    AudioStatus.Value, 
-                    VibroStatus.Value, 
-                    Language.Value
-                    
-                });
+            {
+                AudioStatus.Value, 
+                VibroStatus.Value, 
+                Language.Value
+            });
         }
 
         public void RestoreSettings(SaveableData data)
@@ -51,5 +52,7 @@ namespace TapAndRun.MVP.Settings.Model
             VibroStatus.Value = Convert.ToBoolean(data.Data[1]);
             Language.Value = Convert.ToString(data.Data[2]);
         }
+
+        #endregion
     }
 }

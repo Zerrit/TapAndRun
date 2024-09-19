@@ -10,7 +10,7 @@ namespace TapAndRun.Tools.Reactivity
         {
             OnTriggered?.Invoke();
         }
-        
+
         public void Subscribe(Action method, bool isNeedUpdate = false)
         {
             OnTriggered += method;

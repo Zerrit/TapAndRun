@@ -62,7 +62,7 @@ namespace TapAndRun.Architecture.GameStates
         private void ToSkinShop()
         {
             ToSkinShopAsync(_gameStateMachine.Cts.Token).Forget();
-            
+
             async UniTaskVoid ToSkinShopAsync(CancellationToken token)
             {
                 await _transitionService.ShowTransition(token);

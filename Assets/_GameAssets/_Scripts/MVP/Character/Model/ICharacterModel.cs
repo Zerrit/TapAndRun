@@ -9,15 +9,13 @@ namespace TapAndRun.MVP.Character.Model
     public interface ICharacterModel : IInitializableAsync
     {
         BoolReactiveProperty IsActive { get; }
-        ReactiveProperty<Vector3> Position { get; }
-        ReactiveProperty<float> Rotation { get; }
         BoolReactiveProperty IsFall { get; }
+        ReactiveProperty<Vector3> Position { get; }
 
         ReactiveProperty<string> SelectedSkin { get; }
 
         void MoveTo(Vector2 position, float rotation = 0);
         void StartMove();
-        void StopMove();
 
         void ChangeSpeed(int difficultyLevel);
 

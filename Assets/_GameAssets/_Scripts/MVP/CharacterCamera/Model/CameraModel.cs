@@ -19,9 +19,9 @@ namespace TapAndRun.MVP.CharacterCamera.Model
 
         public CameraMode CurrentMode { get; private set; }
 
-        private CancellationTokenSource _cts;
-
         private Dictionary<CameraMode, int> _cameraModes = new ();
+
+        private CancellationTokenSource _cts;
 
         private readonly CameraConfig _config;
         private readonly ILateUpdateService _updateService;
@@ -37,11 +37,12 @@ namespace TapAndRun.MVP.CharacterCamera.Model
         public UniTask InitializeAsync(CancellationToken token)
         {
             _cts = new CancellationTokenSource();
+
             Position = new ReactiveProperty<Vector3>();
             Rotation = new ReactiveProperty<float>();
             Height = new ReactiveProperty<float>(_config.Height + _config.HeightStep);
-            _cameraModes = _config.CameraModes.ToDictionary(x => x.Mode, x => x.Angle);
 
+            _cameraModes = _config.CameraModes.ToDictionary(x => x.Mode, x => x.Angle);
             _updateService.Subscribe(this);
 
             return UniTask.CompletedTask;
@@ -57,7 +58,7 @@ namespace TapAndRun.MVP.CharacterCamera.Model
             var targetHeight = characterSpeedLevel * _config.HeightStep + _config.Height;
             CurrentMode = mode;
             
-            ChangeDistanceAsync(targetHeight).Forget();
+            ChangeHeightAsync(targetHeight).Forget();
         }
 
         public void SetRotation(float rotation = 0)
@@ -88,20 +89,20 @@ namespace TapAndRun.MVP.CharacterCamera.Model
 
         public async UniTaskVoid SetLoseZoomAsync()
         {
-            await ChangeDistanceAsync(_config.LoseHeight);
+            await ChangeHeightAsync(_config.LoseHeight);
         }
 
         public async UniTaskVoid SetFreeViewZoomAsync()
         {
-            await ChangeDistanceAsync(_config.FreeViewHeight);
+            await ChangeHeightAsync(_config.FreeViewHeight);
         }
 
         public async UniTaskVoid SetShopZoomAsync()
         {
-            await ChangeDistanceAsync(_config.ShopHeight);
+            await ChangeHeightAsync(_config.ShopHeight);
         }
 
-        public async UniTask ChangeDistanceAsync(float targetHaight)
+        public async UniTask ChangeHeightAsync(float targetHaight)
         {
             var originDistance = Height.Value;
 
@@ -112,7 +113,7 @@ namespace TapAndRun.MVP.CharacterCamera.Model
             {
                 t += _config.ZoomSpeed * Time.deltaTime;
                 x = 1 - Mathf.Pow(1 - t, 3);
-                
+
                 Height.Value = Mathf.Lerp(originDistance, targetHaight, x);
 
                 await UniTask.NextFrame(_cts.Token);

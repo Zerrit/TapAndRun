@@ -6,7 +6,7 @@ namespace TapAndRun.MVP.Levels.Views
     public class CrystalView : MonoBehaviour
     {
         public event Action OnTaken;
-        
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.gameObject.CompareTag("Player"))

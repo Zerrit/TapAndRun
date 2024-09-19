@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TapAndRun._GameAssets._Scripts.Editor.LevelConstructor.BuildCommands;
 using TapAndRun.Configs;
-using TapAndRun.Editor.LevelConstructor.BuildCommands;
+using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Levels.Views;
 using UnityEditor;
 using UnityEngine;
@@ -27,6 +27,7 @@ namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor
         {
             GetWindow<LevelContructorTool>(true, "Level Constructor");
         }
+
         private void OnEnable()
         {
             _buildersStack = new Stack<AbstractSegmentBuilder>();
@@ -67,13 +68,13 @@ namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor
             }
             else
             {
-                Debug.Log("Все сегменты уже удалены!");
+                Debug.Log("All segments are deleted!");
             }
         }
-        
+
         private void SaveLevelToPrefab()
         {
-            string savePath = "Assets/_GameAssets/Prefabs/Levels/" + _levelName + ".prefab";
+            var savePath = "Assets/_GameAssets/Prefabs/Levels/" + _levelName + ".prefab";
 
             savePath = AssetDatabase.GenerateUniqueAssetPath(savePath);
             PrefabUtility.SaveAsPrefabAssetAndConnect(_creatingLevel.gameObject, savePath, InteractionMode.AutomatedAction);
@@ -106,14 +107,14 @@ namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor
 
                     ActivateBuilder(builder);
                 }
-                
+
                 if (GUILayout.Button("Middle Road", GUILayout.Height(30)))
                 {
                     var builder = new RoadSegmentBuilder(_creatingLevel, _config.MiddleRoadSegment);
 
                     ActivateBuilder(builder);
                 }
-                
+
                 if (GUILayout.Button("Long Road", GUILayout.Height(30)))
                 {
                     var builder = new RoadSegmentBuilder(_creatingLevel, _config.LongRoadSegment);
@@ -188,7 +189,7 @@ namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor
 
                 _speedDifficulty = EditorGUILayout.IntSlider(_speedDifficulty, 1, 4);
                 EditorGUILayout.LabelField("Speed Difficulty");
-                
+
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.BeginHorizontal();
 
@@ -222,7 +223,7 @@ namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor
             }
             EditorGUILayout.EndFadeGroup();
         }
-        
+
         private void OnDestroy()
         {
             if(_creatingLevel) DestroyImmediate(_creatingLevel.gameObject, false);

@@ -9,8 +9,9 @@ namespace TapAndRun.Services.Audio
     {
         public AudioMixerGroup MixerGroup { get; }
 
-        void PlaySound(string id);
-        UniTask PlaySoundAsync(string id, float delayTime, CancellationToken token);
         void CallVibration();
+        void PlaySound(string id);
+
+        UniTask PlaySoundAsync(string id, float delayTime, CancellationToken token);
     }
 }

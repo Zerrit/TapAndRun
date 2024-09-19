@@ -4,7 +4,7 @@ using TapAndRun.MVP.Levels.Views.SegmentViews;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace TapAndRun.Editor.LevelConstructor.BuildCommands
+namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor.BuildCommands
 {
     public class InteractSegmentBuilder : AbstractSegmentBuilder
     {
@@ -16,7 +16,7 @@ namespace TapAndRun.Editor.LevelConstructor.BuildCommands
         {
             _segmentPrefab = interactViewPrefab;
         }
-        
+
         public override void Build()
         {
             var segmentsCount = _level.Segments.Count;
@@ -27,9 +27,9 @@ namespace TapAndRun.Editor.LevelConstructor.BuildCommands
 
                 _instance = Object.Instantiate(_segmentPrefab, snapPoint.position, snapPoint.rotation, _level.transform);
                 _instance.transform.Rotate(Vector3.forward, _level.Segments[segmentsCount-1].SnapAngleOffset);
-                
+
                 _level.InteractionPoints.Add(_instance.Interaction);
-                
+
                 _level.Segments.Add(_instance);
             }
             else

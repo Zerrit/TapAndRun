@@ -11,10 +11,9 @@ namespace TapAndRun.MVP.MainMenu.Views
     public class LevelButtonView : MonoBehaviour, IPointerClickHandler
     {
         public event Action<LevelButtonView> OnClicked;
-        
+
         public int LevelId { get; private set; }
-        
-        [field:SerializeField] public Button Button { get; private set; }
+
         [field:SerializeField] public Image Background { get; private set; }
         [field:SerializeField] public Image LockIcon { get; private set; }
         [field:SerializeField] public Text LevelText { get; private set; }
@@ -32,7 +31,7 @@ namespace TapAndRun.MVP.MainMenu.Views
         {
             OnClicked?.Invoke(this);
         }
-        
+
         public void Initialize(int levelId)
         {
             LevelId = levelId;
@@ -65,6 +64,7 @@ namespace TapAndRun.MVP.MainMenu.Views
         {
             _cts.Cancel();
             _cts.Dispose();
+
             _cts = new CancellationTokenSource();
         }
     }

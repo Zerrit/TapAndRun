@@ -1,5 +1,4 @@
-﻿using System;
-using TapAndRun.Tools.Reactivity;
+﻿using TapAndRun.Tools.Reactivity;
 
 namespace TapAndRun.MVP.Wallet.Model
 {
@@ -8,7 +7,7 @@ namespace TapAndRun.MVP.Wallet.Model
         ReactiveProperty<int> AvailableCrystals { get; }
         ReactiveProperty<int> CrystalsByRun { get; }
 
-        ReactiveProperty<bool> IsTutorialDisplaying { get; }
+        BoolReactiveProperty IsTutorialDisplaying { get; }
         TriggerReactiveProperty OnTutorialClickTrigger { get; }
     }
 }

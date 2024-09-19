@@ -11,6 +11,7 @@ namespace TapAndRun.Factories.LangButtons
         int GetLangCount();
 
         UniTask<LangButton> CreateAsynс(int index, Transform parent, CancellationToken token);
+
         void Decompose();
     }
 }

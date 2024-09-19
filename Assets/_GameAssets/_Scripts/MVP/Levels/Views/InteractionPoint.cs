@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using TapAndRun.MVP.Levels.Model;
 using TapAndRun.TapSystem;
 using UnityEngine;
 
@@ -33,10 +32,5 @@ namespace TapAndRun.MVP.Levels.Views
             await Icon.DOFade(value, duration)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
         }
-
-        /*private void SetTransparent(float alpha)
-        {
-            Icon.color = new Color(Icon.color.r, Icon.color.g, Icon.color.b, alpha);
-        }*/
     }
 }

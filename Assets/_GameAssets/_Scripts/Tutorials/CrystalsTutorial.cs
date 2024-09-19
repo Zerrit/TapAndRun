@@ -27,7 +27,7 @@ namespace TapAndRun.Tutorials
 
             return UniTask.CompletedTask;
         }
-        
+ 
         private void ShowTutorial()
         {
             Time.timeScale = 0f;
@@ -36,7 +36,7 @@ namespace TapAndRun.Tutorials
             _walletTutorial.OnTutorialClickTrigger.OnTriggered += HideTutorial;
             _levelsModel.OnLevelFailed += HideTutorial;
         }
-    
+
         private void HideTutorial()
         {
             _levelsModel.OnCrystalTaken -= ShowTutorial; 

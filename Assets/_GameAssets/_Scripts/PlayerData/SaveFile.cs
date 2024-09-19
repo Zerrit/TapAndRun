@@ -6,8 +6,8 @@ namespace TapAndRun.PlayerData
     [Serializable]
     public struct SaveFile
     {
-        public DateTime SaveTime; 
-        public List<SaveableData> Data; 
+        public DateTime SaveTime { get; private set; }
+        public List<SaveableData> Data { get; private set; }
 
         public SaveFile(List<SaveableData> data)
         {

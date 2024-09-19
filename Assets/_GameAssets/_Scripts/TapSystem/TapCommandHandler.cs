@@ -14,28 +14,26 @@ namespace TapAndRun.TapSystem
     public class TapCommandHandler
     {
         public bool IsBusy { get; private set; }
-        
         public int CurrentInteractionIndex { get; private set; }
         public int InteractionCount { get; private set; }
-        //TODO Рассмотреть флаг отвачающий за автовыполнение следующей команды, если игрок выполнял тап незадолго до окончания текущего
 
         private readonly List<ICommand> _commandsQueue = new ();
-        
+
         private readonly ICharacterModel _character;
         private readonly ICameraModel _cameraModel;
-        
+
         public TapCommandHandler(ICharacterModel character, ICameraModel cameraModel)
         {
             _character = character;
             _cameraModel = cameraModel;
         }
 
-        public void GenerateCommand(IEnumerable<InteractionPoint> interactions)
+        public void GenerateCommands(IEnumerable<InteractionPoint> interactions)
         {
             _commandsQueue.Clear();
             CurrentInteractionIndex = 0;
             InteractionCount = 0;
-            
+
             foreach (var interact in interactions)
             {
                 switch (interact.CommandType)
@@ -76,7 +74,6 @@ namespace TapAndRun.TapSystem
 
             CurrentInteractionIndex++;
             IsBusy = false;
-            // TODO Проверка на клик в очереди и автозапуск следующей команды при наличии
         }
 
         public void ResetCommandIndex()
@@ -88,18 +85,17 @@ namespace TapAndRun.TapSystem
         {
             if (IsBusy)
             {
-                Debug.Log("В данный момент уже выполняется команда");
+                Debug.Log("Command is already processing");
                 return false;
             }
 
             if(CurrentInteractionIndex >= InteractionCount)
             {
-                Debug.Log("Для текущего уровня не осталось команд");
+                Debug.Log("Commands are finished");
                 return false;
             }
 
             return true;
-            
         }
     }
 }

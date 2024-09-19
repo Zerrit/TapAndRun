@@ -10,25 +10,15 @@ namespace TapAndRun.MVP.Skins_Shop.Views
     {
         public int CurrentSkinIndex { get; set; }
         public int SkinsCount { get; set; }
+
         public List<GameObject> SkinsList { get; set; }
 
         [field:SerializeField] public Transform SliderContent { get; private set; }
-        
+
         [SerializeField] private float _xPosOffsetStep = 1.5f;
         [SerializeField] private float _scaleOffset = 0.5f;
 
         [SerializeField] private float _scrollDuration = 0.5f;
-
-        private int _screenWidth;
-
-        private CancellationTokenSource _cts; //TODO Навести порядок с токенами
-
-        private void Start()
-        {
-            _cts = new CancellationTokenSource();
-            
-            _screenWidth = Screen.width;
-        }
 
         public void Place(Vector3 cameraPosition, float cameraRotation)
         {
@@ -38,13 +28,13 @@ namespace TapAndRun.MVP.Skins_Shop.Views
 
         public void Align()
         {
-            for (int i = 0; i < SkinsCount; i++)
+            for (var i = 0; i < SkinsCount; i++)
             {
                 var skin = SkinsList[i].transform;
                 var alignedPosition = new Vector3(i * _xPosOffsetStep, 0f, 0f);
 
                 skin.transform.localPosition = alignedPosition;
-                RescaleSkin(i, 0 ,_cts.Token).Forget();
+                RescaleSkin(i, 0 ,destroyCancellationToken).Forget();
             }
         }
 
@@ -68,7 +58,7 @@ namespace TapAndRun.MVP.Skins_Shop.Views
             var scale =  Mathf.Clamp01(1 - (distanceFromCenter * _scaleOffset));
             var finalScale = new Vector3(scale,scale, 1f);
             var skin = SkinsList[skinIndex].transform;
-            
+
             if (scale == 0)
             {
                 if (skin.localScale.x != 0)
@@ -76,7 +66,7 @@ namespace TapAndRun.MVP.Skins_Shop.Views
                     await skin.DOScale(finalScale, _scrollDuration)
                         .SetEase(Ease.InOutCubic)
                         .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
-                    
+
                     skin.gameObject.SetActive(false);
                 }
             }
@@ -91,12 +81,6 @@ namespace TapAndRun.MVP.Skins_Shop.Views
                     .SetEase(Ease.InOutCubic)
                     .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token).Forget();
             }
-        }
-
-        private void OnDisable()
-        {
-            _cts.Cancel();
-            _cts.Dispose();
         }
     }
 }

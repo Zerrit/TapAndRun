@@ -23,7 +23,7 @@ namespace TapAndRun.UI
             ShowAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
 
-        public async UniTask ShowAsync(CancellationToken token)
+        public virtual async UniTask ShowAsync(CancellationToken token)
         {
             Content.alpha = 0;
             Content.gameObject.SetActive(true);
@@ -37,13 +37,13 @@ namespace TapAndRun.UI
             Content.alpha = 0f;
             Content.gameObject.SetActive(false);
         }
-        
+
         public virtual void Hide()
         {
             HideAsync(this.GetCancellationTokenOnDestroy()).Forget();
         }
-        
-        public async UniTask HideAsync(CancellationToken token)
+
+        public virtual async UniTask HideAsync(CancellationToken token)
         {
             Content.alpha = 1;
 

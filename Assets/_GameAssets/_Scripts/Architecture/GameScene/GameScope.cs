@@ -30,7 +30,6 @@ using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.MVP.Wallet.View;
 using TapAndRun.PrallaxBackground;
 using TapAndRun.PrallaxBackground.MatrixBackground;
-using TapAndRun.PrallaxBackground.OffsetBackground;
 using TapAndRun.Services.Audio;
 using TapAndRun.Services.Data;
 using TapAndRun.Services.Localization;
@@ -97,7 +96,7 @@ namespace TapAndRun.Architecture.GameScene
             RegisterMainMenu(builder);
 
             RegisterTutorials(builder);
-            
+
             RegisterGameStates(builder);
 
             builder.Register<GameStateMachine>(Lifetime.Singleton);
@@ -110,7 +109,7 @@ namespace TapAndRun.Architecture.GameScene
 
             builder.Register<SkinFactory>(Lifetime.Singleton).As<ISkinFactory>()
                 .WithParameter(_skinsConfig);
-            
+
             builder.Register<LevelFactory>(Lifetime.Singleton).As<ILevelFactory>()
                 .WithParameter(_levelsConfig)
                 .WithParameter(_levelsParent);
@@ -126,7 +125,7 @@ namespace TapAndRun.Architecture.GameScene
         private void RegisterServices(IContainerBuilder builder)
         {
             builder.Register<LocalizationService>(Lifetime.Singleton).AsImplementedInterfaces();
-            
+
             builder.RegisterInstance(_updateService).AsImplementedInterfaces();
             builder.RegisterInstance(_audioService).AsImplementedInterfaces();
 
@@ -140,11 +139,12 @@ namespace TapAndRun.Architecture.GameScene
         {
             builder.RegisterInstance(_backgroundView).As<IParallaxView>();
         }
-        
+
         private void RegisterCamera(IContainerBuilder builder)
         {
             builder.Register<CameraModel>(Lifetime.Singleton).AsImplementedInterfaces()
                 .WithParameter(_cameraConfig);
+
             builder.Register<CameraPresenter>(Lifetime.Singleton)
                 .WithParameter(_cameraView);
         }
@@ -153,6 +153,7 @@ namespace TapAndRun.Architecture.GameScene
         {
             builder.Register<CharacterModel>(Lifetime.Singleton).AsImplementedInterfaces()
                 .WithParameter(_characterConfig);
+
             builder.Register<CharacterPresenter>(Lifetime.Singleton)
                 .WithParameter(_characterView);
         }
@@ -160,6 +161,7 @@ namespace TapAndRun.Architecture.GameScene
         private void RegisterLevels(IContainerBuilder builder)
         {
             builder.Register<LevelsModel>(Lifetime.Singleton).AsImplementedInterfaces();
+
             builder.Register<LevelsPresenter>(Lifetime.Singleton)
                 .WithParameter(_gameplayScreenView);
         }
@@ -167,6 +169,7 @@ namespace TapAndRun.Architecture.GameScene
         private void RegisterWallet(IContainerBuilder builder)
         {
             builder.Register<WalletModel>(Lifetime.Singleton).AsImplementedInterfaces();
+
             builder.Register<WalletPresenter>(Lifetime.Singleton)
                 .WithParameter( _walletView);
         }
@@ -174,6 +177,7 @@ namespace TapAndRun.Architecture.GameScene
         private void RegisterSettings(IContainerBuilder builder)
         {
             builder.Register<SettingsModel>(Lifetime.Singleton).AsImplementedInterfaces();
+
             builder.Register<SettingsPresenter>(Lifetime.Singleton)
                 .WithParameter(_settingsView);
         }
@@ -181,6 +185,7 @@ namespace TapAndRun.Architecture.GameScene
         private void RegisterSkinShop(IContainerBuilder builder)
         {
             builder.Register<SkinShopModel>(Lifetime.Singleton).AsImplementedInterfaces();
+
             builder.Register<SkinShopPresenter>(Lifetime.Singleton)
                 .WithParameter(_skinShopView)
                 .WithParameter(_skinShopSliderView);
@@ -189,6 +194,7 @@ namespace TapAndRun.Architecture.GameScene
         private void RegisterLoseScreen(IContainerBuilder builder)
         {
             builder.Register<LoseModel>(Lifetime.Singleton).AsImplementedInterfaces();
+
             builder.Register<LosePresenter>(Lifetime.Singleton)
                 .WithParameter(_loseView);
         }
@@ -196,12 +202,13 @@ namespace TapAndRun.Architecture.GameScene
         private void RegisterMainMenu(IContainerBuilder builder)
         {
             builder.Register<SelfMainMenuModel>(Lifetime.Singleton).AsImplementedInterfaces();
+
             builder.Register<MainMenuPresenter>(Lifetime.Singleton)
                 .WithParameter(_mainMenu)
                 .WithParameter(_levelSelectView);
         }
-        
-        private void RegisterTutorials(IContainerBuilder builder) //TODO Подумать над резолвом
+
+        private void RegisterTutorials(IContainerBuilder builder)
         {
             builder.Register<TapTutorial>(Lifetime.Singleton).AsSelf();
             builder.Register<CrystalsTutorial>(Lifetime.Singleton).AsSelf();

@@ -59,7 +59,7 @@ namespace TapAndRun.UI
                     SetCanPurchaseState(price);
                     break;
                 }
-                
+
                 case ShopButtonState.CantPurchase:
                 {
                     SetCantPurchaseState(price);
@@ -74,7 +74,7 @@ namespace TapAndRun.UI
         private void SetSelectedState()
         {
             State = ShopButtonState.Selected;
-            
+
             Button.interactable = false;
             _crystalIcon.SetActive(false);
 
@@ -103,7 +103,7 @@ namespace TapAndRun.UI
             _buttonText.text = price.ToString();
             _buttonImage.color = _availableColor;
         }        
-        
+
         private void SetCantPurchaseState(int price)
         {
             State = ShopButtonState.CantPurchase;
@@ -113,14 +113,13 @@ namespace TapAndRun.UI
 
             _buttonText.text = price.ToString();
             _buttonImage.color = _unavailableColor;
-            
         }
 
         public void PlayFailAnim()
         {
             ResetToken();
             PlayFailAnimAsync(_animCts.Token).Forget();
-            
+
             async UniTaskVoid PlayFailAnimAsync(CancellationToken token)
             {
                 await transform.DOPunchPosition(_failAnimVelocity, _failAnimDuration)
@@ -136,7 +135,7 @@ namespace TapAndRun.UI
                 .SetEase(_acceptAnimCurve)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
         }
-        
+
         private void ResetToken()
         {
             _animCts?.Cancel();
@@ -144,5 +143,4 @@ namespace TapAndRun.UI
             _animCts = new CancellationTokenSource();
         }
     }
-    
 }

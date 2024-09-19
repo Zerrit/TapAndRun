@@ -6,13 +6,12 @@ namespace TapAndRun.MVP.Skins_Shop.Model
 {
     public interface ISelfSkinShopModel
     {
-        ReactiveProperty<bool> IsDisplaying { get; set; }
-        
+        BoolReactiveProperty IsDisplaying { get; }
+
         TriggerReactiveProperty BackTrigger { get; }
 
         bool IsAssortmentPrepeared { set; }
         SkinData CurrentSkinsData { get; set; }
-        List<string> UnlockedSkins { get; }
 
         void SelectCurrentSkin();
         bool TryBuyCurrentSkin();

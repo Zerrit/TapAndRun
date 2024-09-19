@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using Cysharp.Threading.Tasks;
-using DG.Tweening;
-using TapAndRun.UI;
+﻿using TapAndRun.UI;
 using UnityEngine;
 using UnityEngine.UI;
 

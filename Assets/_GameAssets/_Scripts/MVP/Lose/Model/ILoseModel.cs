@@ -1,5 +1,4 @@
-﻿using System;
-using TapAndRun.Interfaces;
+﻿using TapAndRun.Interfaces;
 using TapAndRun.Tools.Reactivity;
 
 namespace TapAndRun.MVP.Lose.Model

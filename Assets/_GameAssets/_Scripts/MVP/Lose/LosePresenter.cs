@@ -41,7 +41,7 @@ namespace TapAndRun.MVP.Lose
         {
             if (status)
             {
-                _model.IncreaseLoseCount();
+                _model.ProcessLose();
                 _view.Show();
                 _cameraZoom.SetLoseZoomAsync().Forget();
             }
@@ -76,7 +76,7 @@ namespace TapAndRun.MVP.Lose
                 _view.FreeViewButton.gameObject.SetActive(true);
 
                 await _view.FreeViewButton.OnClickAsync(token);
-            
+
                 _cameraZoom.SetLoseZoomAsync().Forget();
                 _view.FreeViewButton.gameObject.SetActive(false);
                 _view.Show();

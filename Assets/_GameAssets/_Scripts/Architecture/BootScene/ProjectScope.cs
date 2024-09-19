@@ -13,6 +13,7 @@ namespace TapAndRun.Architecture.BootScene
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance(_adsService).AsImplementedInterfaces();
+
             builder.Register<BootEntryPoint>(Lifetime.Singleton).As<IAsyncStartable>();
         }
     }

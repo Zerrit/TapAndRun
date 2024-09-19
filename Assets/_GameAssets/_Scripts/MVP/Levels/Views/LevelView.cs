@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TapAndRun.Configs;
+using TapAndRun.MVP.CharacterCamera.Model;
 using TapAndRun.MVP.Levels.Views.SegmentViews;
 using UnityEngine;
 
@@ -32,6 +33,9 @@ namespace TapAndRun.MVP.Levels.Views
             InteractionPoints[index]?.Activate();
         }
 
+        /// <summary>
+        /// Выключает текущий указатель и активирует следующий при наличии.
+        /// </summary>
         public void SwitchToNextArrow(int currentArrowIndex)
         {
             InteractionPoints[currentArrowIndex]?.Deactivate();

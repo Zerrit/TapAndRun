@@ -13,8 +13,8 @@ namespace TapAndRun.MVP.Wallet.Model
 
         public ReactiveProperty<int> AvailableCrystals { get; private set; }
         public ReactiveProperty<int> CrystalsByRun { get; private set; }
-        
-        public ReactiveProperty<bool> IsTutorialDisplaying { get; private set; }
+
+        public BoolReactiveProperty IsTutorialDisplaying { get; private set; }
         public TriggerReactiveProperty OnTutorialClickTrigger { get; private set; }
 
         private int _crystalsByLevel;
@@ -25,13 +25,14 @@ namespace TapAndRun.MVP.Wallet.Model
             AvailableCrystals = new ReactiveProperty<int>(50);
             CrystalsByRun = new ReactiveProperty<int>(0);
 
-            IsTutorialDisplaying = new ReactiveProperty<bool>();
+            IsTutorialDisplaying = new BoolReactiveProperty();
             OnTutorialClickTrigger = new TriggerReactiveProperty();
 
             return UniTask.CompletedTask;
         }
 
         #region SaveLoad
+
         SaveableData IProgressable.GetProgressData()
         {
             return new (SaveKey, new object[] {AvailableCrystals.Value + _crystalsByCompletedLevels});
@@ -47,6 +48,7 @@ namespace TapAndRun.MVP.Wallet.Model
 
             AvailableCrystals.Value = Convert.ToInt32(loadData.Data[0]);
         }
+
         #endregion
 
         public bool IsEnough(int value)
@@ -67,7 +69,7 @@ namespace TapAndRun.MVP.Wallet.Model
 
         public void IncreaseCrystalsByRun(int levelsCombo = 1)
         { 
-            _crystalsByLevel += levelsCombo; //TODO Добавить подсчёт множителя из конфига
+            _crystalsByLevel += levelsCombo;
 
             CrystalsByRun.Value = _crystalsByLevel + _crystalsByCompletedLevels;
         }
@@ -81,7 +83,7 @@ namespace TapAndRun.MVP.Wallet.Model
         public void GainCrystalsByRun()
         {
             AvailableCrystals.Value += _crystalsByCompletedLevels;
-            
+
             CrystalsByRun.Value = 0;
             _crystalsByLevel = 0;
             _crystalsByCompletedLevels = 0;

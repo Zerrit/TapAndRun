@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace TapAndRun.UI
@@ -14,7 +13,7 @@ namespace TapAndRun.UI
         [SerializeField] private float _height;
 
         private Vector2 _uvRect;
-        
+
         private void Update()
         {
             _uvRect.x += _xSpeed / 100 * Time.deltaTime;

@@ -38,13 +38,13 @@ namespace TapAndRun.MVP.Skins_Shop
         {
             _cts = new CancellationTokenSource();
 
-            _selfModel.IsDisplaying.OnChanged += UpdateDisplaying;
+            _selfModel.IsDisplaying.Subscribe(UpdateDisplaying);
 
             _shopScreenView.BackButton.onClick.AddListener(CloseSkinShop);
             _shopScreenView.LeftButton.onClick.AddListener(ScrollLeft);
             _shopScreenView.RightButton.onClick.AddListener(ScrollRight);
             _shopScreenView.ShopButton.Button.onClick.AddListener(ProccesShopButtonClick);
-            
+
             return UniTask.CompletedTask;
         }
 
@@ -73,14 +73,14 @@ namespace TapAndRun.MVP.Skins_Shop
         private void FillAssortment()
         {
             FillAssortmentAsync(_cts.Token).Forget();
-            
+
             async UniTaskVoid FillAssortmentAsync(CancellationToken token)
             {
                 _sliderView.SkinsList = await _skinFactory.CreateAllSkinsAsync(_sliderView.SliderContent, token);
                 _sliderView.SkinsCount = _sliderView.SkinsList.Count;
                 _sliderView.Align();
 
-                await ChangeSelectedSkin(0, token); //TODO Прокручивать до выбранного скина
+                await ChangeSelectedSkin(0, token);
 
                 _selfModel.IsAssortmentPrepeared = true;
             }
@@ -109,7 +109,7 @@ namespace TapAndRun.MVP.Skins_Shop
 
             _shopScreenView.LeftButton.interactable = skinIndex != 0;
             _shopScreenView.RightButton.interactable = skinIndex != _sliderView.SkinsCount - 1;
-            
+
             await _sliderView.ScrollContentAsync(token);
 
             _shopScreenView.SkinName.text = LocalizationManager.Localize(_selfModel.CurrentSkinsData.Name);
@@ -167,7 +167,7 @@ namespace TapAndRun.MVP.Skins_Shop
         private void ClearAssortment()
         {
             _selfModel.IsAssortmentPrepeared = false;
-            
+
             _sliderView.SkinsList.Clear();
             _skinFactory.ReleaseSkinShopAssortment();
         }
