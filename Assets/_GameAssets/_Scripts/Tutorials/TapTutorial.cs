@@ -14,7 +14,7 @@ namespace TapAndRun.Tutorials
         {
             _levelsModel = levelsModel;
         }
-        
+
         public UniTask InitializeAsync(CancellationToken token)
         {
             if (!_levelsModel.IsTutorialComplete)
@@ -24,7 +24,7 @@ namespace TapAndRun.Tutorials
 
             return UniTask.CompletedTask;
         }
-        
+
         private void ShowTutorial()
         {
             Time.timeScale = 0.2f;
@@ -38,7 +38,7 @@ namespace TapAndRun.Tutorials
         {
             _levelsModel.OnTapTrigger.OnTriggered -= HideTutorial;
             _levelsModel.OnLevelFailed -= HideTutorial;
-            
+
             _levelsModel.IsTutorialDisplaying.Value = false;
             Time.timeScale = 1f;
         }

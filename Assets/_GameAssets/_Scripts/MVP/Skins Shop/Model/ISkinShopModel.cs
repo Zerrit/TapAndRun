@@ -5,8 +5,8 @@ namespace TapAndRun.MVP.Skins_Shop.Model
 {
     public interface ISkinShopModel : IInitializableAsync
     {
-        ReactiveProperty<bool> IsDisplaying { get; }
-        
+        BoolReactiveProperty IsDisplaying { get; }
+
         TriggerReactiveProperty BackTrigger { get; }
 
         bool IsAssortmentPrepeared { get; }

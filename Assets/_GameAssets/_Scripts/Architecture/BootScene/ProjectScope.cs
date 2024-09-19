@@ -1,5 +1,4 @@
-﻿using TapAndRun.Configs;
-using TapAndRun.Services.Ads;
+﻿using TapAndRun.Services.Ads;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;

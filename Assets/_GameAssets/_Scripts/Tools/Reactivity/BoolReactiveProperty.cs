@@ -2,7 +2,7 @@
 
 namespace TapAndRun.Tools.Reactivity
 {
-    public class BoolReactiveProperty
+    public class BoolReactiveProperty : IBoolReactiveProperty
     {
         public event Action<bool> OnChanged;
         public event Action OnChangedToTrue;
@@ -33,7 +33,7 @@ namespace TapAndRun.Tools.Reactivity
         {
             _value = startValue;
         }
-        
+
         public void Subscribe(Action<bool> method, bool isNeedUpdate = false)
         {
             OnChanged += method;
@@ -49,7 +49,7 @@ namespace TapAndRun.Tools.Reactivity
             OnChangedToTrue += trueMethod;
             OnChangedToFalse += falseMethod;
         }
-        
+
         public void Subscribe(Action method, bool triggerValue)
         {
             if (triggerValue)
@@ -66,7 +66,7 @@ namespace TapAndRun.Tools.Reactivity
         {
             OnChanged -= method;
         }
-        
+
         public void Unsubscribe(Action method, bool triggerValue)
         {
             if (triggerValue)
@@ -78,7 +78,7 @@ namespace TapAndRun.Tools.Reactivity
                 OnChangedToFalse -= method;
             }
         }
-        
+
         public void Unsubscribe(Action trueMethod, Action falseMethod)
         {
             OnChangedToTrue -= trueMethod;

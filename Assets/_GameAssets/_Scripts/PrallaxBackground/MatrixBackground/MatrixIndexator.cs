@@ -16,7 +16,7 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
             _size = size;
             _midIndex = _size / 2;
             _indexGrid = new Vector2Int[_size, _size];
-            
+
             for (var i = 0; i < _size; i++)
             {
                 for (var j = 0; j < _size; j++)
@@ -30,7 +30,11 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
         {
             return (_indexGrid[x, y].y * _size + _indexGrid[x, y].x);
         }
-        
+
+        /// <summary>
+        /// Смещает сетку в указанном направлении согласно величине вектора.
+        /// </summary>
+        /// <param name="direction"></param>
         public void ShiftGrid(Vector2 direction)
         {
             for (var y = 0; y < _size; y++)

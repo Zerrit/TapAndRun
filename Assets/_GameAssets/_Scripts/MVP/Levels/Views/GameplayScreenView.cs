@@ -17,7 +17,7 @@ namespace TapAndRun.MVP.Levels.Views
         {
             SpeedText.text = speedLevel.ToString();
         }
-        
+
         public void UpdateLevelText(int curentLevelId)
         {
             LevelText.text = $"Level {curentLevelId + 1}";

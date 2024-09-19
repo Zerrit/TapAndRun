@@ -9,10 +9,10 @@ namespace TapAndRun.Services.Transition
     {
         [SerializeField] private RectTransform _curtain;
 
-        [SerializeField] private float _inDuration;
+        [Header("InParameters"), SerializeField] private float _inDuration;
         [SerializeField] private Ease _inCurve;
-        
-        [SerializeField] private float _outDuration;
+
+        [Header("OutParameters"), SerializeField] private float _outDuration;
         [SerializeField] private Ease _outCurve;
 
         public async UniTask ShowAsync(CancellationToken token)
@@ -29,11 +29,11 @@ namespace TapAndRun.Services.Transition
         public async UniTask HideAsync(CancellationToken token)
         {
             var targetPos =  (_curtain.rect.height / 2 + Screen.height);
-            
+
             await _curtain.DOLocalMoveY(targetPos, _outDuration)
                 .SetEase(_outCurve)
                 .AwaitForComplete(TweenCancelBehaviour.CompleteAndCancelAwait, token);
-            
+
             _curtain.gameObject.SetActive(false);
         }
     }

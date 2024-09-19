@@ -24,7 +24,7 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
         private ParallaxSquare _centerSquare;
         private MatrixIndexator _indexator;
         private Transform _target;
-        
+
         private const int GridSize = 3;
 
         public void Update()
@@ -33,7 +33,7 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
             {
                 return;
             }
-            
+
             Move(_autoMoveDirection);
         }
 
@@ -59,7 +59,7 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
             brithness += _brithnessOffset * 0.01f;
 
             var newColor = Color.HSVToRGB(hue, saturation, brithness);
-            
+
             foreach (var square in _parallaxSquares)
             {
                 square.UpdateSymbols(texture, newColor);
@@ -77,7 +77,7 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
         private void UpdateGrid()
         {
             var targetPos = _target.position;
-            
+
             if (Mathf.Abs(targetPos.x - _centerSquare.transform.position.x) > _squareSize / 2f)
             {
                 if (targetPos.x - _centerSquare.transform.position.x > 0)
@@ -98,7 +98,7 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
                     _indexator.ShiftGrid(Vector2Int.left);
                     _centerSquare = _parallaxSquares[_indexator.CenterIndex];
                 }
-                
+
                 return;
             }
             
@@ -128,10 +128,10 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
         private void BuildSquareGrid()
         {
             var index = 0;
-            
-            for (int y = 1; y > -2; y--)
+
+            for (var y = 1; y > -2; y--)
             {
-                for (int x = -1; x < 2; x++)
+                for (var x = -1; x < 2; x++)
                 {
                     _parallaxSquares[index].transform.localPosition = new Vector3(_squareSize * x, _squareSize * y, 0);
                     index++;

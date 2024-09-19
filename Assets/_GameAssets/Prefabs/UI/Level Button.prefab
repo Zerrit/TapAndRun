@@ -135,7 +135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d673997f1c5e401182f75fba18694412, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Button>k__BackingField: {fileID: 4358269286947803668}
   <Background>k__BackingField: {fileID: 2881341015568119676}
   <LockIcon>k__BackingField: {fileID: 6193740251546332581}
   <LevelText>k__BackingField: {fileID: 3264067490260436340}
@@ -288,7 +287,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fc787bb5e5a09e34992ffa67cb9dd857, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6b3eabbe52938954ba067968a25bd07c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

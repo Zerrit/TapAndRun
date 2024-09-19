@@ -21,7 +21,7 @@ namespace TapAndRun.MVP.Character.View
             Animator = skin.GetComponent<Animator>();
             Sfx = skin.GetComponent<CharacterSfx>();
         }
-        
+
         public void UpdatePosition(Vector3 position)
         {
             Transform.position = position;
@@ -52,7 +52,7 @@ namespace TapAndRun.MVP.Character.View
         {
             Animator.SetFloat(_speed, multiplier);
         }
-        
+
         public void UpdateSfxAcceleration(float value)
         {
             Sfx.ChangeSpeed(value);

@@ -8,12 +8,12 @@ namespace TapAndRun.PlayerData.SaveLoad
     public class FileDataStorage : IDataStorage
     {
 #if UNITY_EDITOR
-        private string SavePath => Application.dataPath;
+        public string SavePath => Application.dataPath;
 #else
-        private string SavePath => Application.persistentDataPath;
+        public string SavePath => Application.persistentDataPath;
 #endif
-        private string FullPath => Path.Combine(SavePath, $"{FileName}{SaveFileExtension}");
-        
+        public string FullPath => Path.Combine(SavePath, $"{FileName}{SaveFileExtension}");
+
         private const string FileName = "Tap&RunPlayerData";
         private const string SaveFileExtension = ".json";
 

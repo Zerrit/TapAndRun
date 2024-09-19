@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using TapAndRun.Configs;
 using TapAndRun.Factories.LangButtons;
@@ -7,7 +6,6 @@ using TapAndRun.Interfaces;
 using TapAndRun.MVP.Settings.Model;
 using TapAndRun.MVP.Settings.Views;
 using TapAndRun.Services.Audio;
-using UnityEngine.UI;
 
 namespace TapAndRun.MVP.Settings
 {
@@ -41,7 +39,7 @@ namespace TapAndRun.MVP.Settings
 
             _view.CloseButton.onClick.AddListener(Close);
             _view.LanguagueButton.onClick.AddListener(ShowLangPanel);
-            
+
             await UniTask.CompletedTask;
         }
 
@@ -53,7 +51,7 @@ namespace TapAndRun.MVP.Settings
 
         private async UniTask InitLangPanelAsync(CancellationToken token)
         {
-            for (int i = 0; i < _langButtonFactory.GetLangCount(); i++)
+            for (var i = 0; i < _langButtonFactory.GetLangCount(); i++)
             {
                 var button = await _langButtonFactory.CreateAsynс(i, _view.LanguagePopup.Content.transform, token);
 
@@ -61,10 +59,10 @@ namespace TapAndRun.MVP.Settings
                 {
                     _view.LanguagueButton.image.sprite = button.LanguageConfig.Icon;
                 }
-                
+
                 button.OnClicked += ChangeLanguage;
             }
-            
+
             _langButtonFactory.Decompose();
         }
 

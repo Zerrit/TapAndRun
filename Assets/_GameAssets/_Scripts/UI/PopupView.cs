@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using UnityEditor;
 using UnityEngine;
 
 namespace TapAndRun.UI

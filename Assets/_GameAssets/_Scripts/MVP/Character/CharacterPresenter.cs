@@ -5,18 +5,17 @@ using TapAndRun.Interfaces;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Character.View;
 using TapAndRun.Services.Audio;
-using UnityEngine;
 
 namespace TapAndRun.MVP.Character
 {
     public class CharacterPresenter : IInitializableAsync, IDecomposable
     {
+        private CancellationTokenSource _cts;
+
         private readonly ISelfCharacterModel _model;
         private readonly ISkinFactory _skinFactory;
         private readonly IAudioService _audioService;
         private readonly CharacterView _view;
-
-        private CancellationTokenSource _cts;
 
         public CharacterPresenter(ISelfCharacterModel model, ISkinFactory skinFactory, IAudioService audioService, CharacterView view)
         {
@@ -33,13 +32,13 @@ namespace TapAndRun.MVP.Character
             await SetSkinAsync(_model.SelectedSkin.Value);
 
             _model.SelectedSkin.Subscribe(SetSkin);
-            _model.IsActive.OnChanged += _view.gameObject.SetActive;
-            _model.Position.OnChanged += _view.UpdatePosition;
-            _model.Rotation.OnChanged += _view.UpdateRotation;
-            _model.IsMoving.OnChanged += _view.UpdateMoving;
-            _model.IsFall.OnChanged += _view.UpdateFalling;
-            _model.AnimMultiplier.OnChanged += _view.UpdateAnimMultiplier;
-            _model.SfxAcceleration.OnChanged += _view.UpdateSfxAcceleration;
+            _model.IsActive.Subscribe(_view.gameObject.SetActive);
+            _model.Position.Subscribe(_view.UpdatePosition);
+            _model.Rotation.Subscribe(_view.UpdateRotation);
+            _model.AnimMultiplier.Subscribe(_view.UpdateAnimMultiplier);
+            _model.SfxAcceleration.Subscribe(_view.UpdateSfxAcceleration);
+            _model.IsMoving.Subscribe(_view.UpdateMoving);
+            _model.IsFall.Subscribe(_view.UpdateFalling);
 
             _model.OnBeganTurning += _view.DisplayTurning;
             _model.OnBeganJumping += _view.DisplayJumping;
@@ -49,7 +48,7 @@ namespace TapAndRun.MVP.Character
         {
             SetSkinAsync(skinId).Forget();
         }
-        
+
         private async UniTask SetSkinAsync(string skinId)
         {
             var skin = await _skinFactory.ChangeSkinTo(skinId, _view.SkinHandler, _cts.Token);
@@ -66,13 +65,13 @@ namespace TapAndRun.MVP.Character
             _cts?.Dispose();
 
             _model.SelectedSkin.Unsubscribe(SetSkin);
-            _model.IsActive.OnChanged -= _view.gameObject.SetActive;
-            _model.Position.OnChanged -= _view.UpdatePosition;
-            _model.Rotation.OnChanged -= _view.UpdateRotation;
-            _model.IsMoving.OnChanged -= _view.UpdateMoving;
-            _model.IsFall.OnChanged -= _view.UpdateFalling;
-            _model.AnimMultiplier.OnChanged -= _view.UpdateAnimMultiplier;
-            _model.SfxAcceleration.OnChanged -= _view.UpdateSfxAcceleration;
+            _model.IsActive.Unsubscribe(_view.gameObject.SetActive);
+            _model.Position.Unsubscribe(_view.UpdatePosition);
+            _model.Rotation.Unsubscribe(_view.UpdateRotation);
+            _model.AnimMultiplier.Unsubscribe(_view.UpdateAnimMultiplier);
+            _model.SfxAcceleration.Unsubscribe(_view.UpdateSfxAcceleration);
+            _model.IsMoving.Unsubscribe(_view.UpdateMoving);
+            _model.IsFall.Unsubscribe(_view.UpdateFalling);
 
             _model.OnBeganTurning -= _view.DisplayTurning;
             _model.OnBeganJumping -= _view.DisplayJumping;

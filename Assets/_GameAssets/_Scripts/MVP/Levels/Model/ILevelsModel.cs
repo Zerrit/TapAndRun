@@ -11,13 +11,13 @@ namespace TapAndRun.MVP.Levels.Model
 
         BoolReactiveProperty IsDisplaying { get; }
         BoolReactiveProperty IsTutorialDisplaying { get; }
-        
+
         TriggerReactiveProperty StartupTrigger { get; }
         TriggerReactiveProperty ResetLevelTrigger { get; } 
 
         TriggerReactiveProperty OnTapTrigger { get; }
         TriggerReactiveProperty OnEnterToInteractPointTrigger { get; } 
-        
+
         bool IsTutorialComplete { get; }
 
         int LastUnlockedLevelId { get; }

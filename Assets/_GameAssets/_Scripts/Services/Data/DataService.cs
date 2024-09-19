@@ -13,17 +13,17 @@ namespace TapAndRun.Services.Data
     public class DataService : IDataService
     {
         private readonly Dictionary<string, IProgressable> _progressablesByKey;
-        private readonly Dictionary<string, ISettingsUser> _settingsUsersByKey;
+        private readonly Dictionary<string, ISettingable> _settingsUsersByKey;
 
         private readonly ISerializer _serializer;
         private readonly IDataStorage _dataStorage;
         private readonly IDataStorage _settingsStorage;
 
-        public DataService(IEnumerable<IProgressable> progressables, IEnumerable<ISettingsUser> settingsUsers)
+        public DataService(IEnumerable<IProgressable> progressables, IEnumerable<ISettingable> settingsUsers)
         {
             _progressablesByKey = progressables.ToDictionary(x => x.SaveKey, x => x);
             _settingsUsersByKey = settingsUsers.ToDictionary(x => x.SaveKey, x => x);
-            
+
             _serializer = new JsonSerializer();
             _dataStorage = new FileDataStorage();
             _settingsStorage = new PrefsDataStorage();
@@ -114,7 +114,7 @@ namespace TapAndRun.Services.Data
 
             Debug.Log("Завершено сохранение игры!");
         }
-        
+
         private async UniTask SaveSettingsAsync(CancellationToken token)
         {
             var settingsList = new List<SaveableData>();
@@ -130,7 +130,7 @@ namespace TapAndRun.Services.Data
 
             Debug.Log("Завершено сохранение настроек!");
         }
-        
+
         private void SaveProgress()
         {
             var progressList = new List<SaveableData>();

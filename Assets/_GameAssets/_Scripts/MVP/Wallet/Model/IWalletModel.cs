@@ -1,5 +1,4 @@
 ﻿using TapAndRun.Interfaces;
-using TapAndRun.Tools.Reactivity;
 
 namespace TapAndRun.MVP.Wallet.Model
 {

@@ -10,8 +10,6 @@ namespace TapAndRun.Services.Update
         public event Action OnUpdated;
         public event Action OnLateUpdated;
 
-        // UPDATE SUBSCRIPTION //
-        
         public void Subscribe(IUpdatable updatable)
         {
             OnUpdated += updatable.Update;
@@ -22,8 +20,6 @@ namespace TapAndRun.Services.Update
             OnUpdated -= updatable.Update;
         }
 
-        // LATE UPDATE SUBSCRIPTION //
-        
         public void Subscribe(ILateUpdatable updatable)
         {
             OnLateUpdated += updatable.LateUpdate;

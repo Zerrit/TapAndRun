@@ -11,7 +11,7 @@ namespace TapAndRun.MVP.Settings.Views
         public event Action<LanguageConfig> OnClicked;
 
         public LanguageConfig LanguageConfig { get; private set; }
-        
+
         [SerializeField] private Image _icon;
 
         public void Initialize(LanguageConfig langConfig)
@@ -25,7 +25,5 @@ namespace TapAndRun.MVP.Settings.Views
         {
             OnClicked?.Invoke(LanguageConfig);
         }
-        
-        //TODO Анимация нажатия.
     }
 }

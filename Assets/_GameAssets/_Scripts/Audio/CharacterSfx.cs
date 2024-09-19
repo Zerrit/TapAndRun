@@ -22,7 +22,7 @@ namespace TapAndRun.Audio
             _audioSource.outputAudioMixerGroup = mixerGroup;
             _runAudioSource.outputAudioMixerGroup = mixerGroup;
         }
-        
+
         public void ChangeSpeed(float acceleration)
         {
             _audioSource.pitch = _baseSpeedPitch + acceleration;

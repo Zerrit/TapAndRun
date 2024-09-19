@@ -16,14 +16,14 @@ namespace TapAndRun.UI
         [SerializeField] private Image _background;
         [SerializeField] private Color _backgroundOffColor;
         [SerializeField] private Color _backgroundOnColor;
-        
+
         [Header("Toggle Handle")]
         [SerializeField] private Image _handle;
         [SerializeField] private Color _handleOffColor;
         [SerializeField] private Color _handleOnColor;
         [SerializeField] private float _handleOffXPos;
         [SerializeField] private float _handleOnXPos;
-        
+
         [Header("Anim Duration")]
         [SerializeField] private float _switchTime;
 

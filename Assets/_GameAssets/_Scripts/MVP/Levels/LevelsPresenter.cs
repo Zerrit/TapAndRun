@@ -24,7 +24,7 @@ namespace TapAndRun.MVP.Levels
         private CancellationTokenSource _cts;
         private TapCommandHandler _commandHandler;
 
-        private readonly IParallaxView _view;
+        private readonly IParallaxView _parallaxView;
         private readonly GameplayScreenView _gameplayScreen;
 
         private readonly ICharacterModel _characterModel;
@@ -34,14 +34,14 @@ namespace TapAndRun.MVP.Levels
         private readonly IAudioService _audioService;
 
         public LevelsPresenter(ISelfLevelsModel model, ILevelFactory levelFactory, IAudioService audioService,
-            ICharacterModel characterModel, ICameraModel cameraModel, IParallaxView view, GameplayScreenView gameplayScreen)
+            ICharacterModel characterModel, ICameraModel cameraModel, IParallaxView parallaxView, GameplayScreenView gameplayScreen)
         {
             _model = model;
             _levelFactory = levelFactory;
             _audioService = audioService;
             _characterModel = characterModel;
             _cameraModel = cameraModel;
-            _view = view;
+            _parallaxView = parallaxView;
             _gameplayScreen = gameplayScreen;
         }
 
@@ -93,16 +93,11 @@ namespace TapAndRun.MVP.Levels
 
         private void BuildNextLevel()
         {
-            if (!_model.CheckLevelExist(_model.CurrentLevelId + 1))
-            {
-                return;
-            }
-
             BuildNextLevelAsync(_cts.Token).Forget();
             
             async UniTask BuildNextLevelAsync(CancellationToken token)
             {
-                var nextLevelId = _model.CurrentLevelId + 1;
+                var nextLevelId = _model.NextLevelId;
 
                 _nextLevel = await _levelFactory.CreateLevelViewAsync(nextLevelId, _currentLevel.FinishSegment.SnapPoint.position, _currentLevel.FinishSegment.SnapPoint.rotation, token);
 
@@ -146,7 +141,7 @@ namespace TapAndRun.MVP.Levels
         {
             _currentLevel = _nextLevel;
 
-            _commandHandler.GenerateCommand(_currentLevel.InteractionPoints);
+            _commandHandler.GenerateCommands(_currentLevel.InteractionPoints);
             UpdateDifficulty();
 
             _gameplayScreen.UpdateLevelText(_model.CurrentLevelId);
@@ -202,7 +197,7 @@ namespace TapAndRun.MVP.Levels
             BuildNextLevel();
 
             _characterModel.CenteringAsync(_currentLevel.StartSegment.SegmentCenter.position).Forget();
-            _view.ChangeStyle();
+            _parallaxView.ChangeStyle();
             _audioService.PlaySound("Finish");
         }
 

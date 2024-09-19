@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TapAndRun.MVP.CharacterCamera.Model;
+using UnityEngine;
 
 namespace TapAndRun.Configs
 {

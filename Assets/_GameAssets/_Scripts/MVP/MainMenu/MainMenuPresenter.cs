@@ -6,7 +6,6 @@ using TapAndRun.MVP.Levels.Model;
 using TapAndRun.MVP.MainMenu.Model;
 using TapAndRun.MVP.MainMenu.Views;
 using TapAndRun.MVP.Settings.Model;
-using TapAndRun.MVP.Skins_Shop.Model;
 using TapAndRun.Services.Audio;
 
 namespace TapAndRun.MVP.MainMenu
@@ -40,7 +39,7 @@ namespace TapAndRun.MVP.MainMenu
             _cts = new CancellationTokenSource();
 
             await FillLevelSelectAsync(token);
-            
+
             _model.IsDisplaying.OnChanged += UpdateDisplaying;
 
             _view.PlayButton.onClick.AddListener(StartPlay);
@@ -69,7 +68,7 @@ namespace TapAndRun.MVP.MainMenu
             _audioService.PlaySound("Play");
             _model.PlayTrigger.Trigger();
         }
-        
+
         private void OpenSettings()
         {
             _audioService.PlaySound("Click");
@@ -81,7 +80,7 @@ namespace TapAndRun.MVP.MainMenu
             _audioService.PlaySound("QuietClick");
             _model.SkinShopTrigger.Trigger();
         }
-        
+
         private void OpenLevelSelect()
         {
             _audioService.PlaySound("QuietClick");
@@ -97,11 +96,11 @@ namespace TapAndRun.MVP.MainMenu
             _audioService.PlaySound("SwooshOut");
             _levelSelectView.Hide();
         }
-        
+
         private void HandleLevelSelection(LevelButtonView levelButton)
         {
             HandleLevelSelectionAsync(_cts.Token).Forget();
-            
+
             async UniTaskVoid HandleLevelSelectionAsync(CancellationToken token)
             {
                 if (levelButton.LevelId > _levelsModel.LastUnlockedLevelId)
@@ -129,7 +128,7 @@ namespace TapAndRun.MVP.MainMenu
 
                 button.OnClicked += HandleLevelSelection;
             }
-            
+
             _levelButtonFactory.Decompose();
         }
 

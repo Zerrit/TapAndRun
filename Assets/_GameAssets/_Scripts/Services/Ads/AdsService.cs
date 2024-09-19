@@ -3,20 +3,20 @@ using Cysharp.Threading.Tasks;
 using TapAndRun.Configs;
 using TapAndRun.Interfaces;
 using UnityEngine;
-using VContainer;
 
 namespace TapAndRun.Services.Ads
 {
     public class AdsService : MonoBehaviour, IAdsService, IDecomposable
     {
         [SerializeField] private AdsServiceConfig _config;
-        
-        private float _lastAdsTime;
+
         private int _currentAdsCounter;
+        private float _lastAdsTime;
         private string _appKey;
 
         public UniTask InitializeAsync(CancellationToken token)
         {
+
 #if UNITY_ANDROID
             _appKey = _config.AndroidAppKey;
 #elif UNITY_IPHONE
@@ -82,7 +82,7 @@ namespace TapAndRun.Services.Ads
                 IronSource.Agent.showInterstitial();
             }
         }
-        
+
         #region Banner
 
         public void LoadBanner()
@@ -95,7 +95,7 @@ namespace TapAndRun.Services.Ads
             IronSource.Agent.destroyBanner();
         }
         
-        /************* Banner AdInfo Delegates *************/
+        //************* Banner AdInfo Delegates ************#1#
         //Invoked once the banner has loaded
         void BannerOnAdLoadedEvent(IronSourceAdInfo adInfo) 
         {
@@ -135,7 +135,7 @@ namespace TapAndRun.Services.Ads
             return (Time.time - _lastAdsTime) > _config.AdsCooldownTime;
         }
 
-        /************* Interstitial AdInfo Delegates *************/
+        //************* Interstitial AdInfo Delegates ************#1#
         // Invoked when the interstitial ad was loaded succesfully.
         void InterstitialOnAdReadyEvent(IronSourceAdInfo adInfo) {
         }
@@ -164,7 +164,7 @@ namespace TapAndRun.Services.Ads
         }
 
         #endregion
-        
+
         #region Rewardable
 
         public void LoadRewardable()
@@ -184,7 +184,7 @@ namespace TapAndRun.Services.Ads
             }
         }
 
-        /************* RewardedVideo AdInfo Delegates *************/
+        //************* RewardedVideo AdInfo Delegates ************#1#
         // Indicates that there’s an available ad.
         // The adInfo object includes information about the ad that was loaded successfully
         // This replaces the RewardedVideoAvailabilityChangedEvent(true) event

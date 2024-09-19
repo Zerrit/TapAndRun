@@ -12,30 +12,31 @@ namespace TapAndRun.MVP.Character.Model
 {
     public class CharacterModel : ISelfCharacterModel, ICharacterModel, IUpdatable, IProgressable, IDecomposable
     {
-        public string SaveKey => "Character";
-
         public event Action OnBeganTurning;
         public event Action OnBeganJumping;
-        public event Action OnFinishedJumping;
 
         public BoolReactiveProperty IsActive { get; private set; }
+
         public ReactiveProperty<Vector3> Position { get; private set; }
         public ReactiveProperty<float> Rotation { get; private set; }
-        public ReactiveProperty<bool> IsMoving { get; private set; }
-        public BoolReactiveProperty IsFall { get; private set; }
+
         public ReactiveProperty<float> AnimMultiplier { get; private set; }
         public ReactiveProperty<float> SfxAcceleration { get; private set; }
 
+        public BoolReactiveProperty IsMoving { get; private set; }
+        public BoolReactiveProperty IsFall { get; private set; }
+
         public ReactiveProperty<string> SelectedSkin { get; private set; }
+
+        public string SaveKey => "Character";
 
         private Vector3 _roadCheckerPosition;
         private float _currentSpeed;
         private bool _isVulnerable;
+        private float _baseAnimSpeed;
 
         private CancellationTokenSource _cts;
 
-        private float _baseAnimSpeed;
-        
         private const float JumpDuration = 1f;
         private const float AnimationTargetMoveSpeed = 2f;
         private const float SfxAccelerationStep = .1f; //TODO донастроить
@@ -58,18 +59,24 @@ namespace TapAndRun.MVP.Character.Model
             _baseAnimSpeed = _config.BaseMoveSpeed / AnimationTargetMoveSpeed;
 
             IsActive = new BoolReactiveProperty();
+
             Position = new ReactiveProperty<Vector3>();
             Rotation = new ReactiveProperty<float>();
-            IsMoving = new ReactiveProperty<bool>();
-            IsFall = new BoolReactiveProperty();
+            
             AnimMultiplier = new ReactiveProperty<float>(_baseAnimSpeed);
             SfxAcceleration = new ReactiveProperty<float>();
+
+            IsMoving = new BoolReactiveProperty();
+            IsFall = new BoolReactiveProperty();
+
             SelectedSkin = new ReactiveProperty<string>(_config.DefaultSkinId);
 
             _updateService.Subscribe(this);
-            
+
             return UniTask.CompletedTask;
         }
+
+        #region SaveLoad
 
         SaveableData IProgressable.GetProgressData()
         {
@@ -86,6 +93,8 @@ namespace TapAndRun.MVP.Character.Model
 
             SelectedSkin.Value = Convert.ToString(loadData.Data[0]);
         }
+
+        #endregion
 
         public void Update()
         {
@@ -125,7 +134,7 @@ namespace TapAndRun.MVP.Character.Model
             _currentSpeed = _config.BaseMoveSpeed + acceleration;
 
             AnimMultiplier.Value = _baseAnimSpeed / _config.BaseMoveSpeed * _currentSpeed;
-            SfxAcceleration.Value = difficultyLevel * SfxAccelerationStep; //TODO Подумать на формулой вычисления
+            SfxAcceleration.Value = difficultyLevel * SfxAccelerationStep;
         }
 
         public async UniTask CenteringAsync(Vector3 centre)
@@ -154,7 +163,7 @@ namespace TapAndRun.MVP.Character.Model
         {
             var originAngle = Rotation.Value;
             var t = 0f;
-            
+
             OnBeganTurning?.Invoke();
 
             while (t < 1f)
@@ -175,12 +184,11 @@ namespace TapAndRun.MVP.Character.Model
             var t = Time.time;
             var totalJumpDuration = JumpDuration / AnimMultiplier.Value;
 
-            while ((t + totalJumpDuration) >= Time.time) //TODO добавить логику согласно изменению сложности
+            while ((t + totalJumpDuration) >= Time.time)
             {
                 await UniTask.NextFrame(_cts.Token);
             }
 
-            OnFinishedJumping?.Invoke();
             _isVulnerable = true;
         }
 
@@ -203,12 +211,7 @@ namespace TapAndRun.MVP.Character.Model
 
         private bool CheckRoad()
         {
-            if (Physics2D.OverlapCircle(_roadCheckerPosition, 0.1f, 1 << 7) || _isVulnerable != true)
-            {
-                return true;
-            }
-
-            return false;
+            return Physics2D.OverlapCircle(_roadCheckerPosition, 0.1f, 1 << 7) || _isVulnerable != true;
         }
 
         private bool IsPayerDirectionVecrtical()

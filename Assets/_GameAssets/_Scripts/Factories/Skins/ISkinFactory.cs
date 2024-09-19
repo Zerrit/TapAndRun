@@ -11,7 +11,8 @@ namespace TapAndRun.Factories.Skins
         SkinsConfig SkinsConfig { get; }
 
         UniTask<List<GameObject>> CreateAllSkinsAsync(Transform parent, CancellationToken token);
-        UniTask<GameObject> ChangeSkinTo(string name, Transform parent, CancellationToken token);
+        UniTask<GameObject> ChangeSkinTo(string id, Transform parent, CancellationToken token);
+
         void ReleaseSkinShopAssortment();
     }
 }

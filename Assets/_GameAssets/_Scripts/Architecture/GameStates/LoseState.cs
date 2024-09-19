@@ -24,17 +24,17 @@ namespace TapAndRun.Architecture.GameStates
 
             _loseModel.RestartTrigger.Subscribe(ToGameplay);
             _loseModel.HomeTrigger.Subscribe(ToMainMenu);
-            
+
             return UniTask.CompletedTask;
         }
 
         public UniTask ExitAsync(CancellationToken token)
         {
             _loseModel.IsDisplaying.Value = false;
-            
+
             _loseModel.RestartTrigger.Unsubscribe(ToGameplay);
             _loseModel.HomeTrigger.Unsubscribe(ToMainMenu);
-            
+
             return UniTask.CompletedTask;
         }
 

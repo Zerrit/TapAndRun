@@ -13,7 +13,7 @@ namespace TapAndRun.Architecture.GameScene
         [SerializeField] private float _quickSaveTimeout;
 
         private float _lastQuickSaveTime;
-        
+
         private IDataService _dataService;
         private List<IDecomposable> _decomposables;
 
@@ -55,7 +55,7 @@ namespace TapAndRun.Architecture.GameScene
 
             Debug.Log("Scope decomposition was completed");
         }
-        
+
         private void QuickSave()
         {
             if (Time.time - _lastQuickSaveTime < _quickSaveTimeout && _lastQuickSaveTime != 0)
@@ -65,7 +65,7 @@ namespace TapAndRun.Architecture.GameScene
  
             _lastQuickSaveTime = Time.time;
             _dataService.Save();
-            
+
             Debug.Log("QuickSave was completed");
         }
     }

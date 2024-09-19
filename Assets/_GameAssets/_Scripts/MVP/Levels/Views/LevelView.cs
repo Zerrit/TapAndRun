@@ -33,6 +33,9 @@ namespace TapAndRun.MVP.Levels.Views
             InteractionPoints[index]?.Activate();
         }
 
+        /// <summary>
+        /// Выключает текущий указатель и активирует следующий при наличии.
+        /// </summary>
         public void SwitchToNextArrow(int currentArrowIndex)
         {
             InteractionPoints[currentArrowIndex]?.Deactivate();

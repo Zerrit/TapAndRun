@@ -11,7 +11,7 @@ namespace TapAndRun.MVP.MainMenu.Views
         [field:SerializeField] public Transform ButtonsContainer { get; private set; }
 
         public List<LevelButtonView> ButtonList { get; }= new();
-        
+
         public void UpdateButtons(int lastUnlockedLevelId)
         {
             foreach (var button in ButtonList)

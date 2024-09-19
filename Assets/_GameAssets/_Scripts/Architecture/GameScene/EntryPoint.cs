@@ -61,9 +61,9 @@ namespace TapAndRun.Architecture.GameScene
                 loseModel,
                 walletModel,
                 skinShopModel,
-                
+
                 dataService,
-                
+
                 settingsPresenter,
                 characterPresenter,
                 cameraPresenter,
@@ -75,7 +75,7 @@ namespace TapAndRun.Architecture.GameScene
 
                 tapTutorial,
                 crystalsTutorial,
-                
+
                 audioService,
                 localizationService,
                 transitionService,
@@ -84,7 +84,6 @@ namespace TapAndRun.Architecture.GameScene
             _gameStateMachine = gameStateMachine;
         }
 
-        // Initialization of all game entities in the specified order 
         public async UniTask StartAsync(CancellationToken cancellation)
         {
             foreach (var entity in _initializationQueue)

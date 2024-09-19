@@ -1,8 +1,7 @@
 ﻿using System;
-using TapAndRun.MVP.CharacterCamera.Model;
 using UnityEngine;
 
-namespace TapAndRun.Configs
+namespace TapAndRun.MVP.CharacterCamera.Model
 {
     [Serializable]
     public class CameraModeData

@@ -76,7 +76,7 @@ namespace TapAndRun.MVP.Lose
                 _view.FreeViewButton.gameObject.SetActive(true);
 
                 await _view.FreeViewButton.OnClickAsync(token);
-            
+
                 _cameraZoom.SetLoseZoomAsync().Forget();
                 _view.FreeViewButton.gameObject.SetActive(false);
                 _view.Show();

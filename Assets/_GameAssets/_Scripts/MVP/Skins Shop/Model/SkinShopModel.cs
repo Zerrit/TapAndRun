@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using TapAndRun.Configs;
 using TapAndRun.MVP.Character.Model;
 using TapAndRun.MVP.Wallet.Model;
 using TapAndRun.PlayerData;
@@ -16,7 +14,7 @@ namespace TapAndRun.MVP.Skins_Shop.Model
     {
         public string SaveKey => "Skins";
 
-        public ReactiveProperty<bool> IsDisplaying { get; set; }
+        public BoolReactiveProperty IsDisplaying { get; set; }
 
         public TriggerReactiveProperty BackTrigger { get; private set; }
 
@@ -36,18 +34,20 @@ namespace TapAndRun.MVP.Skins_Shop.Model
 
         public UniTask InitializeAsync(CancellationToken token)
         {
-            IsDisplaying = new ReactiveProperty<bool>();
+            IsDisplaying = new BoolReactiveProperty();
             BackTrigger = new TriggerReactiveProperty();
 
             UnlockedSkins = new List<string> 
                 {_characterModel.SelectedSkin.Value};
-            
+
             return UniTask.CompletedTask;
         }
 
+        #region SaveLoad
+
         SaveableData IProgressable.GetProgressData()
         {
-            return new SaveableData(SaveKey, new object[] {UnlockedSkins});
+            return new (SaveKey, new object[] {UnlockedSkins});
         }
 
         void IProgressable.RestoreProgress(SaveableData loadData)
@@ -62,11 +62,13 @@ namespace TapAndRun.MVP.Skins_Shop.Model
             UnlockedSkins = skins;
         }
 
+        #endregion
+
         public void SelectCurrentSkin()
         {
             _characterModel.SelectedSkin.Value = CurrentSkinsData.Id;
         }
-        
+
         public bool TryBuyCurrentSkin()
         {
             if (IsCanPurchase())

@@ -818,5 +818,7 @@ MonoBehaviour:
   <Content>k__BackingField: {fileID: 5590449258119608684}
   _fadeOutDuration: 0
   _fadeInDuration: 0
+  <LevelText>k__BackingField: {fileID: 2786459714803558315}
+  <SpeedText>k__BackingField: {fileID: 9124584322349847579}
   <TapButton>k__BackingField: {fileID: 8762707000492330933}
   <TutorialView>k__BackingField: {fileID: 5979066087966816129}

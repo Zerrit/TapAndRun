@@ -23,11 +23,11 @@ namespace TapAndRun.Architecture.BootScene
                 adsService
             };
         }
-        
+
         public async UniTask StartAsync(CancellationToken cancellation)
         {
             Application.targetFrameRate = 60;
-            
+
             foreach (var entity in _initializationQueue)
             {
                 await entity.InitializeAsync(cancellation);

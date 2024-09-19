@@ -17,9 +17,11 @@ namespace TapAndRun.PrallaxBackground.MatrixBackground
                 var randomYPos = Random.Range(-squareSize / 2f, squareSize / 2f);
                 var randomPosition = new Vector3(randomXPos, randomYPos, 0);
 
-                symbol.transform.localPosition = randomPosition;
-                symbol.transform.rotation = Quaternion.Euler(0f, 0f, randomAngle);
-                symbol.transform.localScale = new Vector3(symbolsSize, symbolsSize, 1);
+                var symbolTransform = symbol.transform;
+
+                symbolTransform.localPosition = randomPosition;
+                symbolTransform.rotation = Quaternion.Euler(0f, 0f, randomAngle);
+                symbolTransform.localScale = new Vector3(symbolsSize, symbolsSize, 1);
 
                 var speed = Random.Range(-0.05f, 0.05f);
                 symbol.Animator.SetFloat(Speed, speed);

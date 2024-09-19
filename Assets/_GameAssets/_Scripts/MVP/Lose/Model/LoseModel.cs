@@ -18,7 +18,7 @@ namespace TapAndRun.MVP.Lose.Model
         {
             _adsService = adsService;
         }
-        
+
         public UniTask InitializeAsync(CancellationToken token)
         {
             IsDisplaying = new ReactiveProperty<bool>();

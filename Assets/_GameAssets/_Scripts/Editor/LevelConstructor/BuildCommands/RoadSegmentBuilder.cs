@@ -1,5 +1,4 @@
 ﻿using System;
-using TapAndRun.Editor.LevelConstructor.BuildCommands;
 using TapAndRun.MVP.Levels.Views;
 using TapAndRun.MVP.Levels.Views.SegmentViews;
 using UnityEngine;
@@ -10,9 +9,9 @@ namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor.BuildCommands
     public class RoadSegmentBuilder : AbstractSegmentBuilder
     {
         private RoadSegmentView _instance;
-        
+
         private readonly RoadSegmentView _segmentPrefab;
-        
+
         public RoadSegmentBuilder(LevelView level, RoadSegmentView roadViewPrefab) : base(level)
         {
             _segmentPrefab = roadViewPrefab;
@@ -44,11 +43,10 @@ namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor.BuildCommands
         {
             var crystalsCount = _level.Crystals.Count;
             var amountToRemove = _instance.Crystals.Length;
-            
+
             _level.Crystals.RemoveRange(crystalsCount - amountToRemove, amountToRemove);
 
             base.Debuild();
         }
-        
     }
 }
