@@ -1,0 +1,233 @@
+#if UNITY_EDITOR
+using System.Collections.Generic;
+using TapAndRun._GameAssets._Scripts.Editor.LevelConstructor.BuildCommands;
+using TapAndRun.Configs;
+using TapAndRun.MVP.CharacterCamera.Model;
+using TapAndRun.MVP.Levels.Views;
+using UnityEditor;
+using UnityEngine;
+
+namespace TapAndRun._GameAssets._Scripts.Editor.LevelConstructor
+{
+    public class LevelContructorTool : EditorWindow
+    {
+        private string _levelName;
+        private int _speedDifficulty;
+        private CameraMode _cameraMode;
+
+        private float _fadePanel;
+
+        private LevelView _creatingLevel;
+
+        private Stack<AbstractSegmentBuilder> _buildersStack;
+        private LevelConstructorToolConfig _config;
+
+        [MenuItem("Tools/LevelConstructor")]
+        public static void ShowWindow()
+        {
+            GetWindow<LevelContructorTool>(true, "Level Constructor");
+        }
+
+        private void OnEnable()
+        {
+            _buildersStack = new Stack<AbstractSegmentBuilder>();
+            _config = AssetDatabase.LoadAssetAtPath<LevelConstructorToolConfig>("Assets/_GameAssets/Configs/LevelConstructorToolConfig.asset");
+
+            _fadePanel = 0f;
+        }
+
+        private void CreateStartLevel()
+        {
+            _creatingLevel = new GameObject("Level").AddComponent<LevelView>();
+            var startSegment = Instantiate(_config.StartSegment, _creatingLevel.transform);
+
+            _creatingLevel.Segments.Add(startSegment);
+            _creatingLevel.StartSegment = startSegment;
+        }
+
+        private void CreateFinishLevel()
+        {
+            var segmentsCount = _creatingLevel.Segments.Count;
+            var finishSegment = Instantiate(_config.FinishSegment, _creatingLevel.Segments[segmentsCount - 1].SnapPoint.position, _creatingLevel.Segments[segmentsCount - 1].transform.rotation, _creatingLevel.transform);
+
+            _creatingLevel.Segments.Add(finishSegment);
+            _creatingLevel.FinishSegment = finishSegment;
+        }
+
+        private void ActivateBuilder(AbstractSegmentBuilder builder)
+        {
+            builder.Build();
+            _buildersStack.Push(builder);
+        }
+
+        private void DeactivateBuilder()
+        {
+            if (_buildersStack.TryPop(out var builder))
+            {
+                builder.Debuild();
+            }
+            else
+            {
+                Debug.Log("All segments are deleted!");
+            }
+        }
+
+        private void SaveLevelToPrefab()
+        {
+            var savePath = "Assets/_GameAssets/Prefabs/Levels/" + _levelName + ".prefab";
+
+            savePath = AssetDatabase.GenerateUniqueAssetPath(savePath);
+            PrefabUtility.SaveAsPrefabAssetAndConnect(_creatingLevel.gameObject, savePath, InteractionMode.AutomatedAction);
+
+            DestroyImmediate(_creatingLevel.gameObject ,false);
+        }
+
+        private void OnGUI()
+        {
+            EditorGUILayout.LabelField("Level Constructor - Tap And Run");
+
+            if (GUILayout.Button("Create new level"))
+            {
+                _fadePanel = 1f;
+
+                CreateStartLevel();
+            }
+
+            EditorGUILayout.Space(20);
+            //---------------------------------------------------------------------------//  START MENU
+
+            if (EditorGUILayout.BeginFadeGroup(_fadePanel))
+            {
+                //-----------------------------------------------------------------------//  ROAD SEGMENTS
+                EditorGUILayout.BeginHorizontal();
+
+                if (GUILayout.Button("Short Road", GUILayout.Height(30)))
+                {
+                    var builder = new RoadSegmentBuilder(_creatingLevel, _config.ShortRoadSegment);
+
+                    ActivateBuilder(builder);
+                }
+
+                if (GUILayout.Button("Middle Road", GUILayout.Height(30)))
+                {
+                    var builder = new RoadSegmentBuilder(_creatingLevel, _config.MiddleRoadSegment);
+
+                    ActivateBuilder(builder);
+                }
+
+                if (GUILayout.Button("Long Road", GUILayout.Height(30)))
+                {
+                    var builder = new RoadSegmentBuilder(_creatingLevel, _config.LongRoadSegment);
+
+                    ActivateBuilder(builder);
+                }
+
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.Space(15);
+
+                //---------------------------------------------------------------------------// TURN SEGMENTS
+                EditorGUILayout.BeginHorizontal();
+
+                if (GUILayout.Button("Left Turn", GUILayout.Height(50)))
+                {
+                    var builder = new InteractSegmentBuilder(_creatingLevel, _config.LeftTurnSegment);
+
+                    ActivateBuilder(builder);
+                }
+                if (GUILayout.Button("Right Turn", GUILayout.Height(50)))
+                {
+                    var builder = new InteractSegmentBuilder(_creatingLevel, _config.RightTurnSegment);
+
+                    ActivateBuilder(builder);
+                }
+
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.Space(15);
+
+                //---------------------------------------------------------------------------// JUMP SEGMENTS
+                EditorGUILayout.BeginHorizontal();
+
+                if (GUILayout.Button("Start Jump", GUILayout.Height(30)))
+                {
+                    var builder = new InteractSegmentBuilder(_creatingLevel, _config.JumpStartSegment);
+
+                    ActivateBuilder(builder);
+                }
+                if (GUILayout.Button("Single Jump", GUILayout.Height(30)))
+                {
+                    var builder = new InteractSegmentBuilder(_creatingLevel, _config.JumpSegment);
+
+                    ActivateBuilder(builder);
+                }
+                if (GUILayout.Button("End Jump", GUILayout.Height(30)))
+                {
+                    var builder = new RoadSegmentBuilder(_creatingLevel, _config.JumpEndSegment);
+
+                    ActivateBuilder(builder);
+                }
+
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.Space(30);
+                //---------------------------------------------------------------------------// SEMGENTS DELETING
+
+                EditorGUILayout.BeginHorizontal();
+
+                if (GUILayout.Button("Debuild Last Segment", GUILayout.Height(30)))
+                {
+                    DeactivateBuilder();
+                }
+
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.Space(30);
+                //---------------------------------------------------------------------------// DIFFICULTY SETTING
+
+                EditorGUILayout.BeginHorizontal();
+
+                _speedDifficulty = EditorGUILayout.IntSlider(_speedDifficulty, 1, 4);
+                EditorGUILayout.LabelField("Speed Difficulty");
+
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+
+                _cameraMode = (CameraMode) EditorGUILayout.EnumPopup(_cameraMode);
+                EditorGUILayout.LabelField("Camera Difficulty");
+
+                EditorGUILayout.EndHorizontal();
+
+                EditorGUILayout.Space(15);
+                //---------------------------------------------------------------------------// LEVEL NAME
+
+                EditorGUILayout.BeginHorizontal();
+
+                _levelName = EditorGUILayout.TextField(_levelName);
+                EditorGUILayout.LabelField("Level Name");
+
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.Space(15);
+                //---------------------------------------------------------------------------// ЗАВЕРШЕНИЕ СОЗДАНИЯ УРОВНЯ
+
+                if (GUILayout.Button("Finish Level"))
+                {
+                    CreateFinishLevel();
+                    _creatingLevel.SpeedDifficulty = _speedDifficulty;
+                    _creatingLevel.CameraMode = _cameraMode;
+
+                    SaveLevelToPrefab();
+
+                    _fadePanel = 0;
+                }
+            }
+            EditorGUILayout.EndFadeGroup();
+        }
+
+        private void OnDestroy()
+        {
+            if(_creatingLevel) DestroyImmediate(_creatingLevel.gameObject, false);
+        }
+    }
+}
+#endif

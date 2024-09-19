@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: LutikAnimController
+  m_Controller: {fileID: 9100000, guid: 4154a9cbe0be9d24fbf47424a19cc7d5, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: fa77b751d06aa2443a0d800c7e9e4676, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 2a80ad2a4861f4443b721758177d6f80, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: b884e8128dbbfc044821f70a29700c0b, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 410f4ff2d79a0b64eb69a36f9d02142b, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: f6212ffa1bacb4442b382a38bedd5f6d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: f6212ffa1bacb4442b382a38bedd5f6d, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 2a0fd08da78c689468824ffa9576bf16, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 2a0fd08da78c689468824ffa9576bf16, type: 2}

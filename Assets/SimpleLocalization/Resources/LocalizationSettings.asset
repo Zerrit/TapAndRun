@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63817d93022759543b57e795c78efe11, type: 3}
+  m_Name: LocalizationSettings
+  m_EditorClassIdentifier: 
+  TableId: 18EETWmYX2SBWUkecEw9g3hWSQUcqd3sfuWbraCKUvzY
+  Sheets:
+  - Name: Main
+    Id: 0
+    TextAsset: {fileID: 4900000, guid: f01d9d2750679034894ed12a46e68e28, type: 3}
+  SaveFolder: {fileID: 102900000, guid: 1d1bbcbecfedb9c44b18d967b8d6fd13, type: 3}
